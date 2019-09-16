@@ -9,9 +9,9 @@ import store from "./config/createStore";
 export default function App() {
   return (
     
-    <ArtisteScreen />
-    // <Provider store={store}>
-    //   <Rooter />
-    // </Provider>
+    // <ArtisteScreen />
+    <Provider store={store}>
+      <Rooter />
+    </Provider>
   );
 }

@@ -2,8 +2,9 @@ import React from "react";
 import styled from "styled-components";
 import { TouchableOpacity, ScrollView } from "react-native";
 import ArtistCard from "./ArtistCard";
+import { ArtisteScreen } from "../../screens/ArtisteScreen";
 
-export const ArtistList = ({ show_more, onClick, title, artists }) => {
+export const ArtistList = ({ show_more, onClick, title, artists, navigation }) => {
   return (
     <Container>
       <Header>
@@ -14,7 +15,9 @@ export const ArtistList = ({ show_more, onClick, title, artists }) => {
       <Content>
         <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
           {artists.map((item, index) => (
-            <ArtistCard artist={item} key={index} />
+            <TouchableOpacity>
+              <ArtistCard artist={item} key={index} onPress={() => navigation.navigate('ArtisteScreen')} />
+            </TouchableOpacity>
           ))}
         </ScrollView>
       </Content>

@@ -11,9 +11,14 @@ import PremiumCallToAction from "../components/home/PremiumCallToAction";
 import { CastingList } from "../components/home/CastingList";
 import { ArtistList } from "../components/home/ArtistList";
 import { GenderList } from "../components/home/GenderList";
+import { TouchableOpacity } from 'react-native';
 
 export default class HomeScreen extends React.Component {
+  constructor(props) {
+    super(props);
+  }
   render() {
+    const { navigation } = this.props;
     const mostListenedPlaylist = [...albums];
     return (
       <ScrollView>
@@ -26,7 +31,7 @@ export default class HomeScreen extends React.Component {
           />
           <PremiumCallToAction />
           <CastingList castings={castings} title="Les castings du moment" />
-          <ArtistList title="Les tops artistes" artists={artists.slice(0, 9)} />
+          <ArtistList navigation={navigation} title="Les tops artistes" artists={artists.slice(0, 9)} />
           <GenderList title="Genre de musique" genders={genders} />
         </Container>
       </ScrollView>

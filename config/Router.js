@@ -9,6 +9,7 @@ import HomeScreen from "../screens/HomeScreen";
 import ExplorerScreen from "../screens/ExplorerScreen";
 import MyMusicScreen from "../screens/MyMusicScreen";
 import CastingsScreen from "../screens/CastingsScreen";
+import ArtisteScreen from "../screens/ArtisteScreen";
 import {
   HeartIcon,
   HomeIcon,
@@ -18,10 +19,12 @@ import {
 
 const HomeTabNavigator = createBottomTabNavigator(
   {
-    Home: HomeScreen,
+    Home: HomeStack,
     Explorer: ExplorerScreen,
     MyMusic: MyMusicScreen,
-    Castings: CastingsScreen
+    Castings: CastingsScreen,
+    
+    
   },
   {
     defaultNavigationOptions: ({ navigation }) => ({
@@ -61,6 +64,21 @@ const AppNavigator = createStackNavigator(
     initialRouteName: "HomeStack",
     headerMode: "none"
   }
+);
+
+  {
+const HomeStack = createStackNavigator(
+  {
+    Artiste:{
+      path: "artiste",
+      screen: ArtisteScreen
+    },
+    HomeStack:{
+      initialRouteName: "HomeStack",
+      headerMode: "none"
+    }
+  }
+
 );
 
 const Rooter = createAppContainer(AppNavigator);
