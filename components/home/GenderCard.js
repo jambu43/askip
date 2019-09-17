@@ -10,7 +10,7 @@ const GenderCard = ({ gender, background, color }) => (
 export default GenderCard;
 
 const Container = styled.View`
-  padding: 25px;
+  padding: 10px 15px;
   background-color: ${props =>
     props.background ? props.background : "#f1f1f1"};
   border-radius: 5px;
@@ -20,4 +20,5 @@ const Title = styled.Text`
   color: ${props => (props.color ? props.color : "#23232a")};
   text-align: center;
   font-size: 17px;
+  font-weight: bold;
 `;

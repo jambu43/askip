@@ -16,7 +16,7 @@ const PremiumCallToAction = props => (
 );
 
 const Container = styled.View`
-  background-color: #2692b7;
+  background-color: #f3044c;
   padding: 15px;
   margin: 25px 0;
   flex-direction: row;

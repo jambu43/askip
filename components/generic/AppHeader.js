@@ -1,17 +1,17 @@
 import React from "react";
 import styled from "styled-components";
 import { TouchableOpacity, View } from "react-native";
-import { NotificationIcon } from "../Icons";
+import { BackIcon } from "../Icons";
 
-const AppHeader = props => (
+const AppHeader = ({ showAvatar = true, showBack = false }) => (
   <Container>
     <Wrapper>
-      <TouchableOpacity>
-        <Avatar source={require("../../assets/avatar.jpg")} />
-      </TouchableOpacity>
-      <TouchableOpacity>
-        <NotificationIcon />
-      </TouchableOpacity>
+      {showBack && <BackIcon size={24} />}
+      {showAvatar && (
+        <TouchableOpacity>
+          <Avatar source={require("../../assets/avatar.jpg")} />
+        </TouchableOpacity>
+      )}
     </Wrapper>
   </Container>
 );
@@ -23,6 +23,8 @@ const Container = styled.View`
   justify-content: space-between;
   align-items: center;
   margin-top: 24px;
+  border-bottom-color: #f5f5f5;
+  border-bottom-width: 1px;
 `;
 
 const MenuIcon = styled.Image`
@@ -32,7 +34,6 @@ const MenuIcon = styled.Image`
 
 const Wrapper = styled.View`
   flex-direction: row;
-  justify-content: flex-end;
   align-items: center;
   flex: 1;
 `;

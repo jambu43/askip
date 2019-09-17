@@ -1,51 +1,134 @@
 import React from "react";
+import styled from "styled-components";
 import {
   createAppContainer,
   createStackNavigator,
   createBottomTabNavigator
 } from "react-navigation";
 import LoginScreen from "../screens/LoginScreen";
-import HomeScreen from "../screens/HomeScreen";
 import ExplorerScreen from "../screens/ExplorerScreen";
-import MyMusicScreen from "../screens/MyMusicScreen";
+import Profile from "../screens/Profile";
 import CastingsScreen from "../screens/CastingsScreen";
-import ArtisteScreen from "../screens/ArtisteScreen";
-import {
-  HeartIcon,
-  HomeIcon,
-  SearchIcon,
-  MicroIcon
-} from "../components/Icons";
+import ArtistScreen from "../screens/ArtistScreen";
+import NotificationsScreen from "../screens/NotificationsScreen";
+import { NotificationIcon, SearchIcon, MicroIcon } from "../components/Icons";
+
+const Avatar = styled.Image`
+  height: 24px;
+  width: 24px;
+  border-radius: 17px;
+`;
+
+const BottomTransition = (index, position, height) => {
+  const sceneRange = [index - 1, index, index + 1];
+  const outPutHeight = [height, 0, 0];
+  const transition = position.interpolate({
+    inputRange: sceneRange,
+    outputRange: outPutHeight
+  });
+
+  return {
+    transform: [
+      {
+        translateY: transition
+      }
+    ]
+  };
+};
+
+const SlideTransition = (index, position, width) => {
+  const sceneRange = [index - 1, index, index + 1];
+  const outPutWidth = [width, 0, 0];
+  const transition = position.interpolate({
+    inputRange: sceneRange,
+    outputRange: outPutWidth
+  });
+
+  return {
+    transform: [
+      {
+        translateX: transition
+      }
+    ]
+  };
+};
+
+const configNavigation = () => {
+  return {
+    screenInterpolator: screenProps => {
+      const position = screenProps.position;
+      const scene = screenProps.scene;
+      const index = scene.index;
+      const height = screenProps.layout.initHeight;
+
+      return BottomTransition(index, position, height);
+    }
+  };
+};
+
+const configSlideNavigation = () => {
+  return {
+    screenInterpolator: screenProps => {
+      const position = screenProps.position;
+      const scene = screenProps.scene;
+      const index = scene.index;
+      const width = screenProps.layout.initWidth;
+
+      return SlideTransition(index, position, width);
+    }
+  };
+};
+
+const CastingsStack = createStackNavigator(
+  {
+    Artist: {
+      path: "artiste",
+      screen: ArtistScreen
+    },
+    Castings: {
+      path: "home",
+      screen: CastingsScreen
+    }
+  },
+  {
+    initialRouteName: "Castings",
+    headerMode: "none",
+    transitionConfig: configNavigation
+  }
+);
 
 const HomeTabNavigator = createBottomTabNavigator(
   {
-    Home: HomeStack,
+    Castings: CastingsStack,
     Explorer: ExplorerScreen,
-    MyMusic: MyMusicScreen,
-    Castings: CastingsScreen,
-    
-    
+    Notifications: NotificationsScreen,
+    Profile: {
+      screen: Profile,
+      label: "Moi"
+    }
   },
   {
     defaultNavigationOptions: ({ navigation }) => ({
       tabBarIcon: ({ focused, horizontal, tintColor }) => {
         const { routeName } = navigation.state;
         switch (routeName) {
-          case "MyMusic":
-            return <HeartIcon fill={tintColor} />;
+          case "Profile":
+            return <Avatar source={require("../assets/avatar.jpg")} />;
           case "Explorer":
             return <SearchIcon fill={tintColor} />;
-          case "Home":
-            return <HomeIcon fill={tintColor} />;
           case "Castings":
             return <MicroIcon fill={tintColor} />;
+          case "Notifications":
+            return <NotificationIcon fill={tintColor} />;
         }
       }
     }),
     tabBarOptions: {
       activeTintColor: "#2692b7",
-      inactiveTintColor: "#23232a"
-    }
+      inactiveTintColor: "#474747",
+      showLabel: false
+    },
+    transitionConfig: configSlideNavigation
   }
 );
 
@@ -55,10 +138,7 @@ const AppNavigator = createStackNavigator(
       path: "login",
       screen: LoginScreen
     },
-    HomeStack: {
-      path: "home",
-      screen: HomeTabNavigator
-    }
+    HomeStack: HomeTabNavigator
   },
   {
     initialRouteName: "HomeStack",
@@ -66,21 +146,5 @@ const AppNavigator = createStackNavigator(
   }
 );
 
-  {
-const HomeStack = createStackNavigator(
-  {
-    Artiste:{
-      path: "artiste",
-      screen: ArtisteScreen
-    },
-    HomeStack:{
-      initialRouteName: "HomeStack",
-      headerMode: "none"
-    }
-  }
-
-);
-
 const Rooter = createAppContainer(AppNavigator);
-
 export default Rooter;

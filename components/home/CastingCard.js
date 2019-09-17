@@ -1,26 +1,27 @@
 import React from "react";
 import styled from "styled-components";
-import { Slider } from "react-native";
-import { PlayIcon } from "../Icons";
+import { PlayIcon, MedalIcon, HeartIcon } from "../Icons";
 
 export const CastingCard = ({ casting }) => (
   <Container>
     <CastingAuthorAvatar source={{ uri: casting.artist.picture_path }} />
     <Content>
       <CastingTitle>{casting.title}</CastingTitle>
-      <CastingDescription>{casting.description}</CastingDescription>
       <CastingAuthor>
-        <AlbumCover source={{ uri: casting.album.coverPicture }} />
-        <AlbumPlayer>
-          <PlayIcon fill="#2692b7" />
-          <AlbumPlayerSlider
-            minimumValue={0}
-            maximumValue={100}
-            step={1}
-            thumbTintColor="#2692b7"
-          />
-        </AlbumPlayer>
+        <MedalIcon size={16} fill="#31c69c" />
+        <CastingAuthorName>{casting.artist.artist_name}</CastingAuthorName>
       </CastingAuthor>
+      <CastingStats>
+        <CastingStatsItem>
+          <PlayIcon fill="#474747" size={18} />
+          <CastingStatsItemText>75K</CastingStatsItemText>
+        </CastingStatsItem>
+
+        <CastingStatsItem>
+          <HeartIcon fill="#474747" size={18} />
+          <CastingStatsItemText>1.5K</CastingStatsItemText>
+        </CastingStatsItem>
+      </CastingStats>
     </Content>
   </Container>
 );
@@ -28,15 +29,16 @@ export const CastingCard = ({ casting }) => (
 const Container = styled.View`
   flex-direction: row;
   flex-wrap: wrap;
-  width: 320px;
+  width: auto;
   margin-right: 15px;
+  align-items: center;
 `;
 const CastingAuthorAvatar = styled.Image`
-  height: 90px;
-  width: 90px;
+  height: 80px;
+  width: 80px;
   background: #f1f1f1;
   border-radius: 5px;
-  margin-right: 5px;
+  margin-right: 10px;
   flex-wrap: wrap;
 `;
 const AlbumCover = styled.Image`
@@ -53,22 +55,23 @@ const CastingTitle = styled.Text`
   flex-wrap: wrap;
   max-width: 170px;
 `;
-const CastingDescription = styled.Text`
-  text-align: left;
-  color: #92929d;
-  margin-bottom: 5px;
+const CastingStats = styled.View`
+  flex-direction: row;
+`;
+const CastingStatsItem = styled.View`
+  flex-direction: row;
+  margin-right: 10px;
 `;
 const CastingAuthor = styled.View`
   flex-direction: row;
   width: 100%;
   align-items: center;
+  margin: 5px 0;
 `;
-const AlbumPlayer = styled.View`
-  flex: 1;
-  justify-content: center;
-  align-items: center;
-  flex-direction: row;
+const CastingAuthorName = styled.Text`
+  font-size: 12px;
+  margin-right: 10px;
 `;
-const AlbumPlayerSlider = styled.Slider`
-  flex: 1;
+const CastingStatsItemText = styled.Text`
+  margin-left: 5px;
 `;
