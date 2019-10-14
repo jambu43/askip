@@ -12,6 +12,7 @@ import CastingsScreen from "../screens/CastingsScreen";
 import ArtistScreen from "../screens/ArtistScreen";
 import NotificationsScreen from "../screens/NotificationsScreen";
 import { NotificationIcon, SearchIcon, MicroIcon } from "../components/Icons";
+import WelcomeScreen from "../screens/WelcomeScreen";
 
 const Avatar = styled.Image`
   height: 24px;
@@ -138,10 +139,18 @@ const AppNavigator = createStackNavigator(
       path: "login",
       screen: LoginScreen
     },
+    Artist: {
+      path: "artiste",
+      screen: ArtistScreen
+    },
+    Welcome: {
+      path: "welcome",
+      screen: WelcomeScreen
+    },
     HomeStack: HomeTabNavigator
   },
   {
-    initialRouteName: "HomeStack",
+    initialRouteName: "Welcome",
     headerMode: "none"
   }
 );

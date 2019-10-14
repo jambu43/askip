@@ -22,7 +22,9 @@ export const ArtistList = ({
           {artists.map((item, index) => (
             <TouchableOpacity
               key={index}
-              onPress={() => navigation.navigate("Artist")}
+              onPress={() =>
+                navigation.navigate("Artist", { artist_id: item.id })
+              }
             >
               <ArtistCard artist={item} />
             </TouchableOpacity>

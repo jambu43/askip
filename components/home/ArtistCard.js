@@ -11,15 +11,14 @@ const ArtistCard = ({ artist }) => (
 );
 
 const Container = styled.View`
-  width: 90px;
+  width: 120px;
   height: auto;
   margin-right: 15px;
-  align-items: center;
 `;
 const ArtistImage = styled.Image`
-  width: 80px;
-  height: 80px;
-  border-radius: 60px;
+  width: 120px;
+  height: 180px;
+  border-radius: 5px;
   background: #f1f1f1;
   margin-bottom: 5px;
 `;
@@ -28,7 +27,6 @@ const ArtistName = styled.Text`
   font-weight: bold;
   font-size: 12px;
   margin-bottom: 5px;
-  text-align: center;
 `;
 const ArtistFans = styled.Text`
   color: #92929d;
