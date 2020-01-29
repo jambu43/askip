@@ -3,13 +3,7 @@ import styled from "styled-components";
 import { TouchableOpacity, ScrollView } from "react-native";
 import ArtistCard from "./ArtistCard";
 
-export const ArtistList = ({
-  show_more,
-  onClick,
-  title,
-  artists,
-  navigation
-}) => {
+export const ArtistList = ({ show_more, onClick, title, artists, navigation }) => {
   return (
     <Container>
       <Header>
@@ -22,9 +16,7 @@ export const ArtistList = ({
           {artists.map((item, index) => (
             <TouchableOpacity
               key={index}
-              onPress={() =>
-                navigation.navigate("Artist", { artist_id: item.id })
-              }
+              onPress={() => navigation.navigate("Artist", { artist_id: item.id })}
             >
               <ArtistCard artist={item} />
             </TouchableOpacity>
@@ -37,12 +29,12 @@ export const ArtistList = ({
 
 const Container = styled.View`
   padding: 0 15px;
-  margin: 15px 0;
 `;
 const Title = styled.Text`
   font-size: 20px;
   font-weight: bold;
   margin-bottom: 10px;
+  color: #fff;
 `;
 const Content = styled.View``;
 const Header = styled.View``;

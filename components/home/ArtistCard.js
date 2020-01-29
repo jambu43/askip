@@ -5,7 +5,7 @@ import { cutText } from "../../helpers";
 const ArtistCard = ({ artist }) => (
   <Container>
     <ArtistImage source={{ uri: artist.picture_path }} />
-    <ArtistName>{cutText(artist.artist_name, 12)}</ArtistName>
+    <ArtistName>{cutText(artist.artist_name, 24)}</ArtistName>
     <ArtistFans>{Math.ceil(Math.random() * 100)} fans</ArtistFans>
   </Container>
 );
@@ -23,7 +23,7 @@ const ArtistImage = styled.Image`
   margin-bottom: 5px;
 `;
 const ArtistName = styled.Text`
-  color: #23232a;
+  color: #fff;
   font-weight: bold;
   font-size: 12px;
   margin-bottom: 5px;

@@ -11,6 +11,7 @@ import PremiumCallToAction from "../components/home/PremiumCallToAction";
 import { CastingList } from "../components/home/CastingList";
 import { ArtistList } from "../components/home/ArtistList";
 import { GenderList } from "../components/home/GenderList";
+import { dark } from "../config/variables";
 
 export default class HomeScreen extends React.Component {
   constructor(props) {
@@ -23,16 +24,9 @@ export default class HomeScreen extends React.Component {
       <Container>
         <AppHeader />
         <ScrollView>
-          <CastingList castings={castings} title="Les castings du moment" />
-          <GenderList title="Explorez par genre de musique" genders={genders} />
-          <AlbumList
-            title="Les chansons les plus remixées"
-            albums={mostListenedPlaylist.slice(0, 5).reverse()}
-          />
-          <PremiumCallToAction />
           <ArtistList
             navigation={navigation}
-            title="Chantez avec les artistes"
+            title="Nouvelles parutions"
             artists={artists.slice(0, 9)}
           />
         </ScrollView>
@@ -43,4 +37,5 @@ export default class HomeScreen extends React.Component {
 
 const Container = styled.View`
   flex: 1;
+  background-color: ${dark};
 `;

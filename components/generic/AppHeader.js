@@ -3,14 +3,15 @@ import styled from "styled-components";
 import { connect } from "react-redux";
 import { TouchableOpacity, View } from "react-native";
 import { BackIcon } from "../Icons";
+import { dark } from "../../config/variables";
 
 const AppHeader = ({ showAvatar = true, showBack = false, user }) => (
   <Container>
-    <Wrapper>
+    <Wrapper centerLogo={showAvatar}>
       {showBack && <BackIcon size={24} />}
       {showAvatar && (
         <TouchableOpacity>
-          <Avatar source={{ uri: user.avatar }} />
+          <Logo source={require("../../assets/askip.png")} />
         </TouchableOpacity>
       )}
     </Wrapper>
@@ -24,8 +25,7 @@ const Container = styled.View`
   justify-content: space-between;
   align-items: center;
   margin-top: 24px;
-  border-bottom-color: #f5f5f5;
-  border-bottom-width: 1px;
+  background: ${dark};
 `;
 
 const MenuIcon = styled.Image`
@@ -36,13 +36,13 @@ const MenuIcon = styled.Image`
 const Wrapper = styled.View`
   flex-direction: row;
   align-items: center;
+  justify-content: ${props => (props.centerLogo ? "center" : "space-between")};
   flex: 1;
 `;
-const Avatar = styled.Image`
-  height: 34px;
-  width: 34px;
+const Logo = styled.Image`
+  height: 37.94px;
+  width: 85px;
   border-radius: 17px;
-  margin-right: 10px;
 `;
 
 const mapStateToProps = state => {
