@@ -63,11 +63,6 @@ class LoginScreen extends React.Component {
           accedez à des centaines de magazines et journaux.
         </Text>
 
-        <ButtonGmail disabled={isLoggingIn} onPress={() => navigation.navigate("HomeStack")}>
-          <ButtonIcon source={require("../assets/google.png")}></ButtonIcon>
-          <ButtonGmailText>CONTINUER AVEC GMAIL</ButtonGmailText>
-        </ButtonGmail>
-
         <ButtonFacebook disabled={isLoggingIn} onPress={this.handleLoginClick.bind(this)}>
           <ButtonIcon source={require("../assets/facebook.png")}></ButtonIcon>
           <ButtonFacebookText>CONTINUER AVEC FACEBOOK</ButtonFacebookText>
