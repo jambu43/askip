@@ -3,37 +3,32 @@ import styled from "styled-components";
 import {
   createAppContainer,
   createStackNavigator,
-  createBottomTabNavigator
+  createBottomTabNavigator,
 } from "react-navigation";
 import LoginScreen from "../screens/LoginScreen";
 import ExplorerScreen from "../screens/ExplorerScreen";
 import Profile from "../screens/Profile";
-import CastingsScreen from "../screens/CastingsScreen";
+import HomeScreen from "../screens/HomeScreen";
 import ArtistScreen from "../screens/ArtistScreen";
 import NotificationsScreen from "../screens/NotificationsScreen";
 import { NotificationIcon, SearchIcon, MicroIcon } from "../components/Icons";
 import WelcomeScreen from "../screens/WelcomeScreen";
-
-const Avatar = styled.Image`
-  height: 24px;
-  width: 24px;
-  border-radius: 17px;
-`;
+import UserAvatar from "../components/generic/UserAvatar";
 
 const BottomTransition = (index, position, height) => {
   const sceneRange = [index - 1, index, index + 1];
   const outPutHeight = [height, 0, 0];
   const transition = position.interpolate({
     inputRange: sceneRange,
-    outputRange: outPutHeight
+    outputRange: outPutHeight,
   });
 
   return {
     transform: [
       {
-        translateY: transition
-      }
-    ]
+        translateY: transition,
+      },
+    ],
   };
 };
 
@@ -42,15 +37,15 @@ const SlideTransition = (index, position, width) => {
   const outPutWidth = [width, 0, 0];
   const transition = position.interpolate({
     inputRange: sceneRange,
-    outputRange: outPutWidth
+    outputRange: outPutWidth,
   });
 
   return {
     transform: [
       {
-        translateX: transition
-      }
-    ]
+        translateX: transition,
+      },
+    ],
   };
 };
 
@@ -63,7 +58,7 @@ const configNavigation = () => {
       const height = screenProps.layout.initHeight;
 
       return BottomTransition(index, position, height);
-    }
+    },
   };
 };
 
@@ -76,37 +71,37 @@ const configSlideNavigation = () => {
       const width = screenProps.layout.initWidth;
 
       return SlideTransition(index, position, width);
-    }
+    },
   };
 };
 
-const CastingsStack = createStackNavigator(
+const HomeStack = createStackNavigator(
   {
     Artist: {
       path: "artiste",
-      screen: ArtistScreen
+      screen: ArtistScreen,
     },
-    Castings: {
+    Home: {
       path: "home",
-      screen: CastingsScreen
-    }
+      screen: HomeScreen,
+    },
   },
   {
-    initialRouteName: "Castings",
+    initialRouteName: "Home",
     headerMode: "none",
-    transitionConfig: configNavigation
+    transitionConfig: configNavigation,
   }
 );
 
 const HomeTabNavigator = createBottomTabNavigator(
   {
-    Castings: CastingsStack,
+    Home: HomeStack,
     Explorer: ExplorerScreen,
     Notifications: NotificationsScreen,
     Profile: {
       screen: Profile,
-      label: "Moi"
-    }
+      label: "Moi",
+    },
   },
   {
     defaultNavigationOptions: ({ navigation }) => ({
@@ -114,22 +109,22 @@ const HomeTabNavigator = createBottomTabNavigator(
         const { routeName } = navigation.state;
         switch (routeName) {
           case "Profile":
-            return <Avatar source={require("../assets/avatar.jpg")} />;
+            return <UserAvatar />;
           case "Explorer":
             return <SearchIcon fill={tintColor} />;
-          case "Castings":
+          case "Home":
             return <MicroIcon fill={tintColor} />;
           case "Notifications":
             return <NotificationIcon fill={tintColor} />;
         }
-      }
+      },
     }),
     tabBarOptions: {
       activeTintColor: "#2692b7",
       inactiveTintColor: "#474747",
-      showLabel: false
+      showLabel: false,
     },
-    transitionConfig: configSlideNavigation
+    transitionConfig: configSlideNavigation,
   }
 );
 
@@ -137,21 +132,21 @@ const AppNavigator = createStackNavigator(
   {
     Login: {
       path: "login",
-      screen: LoginScreen
+      screen: LoginScreen,
     },
     Artist: {
       path: "artiste",
-      screen: ArtistScreen
+      screen: ArtistScreen,
     },
     Welcome: {
       path: "welcome",
-      screen: WelcomeScreen
+      screen: WelcomeScreen,
     },
-    HomeStack: HomeTabNavigator
+    HomeStack: HomeTabNavigator,
   },
   {
-    initialRouteName: "Welcome",
-    headerMode: "none"
+    initialRouteName: "Login",
+    headerMode: "none",
   }
 );
 

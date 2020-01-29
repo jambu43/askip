@@ -11,7 +11,6 @@ import PremiumCallToAction from "../components/home/PremiumCallToAction";
 import { CastingList } from "../components/home/CastingList";
 import { ArtistList } from "../components/home/ArtistList";
 import { GenderList } from "../components/home/GenderList";
-import { TouchableOpacity } from "react-native";
 
 export default class HomeScreen extends React.Component {
   constructor(props) {

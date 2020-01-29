@@ -1,39 +1,102 @@
 import React from "react";
+import { connect } from "react-redux";
 import styled from "styled-components";
-import { TouchableOpacity } from "react-native";
+import * as Facebook from "expo-facebook";
+import { registerUser, toggleIsLoggingIn } from "../store/actions/auth";
+import { NavigationActions, StackActions } from "react-navigation";
+import { ActivityIndicator } from "react-native";
+import { danger } from "../config/variables";
 
-export default class LoginScreen extends React.Component {
+class LoginScreen extends React.Component {
+  async handleLoginClick() {
+    try {
+      this.props.toggleIsLoggingIn();
+      Facebook.initializeAsync("458865114989418");
+      const {
+        type,
+        token,
+        expires,
+        permissions,
+        declinedPermissions,
+      } = await Facebook.logInWithReadPermissionsAsync("458865114989418", {
+        permissions: ["public_profile", "email"],
+      });
+      if (type === "success") {
+        const response = await fetch(
+          `https://graph.facebook.com/me?access_token=${token}&fields=first_name,last_name,email,picture.type(large)`
+        );
+        const user = await response.json();
+        this.props
+          .registerUser({
+            avatar: user.picture.data.url,
+            name: `${user.first_name} ${user.last_name}`,
+            email: user.email,
+            social_auth_provider: "facebook",
+            social_auth_id: user.id,
+          })
+          .then(() => {
+            this.goToHomeScreen();
+          });
+      } else {
+        this.props.toggleIsLoggingIn();
+      }
+    } catch ({ message }) {
+      this.props.toggleIsLoggingIn();
+    }
+  }
+
+  goToHomeScreen() {
+    const resetAction = StackActions.reset({
+      index: 0,
+      actions: [NavigationActions.navigate({ routeName: "HomeStack" })],
+    });
+    this.props.navigation.dispatch(resetAction);
+  }
   render() {
-    const { navigation } = this.props;
+    const { navigation, isLoggingIn } = this.props;
     return (
       <Container>
-        <Image
-          resizeMode="contain"
-          source={require("../assets/login_simple_touch.jpg")}
-        />
-        <Title>Sign up with a simple touch</Title>
+        <Image resizeMode="contain" source={require("../assets/login_simple_touch.jpg")} />
+        <Title>Rejoignez-nous avec un simple clique</Title>
         <Text>
-          magnam dolores maxime at voluptates nihil iste hic fflibero architecto
-          vitae quod veniam? Repellendus! magnam dolores maxime.
+          Rejoignez la conversation en donnant votre avis sur les actualités et les rumeurs et
+          accedez à des centaines de magazines et journaux.
         </Text>
 
-        <TouchableOpacity onPress={() => navigation.navigate("HomeStack")}>
-          <ButtonGmail>
-            <ButtonIcon source={require("../assets/google.png")}></ButtonIcon>
-            <ButtonGmailText>CONTINUER AVEC GMAIL</ButtonGmailText>
-          </ButtonGmail>
-        </TouchableOpacity>
+        <ButtonGmail disabled={isLoggingIn} onPress={() => navigation.navigate("HomeStack")}>
+          <ButtonIcon source={require("../assets/google.png")}></ButtonIcon>
+          <ButtonGmailText>CONTINUER AVEC GMAIL</ButtonGmailText>
+        </ButtonGmail>
 
-        <TouchableOpacity onPress={() => navigation.navigate("HomeStack")}>
-          <ButtonFacebook>
-            <ButtonIcon source={require("../assets/facebook.png")}></ButtonIcon>
-            <ButtonFacebookText>CONTINUER AVEC FACEBOOK</ButtonFacebookText>
-          </ButtonFacebook>
-        </TouchableOpacity>
+        <ButtonFacebook disabled={isLoggingIn} onPress={this.handleLoginClick.bind(this)}>
+          <ButtonIcon source={require("../assets/facebook.png")}></ButtonIcon>
+          <ButtonFacebookText>CONTINUER AVEC FACEBOOK</ButtonFacebookText>
+        </ButtonFacebook>
+        {isLoggingIn ? (
+          <LoadingMessage>
+            <ActivityIndicator color={danger} />
+            <LoadingMessageText>Authentification en cours...</LoadingMessageText>
+          </LoadingMessage>
+        ) : null}
       </Container>
     );
   }
 }
+
+const mapDispatchToProps = dispatch => {
+  return {
+    registerUser: payload => dispatch(registerUser(payload)),
+    toggleIsLoggingIn: () => dispatch(toggleIsLoggingIn()),
+  };
+};
+const mapStateToProps = state => {
+  return {
+    isLoggingIn: state.auth.isLoggingIn,
+    isLoggedIn: state.auth.isLoggedIn,
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(LoginScreen);
 
 const Container = styled.View`
   padding: 25px;
@@ -58,7 +121,13 @@ const Text = styled.Text`
   margin-bottom: 15px;
 `;
 
-const ButtonGmail = styled.View`
+const LoadingMessage = styled.View`
+  flex-direction: row;
+  justify-content: center;
+  color: #222;
+`;
+const LoadingMessageText = styled.Text``;
+const ButtonGmail = styled.TouchableOpacity`
   width: 100%;
   border-radius: 2px;
   padding: 15px;
@@ -82,7 +151,7 @@ const ButtonGmailText = styled.Text`
   text-align: center;
   font-weight: bold;
 `;
-const ButtonFacebook = styled.View`
+const ButtonFacebook = styled.TouchableOpacity`
   width: 100%;
   border-radius: 2px;
   padding: 15px;

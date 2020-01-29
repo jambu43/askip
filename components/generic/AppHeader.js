@@ -1,15 +1,16 @@
 import React from "react";
 import styled from "styled-components";
+import { connect } from "react-redux";
 import { TouchableOpacity, View } from "react-native";
 import { BackIcon } from "../Icons";
 
-const AppHeader = ({ showAvatar = true, showBack = false }) => (
+const AppHeader = ({ showAvatar = true, showBack = false, user }) => (
   <Container>
     <Wrapper>
       {showBack && <BackIcon size={24} />}
       {showAvatar && (
         <TouchableOpacity>
-          <Avatar source={require("../../assets/avatar.jpg")} />
+          <Avatar source={{ uri: user.avatar }} />
         </TouchableOpacity>
       )}
     </Wrapper>
@@ -44,4 +45,10 @@ const Avatar = styled.Image`
   margin-right: 10px;
 `;
 
-export default AppHeader;
+const mapStateToProps = state => {
+  return {
+    user: state.auth.user,
+  };
+};
+
+export default connect(mapStateToProps)(AppHeader);
