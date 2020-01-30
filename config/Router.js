@@ -6,6 +6,7 @@ import {
   createBottomTabNavigator,
 } from "react-navigation";
 import LoginScreen from "../screens/LoginScreen";
+import MagazineScreen from "../screens/MagazineScreen";
 import ExplorerScreen from "../screens/ExplorerScreen";
 import Profile from "../screens/Profile";
 import HomeScreen from "../screens/HomeScreen";
@@ -14,6 +15,7 @@ import NotificationsScreen from "../screens/NotificationsScreen";
 import { NotificationIcon, SearchIcon, MicroIcon } from "../components/Icons";
 import WelcomeScreen from "../screens/WelcomeScreen";
 import UserAvatar from "../components/generic/UserAvatar";
+import { dark } from "./variables";
 
 const BottomTransition = (index, position, height) => {
   const sceneRange = [index - 1, index, index + 1];
@@ -81,6 +83,10 @@ const HomeStack = createStackNavigator(
       path: "artiste",
       screen: ArtistScreen,
     },
+    Magazine: {
+      path: "magazine",
+      screen: MagazineScreen,
+    },
     Home: {
       path: "home",
       screen: HomeScreen,
@@ -120,9 +126,12 @@ const HomeTabNavigator = createBottomTabNavigator(
       },
     }),
     tabBarOptions: {
-      activeTintColor: "#2692b7",
-      inactiveTintColor: "#474747",
+      activeTintColor: "#fff",
+      inactiveTintColor: "#92929d",
       showLabel: false,
+      style: {
+        backgroundColor: dark,
+      },
     },
     transitionConfig: configSlideNavigation,
   }

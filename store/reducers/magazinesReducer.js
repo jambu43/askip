@@ -22,10 +22,7 @@ export const magazinesReducer = (state = initialState, { type, payload }) => {
     case SET_MAGAZINE_PUBLICATION_RELEASES:
       return {
         ...state,
-        magazines_publication_releases: [
-          ...state.magazines_publication_releases,
-          ...payload.publicationReleases,
-        ],
+        magazines_publication_releases: [...payload.publicationReleases],
       };
     case SET_MAGAZINE_PUBLICATION_RELEASE:
       let publicationReleasesIndex = {};

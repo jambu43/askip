@@ -5,9 +5,9 @@ import { cutText, assetsUrl } from "../../helpers";
 
 export default class MagazineReleaseCard extends React.Component {
   render() {
-    const { magazine } = this.props;
+    const { magazine, navigation } = this.props;
     return (
-      <Container>
+      <Container onPress={() => navigation.navigate("Magazine", { magazine_id: magazine.id })}>
         <MagazineCover source={{ uri: assetsUrl(magazine.cover_image) }} />
         <MagazineTitle>{cutText(magazine.title, 30)}</MagazineTitle>
         <MagazineReleaseEdition>
