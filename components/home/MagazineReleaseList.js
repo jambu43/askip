@@ -1,9 +1,9 @@
 import React from "react";
 import styled from "styled-components";
 import { TouchableOpacity, ScrollView } from "react-native";
-import AlbumCard from "./AlbumCard";
+import MagazineReleaseCard from "../magazine/MagazineReleaseCard";
 
-export const AlbumList = ({ show_more, onClick, title, albums }) => {
+const MagazineReleaseList = ({ show_more, onClick, title, magazines }) => {
   return (
     <Container>
       <Header>
@@ -13,14 +13,16 @@ export const AlbumList = ({ show_more, onClick, title, albums }) => {
       </Header>
       <Content>
         <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-          {albums.map(item => (
-            <AlbumCard album={item} key={item.song_id} />
+          {magazines.map(magazine => (
+            <MagazineReleaseCard magazine={magazine} key={magazine.id} />
           ))}
         </ScrollView>
       </Content>
     </Container>
   );
 };
+
+export default MagazineReleaseList;
 
 const Container = styled.View`
   padding: 0 15px;
@@ -29,6 +31,7 @@ const Title = styled.Text`
   font-size: 20px;
   font-weight: bold;
   margin-bottom: 10px;
+  color: #fff;
 `;
 const Content = styled.View``;
 const Header = styled.View``;

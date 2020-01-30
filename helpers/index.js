@@ -8,6 +8,10 @@ export const apiUrl = pathname => {
   return `http://askip.ngangeli.com/api/v1/${pathname}`;
 };
 
+export const assetsUrl = pathname => {
+  return `http://askip.ngangeli.com/storage/${pathname}`;
+};
+
 let _navigator;
 
 function setTopLevelNavigator(navigatorRef) {

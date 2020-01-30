@@ -1,39 +1,52 @@
 import React from "react";
 import styled from "styled-components";
+import { connect } from "react-redux";
 import { ScrollView } from "react-native";
 import AppHeader from "../components/generic/AppHeader";
-import { AlbumList } from "../components/home/AlbumList";
-import { artists } from "../config/artists";
-import { albums } from "../config/albums";
-import { castings } from "../config/castings";
-import { genders } from "../config/genders";
-import PremiumCallToAction from "../components/home/PremiumCallToAction";
-import { CastingList } from "../components/home/CastingList";
-import { ArtistList } from "../components/home/ArtistList";
-import { GenderList } from "../components/home/GenderList";
+import MagazineReleaseList from "../components/home/MagazineReleaseList";
 import { dark } from "../config/variables";
+import { fetchLatestMagazineReleases } from "../store/actions/magazines";
 
-export default class HomeScreen extends React.Component {
+class HomeScreen extends React.Component {
   constructor(props) {
     super(props);
   }
+  componentDidMount() {
+    this.props.fetchLatestMagazineReleases();
+  }
   render() {
-    const { navigation } = this.props;
-    const mostListenedPlaylist = [...albums];
+    const { navigation, magazines_publication_releases } = this.props;
+    console.log(magazines_publication_releases);
     return (
       <Container>
         <AppHeader />
         <ScrollView>
-          <ArtistList
+          <MagazineReleaseList
             navigation={navigation}
             title="Nouvelles parutions"
-            artists={artists.slice(0, 9)}
+            magazines={magazines_publication_releases}
           />
         </ScrollView>
       </Container>
     );
   }
 }
+
+const mapStateTopProps = ({ magazine }) => {
+  console.log(magazine);
+  return {
+    magazines_publication_releases: magazine.magazines_publication_releases,
+    magazines_publication_releases_loading: magazine.magazines_publication_releases_loading,
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    fetchLatestMagazineReleases: () => dispatch(fetchLatestMagazineReleases()),
+  };
+};
+
+export default connect(mapStateTopProps, mapDispatchToProps)(HomeScreen);
 
 const Container = styled.View`
   flex: 1;
