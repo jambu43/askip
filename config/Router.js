@@ -3,7 +3,7 @@ import styled from "styled-components";
 import {
   createAppContainer,
   createStackNavigator,
-  createBottomTabNavigator,
+  createBottomTabNavigator
 } from "react-navigation";
 import LoginScreen from "../screens/LoginScreen";
 import MagazineScreen from "../screens/MagazineScreen";
@@ -22,15 +22,15 @@ const BottomTransition = (index, position, height) => {
   const outPutHeight = [height, 0, 0];
   const transition = position.interpolate({
     inputRange: sceneRange,
-    outputRange: outPutHeight,
+    outputRange: outPutHeight
   });
 
   return {
     transform: [
       {
-        translateY: transition,
-      },
-    ],
+        translateY: transition
+      }
+    ]
   };
 };
 
@@ -39,15 +39,15 @@ const SlideTransition = (index, position, width) => {
   const outPutWidth = [width, 0, 0];
   const transition = position.interpolate({
     inputRange: sceneRange,
-    outputRange: outPutWidth,
+    outputRange: outPutWidth
   });
 
   return {
     transform: [
       {
-        translateX: transition,
-      },
-    ],
+        translateX: transition
+      }
+    ]
   };
 };
 
@@ -60,7 +60,7 @@ const configNavigation = () => {
       const height = screenProps.layout.initHeight;
 
       return BottomTransition(index, position, height);
-    },
+    }
   };
 };
 
@@ -73,7 +73,7 @@ const configSlideNavigation = () => {
       const width = screenProps.layout.initWidth;
 
       return SlideTransition(index, position, width);
-    },
+    }
   };
 };
 
@@ -81,21 +81,21 @@ const HomeStack = createStackNavigator(
   {
     Artist: {
       path: "artiste",
-      screen: ArtistScreen,
+      screen: ArtistScreen
     },
     Magazine: {
       path: "magazine",
-      screen: MagazineScreen,
+      screen: MagazineScreen
     },
     Home: {
       path: "home",
-      screen: HomeScreen,
-    },
+      screen: HomeScreen
+    }
   },
   {
     initialRouteName: "Home",
     headerMode: "none",
-    transitionConfig: configNavigation,
+    transitionConfig: configNavigation
   }
 );
 
@@ -106,8 +106,8 @@ const HomeTabNavigator = createBottomTabNavigator(
     Notifications: NotificationsScreen,
     Profile: {
       screen: Profile,
-      label: "Moi",
-    },
+      label: "Moi"
+    }
   },
   {
     defaultNavigationOptions: ({ navigation }) => ({
@@ -123,17 +123,17 @@ const HomeTabNavigator = createBottomTabNavigator(
           case "Notifications":
             return <NotificationIcon fill={tintColor} />;
         }
-      },
+      }
     }),
     tabBarOptions: {
       activeTintColor: "#fff",
       inactiveTintColor: "#92929d",
       showLabel: false,
       style: {
-        backgroundColor: dark,
-      },
+        backgroundColor: dark
+      }
     },
-    transitionConfig: configSlideNavigation,
+    transitionConfig: configSlideNavigation
   }
 );
 
@@ -141,21 +141,21 @@ const AppNavigator = createStackNavigator(
   {
     Login: {
       path: "login",
-      screen: LoginScreen,
+      screen: LoginScreen
     },
     Artist: {
       path: "artiste",
-      screen: ArtistScreen,
+      screen: ArtistScreen
     },
     Welcome: {
       path: "welcome",
-      screen: WelcomeScreen,
+      screen: WelcomeScreen
     },
-    HomeStack: HomeTabNavigator,
+    HomeStack: HomeTabNavigator
   },
   {
     initialRouteName: "Login",
-    headerMode: "none",
+    headerMode: "none"
   }
 );
 

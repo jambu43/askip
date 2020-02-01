@@ -9,11 +9,8 @@ export default class NotificationsScreen extends React.Component {
         <AppHeader />
         <Content>
           <Image source={require("../assets/notifications.png")} />
-          <Title>Aucune notification</Title>
-          <Text>
-            magnam dolores maxime at voluptates nihil iste hic fflibero
-            architecto vitae quod veniam? Repellendus! magnam dolores.
-          </Text>
+          <Title> Aucune notification </Title>
+          <Text>magnam dolores maxime at voluptates nihil iste hic fflibero architecto vitae quod veniam ? Repellendus!magnam dolores. </Text>
         </Content>
       </Container>
     );
