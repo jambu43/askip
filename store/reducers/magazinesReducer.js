@@ -12,7 +12,6 @@ const initialState = {
 };
 
 export const magazinesReducer = (state = initialState, { type, payload }) => {
-  console.log(payload, type);
   switch (type) {
     case TOGGLE_MAGAZINES_PUBLICATION_RELEASES_LOADING:
       return {
