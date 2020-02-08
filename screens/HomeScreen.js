@@ -6,6 +6,7 @@ import AppHeader from "../components/generic/AppHeader";
 import MagazineReleaseList from "../components/home/MagazineReleaseList";
 import { dark } from "../config/variables";
 import { fetchLatestMagazineReleases } from "../store/actions/magazines";
+import PublicationRelease from "../components/home/PublicationRelease";
 
 class HomeScreen extends React.Component {
   constructor(props) {
@@ -26,7 +27,9 @@ class HomeScreen extends React.Component {
             title="Nouvelles parutions"
             magazines={magazines_publication_releases}
           />
+          <PublicationRelease />
         </ScrollView>
+
       </Container>
     );
   }
