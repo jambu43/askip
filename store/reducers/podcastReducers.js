@@ -45,8 +45,13 @@ export function podcastReducers(state = initialState, { payload, type }) {
         podcasts_loading: !state.podcasts_loading,
       };
     case SET_LATEST_PODCAST:
+      let latestPodcastExists = state.podcasts.find(item => item.id === payload.podcast.id);
+      let newPodcastList = !latestPodcastExists
+        ? [...state.podcasts, payload.podcast]
+        : state.podcasts.map(item => (item.id === payload.podcast.id ? payload.podcast : item));
       return {
         ...state,
+        podcasts: newPodcastList,
         latest_podcast: payload.podcast,
       };
     case TOGGLE_PODCAST_LOADING:

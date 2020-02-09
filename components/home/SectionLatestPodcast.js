@@ -2,14 +2,14 @@ import React from "react";
 import styled from "styled-components";
 import CardLatestPodcast from "./CardLatestPodcast";
 
-const SectionLatestPodcast = ({ title, podcast }) => {
+const SectionLatestPodcast = ({ title, podcast, navigation }) => {
   return (
     <Container>
       <Header>
         <Title>{title}</Title>
       </Header>
       <Content>
-        <CardLatestPodcast podcast={podcast} />
+        <CardLatestPodcast navigation={navigation} podcast={podcast} />
       </Content>
     </Container>
   );

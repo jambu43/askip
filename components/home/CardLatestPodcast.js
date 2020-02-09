@@ -110,6 +110,16 @@ class CardLatestPodcast extends React.Component {
       });
   }
 
+  async componentWillUnmount() {
+    const { now_playing } = this.props;
+    if (now_playing.soundObject) {
+      const { playbackStatus } = now_playing;
+      if (playbackStatus.isPlaying) {
+        await now_playing.soundObject.stopAsync();
+      }
+    }
+  }
+
   render() {
     const { podcast, now_playing, navigation } = this.props;
     const { playbackStatus } = now_playing;
@@ -150,7 +160,7 @@ class CardLatestPodcast extends React.Component {
           <PlayingProgress progress={playingProgress}></PlayingProgress>
           <BufferingProgress progress={bufferingProgress}></BufferingProgress>
         </ProgressWrapper>
-        <MorePodcastButton>
+        <MorePodcastButton onPress={() => navigation.navigate("Podcasts")}>
           <MorePodcastButtonText>Voir d’autres épisodes</MorePodcastButtonText>
         </MorePodcastButton>
       </Container>

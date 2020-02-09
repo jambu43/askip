@@ -12,6 +12,7 @@ import ExplorerScreen from "../screens/ExplorerScreen";
 import Profile from "../screens/Profile";
 import HomeScreen from "../screens/HomeScreen";
 import PodcastScreen from "../screens/PodcastScreen";
+import PodcastsScreen from "../screens/PodcastsScreen";
 import ArtistScreen from "../screens/ArtistScreen";
 import NotificationsScreen from "../screens/NotificationsScreen";
 import WelcomeScreen from "../screens/WelcomeScreen";
@@ -93,6 +94,10 @@ const HomeStack = createStackNavigator(
     Home: {
       path: "home",
       screen: HomeScreen,
+    },
+    Podcasts: {
+      path: "podcasts",
+      screen: PodcastsScreen,
     },
     Podcast: {
       path: "podcast/:podcast_id",

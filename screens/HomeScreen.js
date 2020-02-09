@@ -29,7 +29,11 @@ class HomeScreen extends React.Component {
             magazines={magazines_publication_releases}
           />
           {latest_podcast ? (
-            <SectionLatestPodcast title="Dernière épisode du podcast" podcast={latest_podcast} />
+            <SectionLatestPodcast
+              navigation={navigation}
+              title="Dernière épisode du podcast"
+              podcast={latest_podcast}
+            />
           ) : null}
         </ScrollView>
       </Container>
