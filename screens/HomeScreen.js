@@ -19,7 +19,6 @@ class HomeScreen extends React.Component {
   }
   render() {
     const { navigation, magazines_publication_releases, latest_podcast } = this.props;
-    console.log(latest_podcast);
     return (
       <Container>
         <AppHeader />

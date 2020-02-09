@@ -3,6 +3,9 @@ import styled from "styled-components";
 import { connect } from "react-redux";
 import { danger } from "../../config/variables";
 import { apiUrl, assetsUrl } from "../../helpers";
+import PlayButton from "../podcast/PlayButton";
+import PlayBackWardButton from "../podcast/PlayBackWardButton";
+import PlayForwardButton from "../podcast/PlayForWardButton";
 
 class CardLatestPodcast extends React.Component {
   constructor(props) {
@@ -14,6 +17,11 @@ class CardLatestPodcast extends React.Component {
       <Container>
         <CoverImage source={{ uri: assetsUrl(podcast.cover_image) }} />
         <Title>{podcast.title}</Title>
+        <PlayerControlWrapper>
+          <PlayBackWardButton size={30} disabled={false} />
+          <PlayButton is_playing={false} size={45} />
+          <PlayForwardButton disabled={false} size={30} />
+        </PlayerControlWrapper>
         <ProgressWrapper>
           <ProgressInner progress={50}></ProgressInner>
         </ProgressWrapper>
@@ -51,6 +59,12 @@ const MorePodcastButtonText = styled.Text`
   text-align: center;
   font-size: 18px;
   font-weight: bold;
+`;
+
+const PlayerControlWrapper = styled.View`
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
 `;
 
 const ProgressWrapper = styled.View`
