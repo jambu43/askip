@@ -10,6 +10,7 @@ import LoginScreen from "../screens/LoginScreen";
 import MagazineScreen from "../screens/MagazineScreen";
 import ExplorerScreen from "../screens/ExplorerScreen";
 import Profile from "../screens/Profile";
+import ArticleScreen from "../screens/ArticleScreen";
 import HomeScreen from "../screens/HomeScreen";
 import PodcastScreen from "../screens/PodcastScreen";
 import PodcastsScreen from "../screens/PodcastsScreen";
@@ -83,9 +84,9 @@ const configSlideNavigation = () => {
 
 const HomeStack = createStackNavigator(
   {
-    Artist: {
-      path: "artiste",
-      screen: ArtistScreen,
+    Article: {
+      path: "article",
+      screen: ArticleScreen,
     },
     Magazine: {
       path: "magazine",

@@ -8,6 +8,8 @@ import { dark } from "../config/variables";
 import { fetchLatestMagazineReleases } from "../store/actions/magazines";
 import { fetchLatestPodcast } from "../store/actions/podcasts";
 import SectionLatestPodcast from "../components/home/SectionLatestPodcast";
+import { fetchLatestArticles } from "../store/actions/articles";
+import ArticleReleaseList from "../components/home/ArticleReleaseList";
 
 class HomeScreen extends React.Component {
   constructor(props) {
@@ -16,9 +18,16 @@ class HomeScreen extends React.Component {
   componentDidMount() {
     this.props.fetchLatestMagazineReleases();
     this.props.fetchLatestPodcast();
+    this.props.fetchLatestArticles();
   }
   render() {
-    const { navigation, magazines_publication_releases, latest_podcast } = this.props;
+    const {
+      navigation,
+      magazines_publication_releases,
+      latest_podcast,
+      articles,
+      articles_loading,
+    } = this.props;
     return (
       <Container>
         <AppHeader />
@@ -28,6 +37,7 @@ class HomeScreen extends React.Component {
             title="Nouvelles parutions"
             magazines={magazines_publication_releases}
           />
+          <ArticleReleaseList navigation={navigation} title="À la une" articles={articles} />
           {latest_podcast ? (
             <SectionLatestPodcast
               navigation={navigation}
@@ -41,11 +51,13 @@ class HomeScreen extends React.Component {
   }
 }
 
-const mapStateTopProps = ({ magazine, podcast }) => {
+const mapStateTopProps = ({ magazine, podcast, article }) => {
   return {
     magazines_publication_releases: magazine.magazines_publication_releases,
     magazines_publication_releases_loading: magazine.magazines_publication_releases_loading,
     latest_podcast: podcast.latest_podcast,
+    articles: article.article_list,
+    articles_loading: article.article_list_loading,
   };
 };
 
@@ -53,6 +65,7 @@ const mapDispatchToProps = dispatch => {
   return {
     fetchLatestMagazineReleases: () => dispatch(fetchLatestMagazineReleases()),
     fetchLatestPodcast: () => dispatch(fetchLatestPodcast()),
+    fetchLatestArticles: () => dispatch(fetchLatestArticles()),
   };
 };
 

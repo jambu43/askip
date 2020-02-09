@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import styled from 'styled-components';
 import { dark } from '../config/variables';
 
-class MagazineScreen extends React.Component {
+class ArticleScreen extends React.Component {
 	render() {
 		return <Container />;
 	}
@@ -17,4 +17,4 @@ const Container = styled.View`
 const mapStateToProps = (state) => {
 	return state;
 };
-export default connect(mapStateToProps)(MagazineScreen);
+export default connect(mapStateToProps)(ArticleScreen);
