@@ -12,6 +12,23 @@ export const assetsUrl = pathname => {
   return `http://askip.ngangeli.com/storage/${pathname}`;
 };
 
+export const processPlaybackStatus = ({
+  playableDurationMillis,
+  durationMillis,
+  positionMillis,
+}) => {
+  let bufferingProgress = durationMillis ? (playableDurationMillis * 100) / durationMillis : 0;
+  let playingProgress = durationMillis ? (positionMillis * 100) / durationMillis : 0;
+  let canGoForward = positionMillis < durationMillis;
+  let canGoBackward = positionMillis > 0;
+  return {
+    bufferingProgress,
+    playingProgress,
+    canGoForward,
+    canGoBackward,
+  };
+};
+
 let _navigator;
 
 function setTopLevelNavigator(navigatorRef) {

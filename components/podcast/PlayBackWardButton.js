@@ -1,10 +1,10 @@
 import React from "react";
 import styled from "styled-components";
 
-const PlayBackWardButton = ({ size, disabled }) => {
+const PlayBackWardButton = ({ size, disabled, onPress }) => {
   let icon = require("../../assets/podcast/play-backward.png");
   return (
-    <ButtonWrapper size={size} disabled={disabled}>
+    <ButtonWrapper size={size} disabled={disabled} onPress={onPress}>
       <ButtonIcon size={size} source={icon}></ButtonIcon>
     </ButtonWrapper>
   );

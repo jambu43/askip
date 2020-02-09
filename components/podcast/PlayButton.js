@@ -1,12 +1,13 @@
 import React from "react";
 import styled from "styled-components";
+import { ActivityIndicator } from "react-native";
 
-const PlayButton = ({ is_playing, size }) => {
+const PlayButton = ({ is_playing, size, onPress }) => {
   let icon = is_playing
     ? require("../../assets/podcast/pause-button.png")
     : require("../../assets/podcast/play-button.png");
   return (
-    <ButtonWrapper size={size}>
+    <ButtonWrapper size={size} onPress={onPress}>
       <ButtonIcon size={size} source={icon}></ButtonIcon>
     </ButtonWrapper>
   );

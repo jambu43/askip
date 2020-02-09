@@ -4,6 +4,9 @@ import {
   TOGGLE_PODCASTS_LOADING,
   TOGGLE_PODCAST_LOADING,
   SET_LATEST_PODCAST,
+  SET_NOW_PLAYING_SOUND_OBJECT,
+  SET_NOW_PLAYING_PLAY_BACK_STATUS,
+  SET_NOW_PLAYING,
 } from "../types/podcast";
 
 export const togglePodcastsLoading = () => {
@@ -23,6 +26,36 @@ export const setLatestPodcast = podcast => {
     type: SET_LATEST_PODCAST,
     payload: {
       podcast,
+    },
+  };
+};
+
+export const setNowPlayingSoundObject = soundObject => {
+  return {
+    type: SET_NOW_PLAYING_SOUND_OBJECT,
+    payload: {
+      soundObject,
+    },
+  };
+};
+export const setNowPlayingPlayBackStatus = playbackStatus => {
+  return {
+    type: SET_NOW_PLAYING_PLAY_BACK_STATUS,
+    payload: {
+      playbackStatus,
+    },
+  };
+};
+
+export const setNowPlaying = ({ soundObject, playbackStatus, podcast_id }) => {
+  return {
+    type: SET_NOW_PLAYING,
+    payload: {
+      now_playing: {
+        soundObject,
+        playbackStatus,
+        podcast_id,
+      },
     },
   };
 };

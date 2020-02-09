@@ -1,10 +1,10 @@
 import React from "react";
 import styled from "styled-components";
 
-const PlayForwardButton = ({ size, disabled }) => {
+const PlayForwardButton = ({ size, disabled, onPress }) => {
   let icon = require("../../assets/podcast/play-forward.png");
   return (
-    <ButtonWrapper size={size} disabled={disabled}>
+    <ButtonWrapper size={size} disabled={disabled} onPress={onPress}>
       <ButtonIcon size={size} source={icon}></ButtonIcon>
     </ButtonWrapper>
   );
