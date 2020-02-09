@@ -111,7 +111,7 @@ class CardLatestPodcast extends React.Component {
   }
 
   render() {
-    const { podcast, now_playing } = this.props;
+    const { podcast, now_playing, navigation } = this.props;
     const { playbackStatus } = now_playing;
     const {
       bufferingProgress,
@@ -121,8 +121,10 @@ class CardLatestPodcast extends React.Component {
     } = processPlaybackStatus(playbackStatus);
     return (
       <Container>
-        <CoverImage source={{ uri: assetsUrl(podcast.cover_image) }} />
-        <Title>{podcast.title}</Title>
+        <ContentWrapper onPress={() => navigation.navigate("Podcast", { podcast_id: podcast.id })}>
+          <CoverImage source={{ uri: assetsUrl(podcast.cover_image) }} />
+          <Title>{podcast.title}</Title>
+        </ContentWrapper>
         <PlayerControlWrapper>
           <PlayBackWardButton
             onPress={this.handlePlayBackwardClick.bind(this)}
@@ -140,7 +142,9 @@ class CardLatestPodcast extends React.Component {
             disabled={!canGoForward}
             size={30}
           />
-          {playbackStatus.isBuffering ? <ActivityIndicator size="small" color="#fff" /> : null}
+          {playbackStatus.isBuffering && playbackStatus.isPlaying ? (
+            <ActivityIndicator size="small" color="#fff" />
+          ) : null}
         </PlayerControlWrapper>
         <ProgressWrapper>
           <PlayingProgress progress={playingProgress}></PlayingProgress>
@@ -157,6 +161,8 @@ class CardLatestPodcast extends React.Component {
 const Container = styled.View`
   padding: 0;
 `;
+
+const ContentWrapper = styled.TouchableOpacity``;
 const Title = styled.Text`
   font-size: 18px;
   font-weight: bold;

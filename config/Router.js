@@ -5,16 +5,19 @@ import {
   createStackNavigator,
   createBottomTabNavigator,
 } from "react-navigation";
+
 import LoginScreen from "../screens/LoginScreen";
 import MagazineScreen from "../screens/MagazineScreen";
 import ExplorerScreen from "../screens/ExplorerScreen";
 import Profile from "../screens/Profile";
 import HomeScreen from "../screens/HomeScreen";
+import PodcastScreen from "../screens/PodcastScreen";
 import ArtistScreen from "../screens/ArtistScreen";
 import NotificationsScreen from "../screens/NotificationsScreen";
-import { NotificationIcon, SearchIcon, MicroIcon } from "../components/Icons";
 import WelcomeScreen from "../screens/WelcomeScreen";
 import UserAvatar from "../components/generic/UserAvatar";
+import { NotificationIcon, SearchIcon, MicroIcon } from "../components/Icons";
+
 import { dark } from "./variables";
 
 const BottomTransition = (index, position, height) => {
@@ -90,6 +93,10 @@ const HomeStack = createStackNavigator(
     Home: {
       path: "home",
       screen: HomeScreen,
+    },
+    Podcast: {
+      path: "podcast/:podcast_id",
+      screen: PodcastScreen,
     },
   },
   {
