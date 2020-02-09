@@ -10,7 +10,7 @@ export default class ArticleReleaseCard extends React.Component {
 				<ArticleCover source={{ uri: assetsUrl(article.featured_image) }} />
 				<ArticleTitle>{cutText(article.title, 50)}</ArticleTitle>
 				<ArticlePreview>{cutText(article.preview, 80)}</ArticlePreview>
-				<ArticleFrom>{article.publication_release.title}</ArticleFrom>
+				<ArticleFrom>{article.publication_release.newspaper.name}</ArticleFrom>
 			</Container>
 		);
 	}
@@ -24,7 +24,7 @@ const Container = styled.TouchableOpacity`
 
 const ArticleCover = styled.Image`
 	width: 200px;
-	height: 160px;
+	height: 108px;
 	border-radius: 5px;
 	margin-bottom: 5px;
 	background-color: #fff;

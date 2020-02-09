@@ -31,7 +31,7 @@ class HomeScreen extends React.Component {
 						title="Nouvelles parutions"
 						magazines={magazines_publication_releases}
 					/>
-					<ArticleReleaseList navigation={navigation} title="A la une" articles={articles} />
+					<ArticleReleaseList navigation={navigation} title="À la une" articles={articles} />
 					{latest_podcast ? (
 						<SectionLatestPodcast title="Dernière épisode du podcast" podcast={latest_podcast} />
 					) : null}
