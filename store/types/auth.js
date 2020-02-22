@@ -5,3 +5,5 @@ export const SET_TOKEN = "SET_TOKEN";
 export const SET_AUTH_USER = "SET_AUTH_USER";
 export const SET_LOGIN_ERRORS = "SET_LOGIN_ERRORS";
 export const SET_LOGIN_MODE = "SET_LOGIN_MODE";
+
+export const TOGGLE_USER_FOLLOWEES = "TOGGLE_USER_FOLLOWEES";

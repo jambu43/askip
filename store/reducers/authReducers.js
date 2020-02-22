@@ -5,6 +5,7 @@ import {
   SET_TOKEN,
   SET_IS_LOGGED_IN,
   SET_LOGIN_ERRORS,
+  TOGGLE_USER_FOLLOWEES,
 } from "../types/auth";
 
 const initialState = {
@@ -51,6 +52,23 @@ export const authReducers = (state = initialState, action) => {
         ...state,
         loginErrors: action.payload,
       };
+    case TOGGLE_USER_FOLLOWEES:
+      try {
+        let followeeIdExist = state.user.followees_ids.includes(action.payload.followee_id);
+        let followeesIds = !followeeIdExist
+          ? [...state.user.followees_ids, action.payload.followee_id]
+          : state.user.followees_ids.filter(item => item.id == action.payload.followee_id);
+        return {
+          ...state,
+          user: {
+            ...state.user,
+            followees_ids: followeesIds,
+          },
+        };
+      } catch (e) {
+        console.log(e);
+      }
+      break;
   }
 
   return state;
