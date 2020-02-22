@@ -23,13 +23,11 @@ export const fetchLatestArticles = () => {
     axios
       .get(apiUrl("latest_newspaper_articles"))
       .then(({ data }) => {
-        console.log("then", data);
         dispatch(setArticleList(data.data));
         dispatch(toggleArticleListLoading());
       })
       .catch(({ response }) => {
         dispatch(toggleArticleListLoading());
-        console.log("catch", response);
       });
   };
 };

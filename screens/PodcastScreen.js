@@ -110,6 +110,15 @@ class PodcastScreen extends React.Component {
         console.log("Error", error);
       });
   }
+
+  async componentDidMount() {
+    const { now_playing } = this.props;
+    const { playbackStatus } = now_playing;
+    let play = this.props.navigation.getParam("play");
+    if (play && !playbackStatus.isPlaying) {
+      await this.handlePlayButtonClick();
+    }
+  }
   render() {
     const { podcast, now_playing, navigation } = this.props;
     const { playbackStatus } = now_playing;

@@ -41,6 +41,7 @@ class LoginScreen extends React.Component {
         this.props.toggleIsLoggingIn();
       }
     } catch ({ message }) {
+      console.log(message);
       this.props.toggleIsLoggingIn();
     }
   }
