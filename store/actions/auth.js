@@ -4,9 +4,10 @@ import {
   TOGGLE_IS_LOGGING_IN,
   SET_TOKEN,
   SET_IS_LOGGED_IN,
-  SET_USER,
+  SET_AUTH_USER,
   TOGGLE_HAS_LOGIN_ERRORS,
   SET_LOGIN_ERRORS,
+  TOGGLE_USER_FOLLOWEES,
 } from "../types/auth";
 
 export const toggleIsLoggingIn = () => {
@@ -14,6 +15,16 @@ export const toggleIsLoggingIn = () => {
     type: TOGGLE_IS_LOGGING_IN,
   };
 };
+
+export const toggleUserFollowees = followee_id => {
+  return {
+    type: TOGGLE_USER_FOLLOWEES,
+    payload: {
+      followee_id: followee_id.toString(),
+    },
+  };
+};
+
 export function logOutUser() {
   return function(dispatch) {
     return new Promise((resolve, reject) => {
@@ -46,7 +57,7 @@ export function registerUser(payload) {
         .then(function({ data }) {
           dispatch({
             type: SET_TOKEN,
-            payload: data.token,
+            payload: data.access_token,
           });
 
           dispatch({
@@ -55,11 +66,11 @@ export function registerUser(payload) {
           });
 
           dispatch({
-            type: SET_USER,
+            type: SET_AUTH_USER,
             payload: data.user,
           });
 
-          axios.defaults.headers.common["Authorization"] = `Bearer ${data.token}`;
+          axios.defaults.headers.common["Authorization"] = `Bearer ${data.access_token}`;
 
           resolve();
         })

@@ -1,7 +1,8 @@
-import { SET_USER } from "../types/user";
+import { SET_USER, SET_USER_LOADING } from "../types/user";
 
 const initialState = {
   users: [],
+  userLoading: {},
 };
 
 export const userReducer = (state = initialState, { payload, type }) => {
@@ -14,6 +15,16 @@ export const userReducer = (state = initialState, { payload, type }) => {
           : state.users.map(item => {
               return item.id === payload.user.id ? payload.user : item;
             }),
+      };
+    }
+    case SET_USER_LOADING: {
+      console.log(payload);
+      return {
+        ...state,
+        userLoading: {
+          ...state.userLoading,
+          [payload.user_id]: payload.state,
+        },
       };
     }
     default:
