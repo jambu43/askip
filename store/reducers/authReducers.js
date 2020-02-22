@@ -1,7 +1,7 @@
 import {
   TOGGLE_HAS_LOGIN_ERRORS,
   TOGGLE_IS_LOGGING_IN,
-  SET_USER,
+  SET_AUTH_USER,
   SET_TOKEN,
   SET_IS_LOGGED_IN,
   SET_LOGIN_ERRORS,
@@ -34,7 +34,7 @@ export const authReducers = (state = initialState, action) => {
         ...state,
         isLoggedIn: action.payload,
       };
-    case SET_USER:
+    case SET_AUTH_USER:
       return {
         ...state,
         user: action.payload,

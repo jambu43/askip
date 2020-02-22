@@ -4,7 +4,7 @@ import {
   TOGGLE_IS_LOGGING_IN,
   SET_TOKEN,
   SET_IS_LOGGED_IN,
-  SET_USER,
+  SET_AUTH_USER,
   TOGGLE_HAS_LOGIN_ERRORS,
   SET_LOGIN_ERRORS,
 } from "../types/auth";
@@ -55,7 +55,7 @@ export function registerUser(payload) {
           });
 
           dispatch({
-            type: SET_USER,
+            type: SET_AUTH_USER,
             payload: data.user,
           });
 

@@ -9,7 +9,7 @@ import {
   SET_NOW_PLAYING,
   SET_PODCASTS,
 } from "../types/podcast";
-import { setUser } from "./users";
+import { setUser, setUserLoading } from "./users";
 
 export const togglePodcastsLoading = () => {
   return {
@@ -73,15 +73,17 @@ export const setNowPlaying = ({ soundObject, playbackStatus, podcast_id }) => {
 
 export const fetchUserPodcasts = () => {
   return dispatch => {
+    dispatch(setUserLoading(3, true));
     axios
       .get(apiUrl("get_user_podcasts/3"))
       .then(({ data }) => {
         let { podcasts, ...user } = data.data;
         dispatch(setPodcasts(podcasts));
         dispatch(setUser(user));
+        dispatch(setUserLoading(3, false));
       })
       .catch(({ response }) => {
-        console.log(response);
+        dispatch(setUserLoading(3, false));
       });
   };
 };
