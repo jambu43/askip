@@ -20,7 +20,7 @@ class MyMusicScreen extends React.Component {
 	}
 	render() {
 		const { user, navigation, magazines_publication_releases, articles } = this.props;
-		console.log(magazines_publication_releases);
+		console.log(user);
 
 		return (
 			<Container>
@@ -34,15 +34,15 @@ class MyMusicScreen extends React.Component {
 						</Count>
 						<Informations>
 							<Publication>
-								<Number>19</Number>
+								<Number>{user.posts_count}</Number>
 								<Title>Publications</Title>
 							</Publication>
 							<Publication>
-								<Number>390</Number>
+								<Number>{user.followers_count}</Number>
 								<Title>Abonnés</Title>
 							</Publication>
 							<Publication>
-								<Number>239</Number>
+								<Number>{user.followees_count}</Number>
 								<Title>Abonnements</Title>
 							</Publication>
 						</Informations>
@@ -155,5 +155,7 @@ const ShowAskipText = styled.Text`
 const ShowMore = styled.Image`
 	width: 30px;
 	height: 30px;
+	top: 35px;
+	margin-left: 10px;
 `;
 const CenterMagazineContent = styled.View`justify-content: center;`;
