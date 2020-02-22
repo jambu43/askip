@@ -160,7 +160,7 @@ class CardLatestPodcast extends React.Component {
           <PlayingProgress progress={playingProgress}></PlayingProgress>
           <BufferingProgress progress={bufferingProgress}></BufferingProgress>
         </ProgressWrapper>
-        <MorePodcastButton onPress={() => navigation.navigate("Podcasts")}>
+        <MorePodcastButton onPress={() => navigation.navigate("Podcasts", { user_id: 3 })}>
           <MorePodcastButtonText>Voir d’autres épisodes</MorePodcastButtonText>
         </MorePodcastButton>
       </Container>

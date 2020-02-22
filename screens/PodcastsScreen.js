@@ -1,12 +1,19 @@
 import React from "react";
 import styled from "styled-components";
+import AppHeader from "../components/generic/AppHeader";
 import { connect } from "react-redux";
 import { dark } from "../config/variables";
+import { fetchUserPodcasts } from "../store/actions/podcasts";
 
 class PodcastsScreen extends React.Component {
+  componentDidMount() {
+    this.props.fetchUserPodcasts();
+  }
+
   render() {
     return (
       <Container>
+        <AppHeader />
         <Content></Content>
       </Container>
     );
@@ -15,13 +22,19 @@ class PodcastsScreen extends React.Component {
 
 const Container = styled.View`
   background: ${dark};
+  flex: 1;
 `;
 const Content = styled.View``;
 
-const mapStateToProps = ({ podcast }) => {
+const mapDispatchToProps = dispatch => {
   return {
-    podcasts: podcast.podcasts,
+    fetchUserPodcasts: () => dispatch(fetchUserPodcasts()),
+  };
+};
+const mapStateToProps = state => {
+  return {
+    podcasts: state.podcast.podcasts,
   };
 };
 
-export default connect(mapStateToProps)(PodcastsScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(PodcastsScreen);

@@ -2,39 +2,88 @@ import React from 'react';
 import styled from 'styled-components';
 import AppHeader from '../components/generic/AppHeader';
 import { dark } from '../config/variables';
+import UserMagazine from '../components/home/UserMagazine';
+import { ScrollView } from 'react-native-gesture-handler';
+import { connect } from 'react-redux';
+import { fetchLatestMagazineReleases } from '../store/actions/magazines';
+import { fetchLatestArticles } from '../store/actions/articles';
+import ArticleReleaseList from '../components/home/ArticleReleaseList';
+import { StyleSheet } from 'react-native';
 
-export default class Profile extends React.Component {
+class MyMusicScreen extends React.Component {
+	constructor(props) {
+		super(props);
+	}
+	componentDidMount() {
+		this.props.fetchLatestMagazineReleases();
+		this.props.fetchLatestArticles();
+	}
 	render() {
+		const { user, navigation, magazines_publication_releases, articles } = this.props;
+		console.log(magazines_publication_releases);
+
 		return (
 			<Container>
 				<AppHeader />
-				<Card>
-					<Count>
-						<Avatar source={{ uri: user.avatar }} />
-						<Username>{{ uri: user.username }}</Username>
-					</Count>
-					<Informations>
-						<Publication>
-							<Number>19</Number>
-							<Title>Publications</Title>
-						</Publication>
-						<Publication>
-							<Number>390</Number>
-							<Title>Abonnés</Title>
-						</Publication>
-						<Publication>
-							<Number>239</Number>
-							<Title>Abonnements</Title>
-						</Publication>
-					</Informations>
-				</Card>
-				<Btnupdate>
-					<Btntext>Modifier</Btntext>
-				</Btnupdate>
+				<ScrollView>
+					<Card>
+						<Count>
+							<Avatar source={{ uri: user.avatar }} />
+
+							<Username>{user.name}</Username>
+						</Count>
+						<Informations>
+							<Publication>
+								<Number>19</Number>
+								<Title>Publications</Title>
+							</Publication>
+							<Publication>
+								<Number>390</Number>
+								<Title>Abonnés</Title>
+							</Publication>
+							<Publication>
+								<Number>239</Number>
+								<Title>Abonnements</Title>
+							</Publication>
+						</Informations>
+					</Card>
+					<ShowAskip>
+						<ShowAskipText>Synchroniser depuis Facebook</ShowAskipText>
+					</ShowAskip>
+
+					<MagazineRecentlyRead>Mes Magazine</MagazineRecentlyRead>
+					<CenterMagazineContent>
+						<ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+							{magazines_publication_releases.map((magazine) => (
+								<UserMagazine navigation={navigation} magazine={magazine} key={magazine.id} />
+							))}
+							<ShowMore source={require('../assets/chevron_right.png')} />
+						</ScrollView>
+					</CenterMagazineContent>
+					<ArticleReleaseList navigation={navigation} title="Mes Articles" articles={articles} />
+					<ShowAskip>
+						<ShowAskipText>Voir mes Askip</ShowAskipText>
+					</ShowAskip>
+				</ScrollView>
 			</Container>
 		);
 	}
 }
+
+const mapStateToProps = ({ auth, article, magazine }) => {
+	return {
+		user: auth.user,
+		magazines_publication_releases: magazine.magazines_publication_releases,
+		articles: article.article_list
+	};
+};
+const mapDispatchToProps = (dispatch) => {
+	return {
+		fetchLatestMagazineReleases: () => dispatch(fetchLatestMagazineReleases()),
+		fetchLatestArticles: () => dispatch(fetchLatestArticles())
+	};
+};
+export default connect(mapStateToProps, mapDispatchToProps)(MyMusicScreen);
 
 const Container = styled.View`
 	flex: 1;
@@ -51,14 +100,16 @@ const Username = styled.Text`
 	color: #fff;
 	text-align: center;
 	margin-top: 10px;
-	font-size: 15px;
+	font-size: 13px;
+	font-weight: 800;
 	width: 100px;
 `;
 
 const Avatar = styled.Image`
-	height: 100px;
-	width: 100px;
+	height: 90px;
+	width: 90px;
 	border-radius: 50px;
+	background-color: #ffffff;
 `;
 
 const Informations = styled.View`
@@ -66,33 +117,43 @@ const Informations = styled.View`
 	flex-direction: row;
 `;
 
-const Publication = styled.View`margin-left: 20px;`;
+const Publication = styled.View`margin-left: 10px;`;
 
 const Number = styled.Text`
-	font-size: 16px;
+	font-size: 15px;
 	font-weight: 600;
 	text-align: center;
 	color: #ffffff;
 `;
 
 const Title = styled.Text`
-	font-size: 15px;
+	font-size: 13px;
 	color: #ffffff;
+	padding-left: 3px;
+`;
+const MagazineRecentlyRead = styled.Text`
+	font-size: 20px;
+	font-weight: bold;
+	margin-bottom: 10px;
+	margin-top: 10px;
+	color: #fff;
+	text-transform: uppercase;
 `;
 
-const Btnupdate = styled.TouchableOpacity`
-	background-color: #ffffff;
+const ShowAskip = styled.TouchableOpacity`
+	border: 2px #fff solid;
+	padding: 10px 20px;
+	border-radius: 8px;
+	margin: 10px 20px 20px 10px;
+`;
+const ShowAskipText = styled.Text`
+	color: #fff;
+	text-align: center;
+	font-size: 18px;
+	font-weight: bold;
+`;
+const ShowMore = styled.Image`
+	width: 30px;
 	height: 30px;
-	margin: 0 20px 20px 10px;
-	border: none;
-	border-radius: 4px;
-	align-content: center;
-	align-items: center;
-	margin-top: 5px;
 `;
-
-const Btntext = styled.Text`
-	font-size: 15px;
-	color: #000;
-	padding-top: 5px;
-`;
+const CenterMagazineContent = styled.View`justify-content: center;`;

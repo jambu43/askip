@@ -37,7 +37,11 @@ export default class AskipCard extends React.Component {
 }
 
 const Container = styled.View``;
-const AskpImage = styled.Image`height: 350px;`;
+const AskpImage = styled.Image`
+	height: 250px;
+	background-color: #ffffff;
+	width: 100%;
+`;
 const Group = styled.View`justify-content: space-between;`;
 const AskipLike = styled.View`
 	flex-direction: row;
