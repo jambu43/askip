@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import AppHeader from "../components/generic/AppHeader";
+import { dark } from "../config/variables";
 
 export default class NotificationsScreen extends React.Component {
   render() {
@@ -10,7 +11,10 @@ export default class NotificationsScreen extends React.Component {
         <Content>
           <Image source={require("../assets/notifications.png")} />
           <Title> Aucune notification </Title>
-          <Text>magnam dolores maxime at voluptates nihil iste hic fflibero architecto vitae quod veniam ? Repellendus!magnam dolores. </Text>
+          <Text>
+            magnam dolores maxime at voluptates nihil iste hic fflibero architecto vitae quod veniam
+            ? Repellendus!magnam dolores.{" "}
+          </Text>
         </Content>
       </Container>
     );
@@ -18,8 +22,8 @@ export default class NotificationsScreen extends React.Component {
 }
 
 const Container = styled.View`
-  padding: 25px;
   flex: 1;
+  background: ${dark};
 `;
 
 const Content = styled.View`
@@ -28,8 +32,9 @@ const Content = styled.View`
 `;
 
 const Image = styled.Image`
-  height: 200px;
-  width: 100%;
+  height: 140px;
+  width: 240px;
+  margin: 0 auto;
   margin-bottom: 25px;
 `;
 
@@ -37,13 +42,13 @@ const Title = styled.Text`
   font-size: 30px;
   font-weight: bold;
   line-height: 32px;
-  color: #222;
+  color: #fff;
   margin-bottom: 15px;
   text-align: center;
 `;
 
 const Text = styled.Text`
-  color: #222;
+  color: #fff;
   margin-bottom: 15px;
   text-align: center;
 `;

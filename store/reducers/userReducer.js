@@ -18,7 +18,6 @@ export const userReducer = (state = initialState, { payload, type }) => {
       };
     }
     case SET_USER_LOADING: {
-      console.log(payload);
       return {
         ...state,
         userLoading: {
