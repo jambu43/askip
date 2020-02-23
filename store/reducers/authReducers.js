@@ -6,6 +6,7 @@ import {
   SET_IS_LOGGED_IN,
   SET_LOGIN_ERRORS,
   TOGGLE_USER_FOLLOWEES,
+  TOGGLE_PUBLICATION_RELEASES_READ,
 } from "../types/auth";
 
 const initialState = {
@@ -63,6 +64,27 @@ export const authReducers = (state = initialState, action) => {
           user: {
             ...state.user,
             followees_ids: followeesIds,
+          },
+        };
+      } catch (e) {
+        console.log(e);
+      }
+      break;
+    case TOGGLE_PUBLICATION_RELEASES_READ:
+      try {
+        let publicationReleaseIdExist = state.user.publication_releases_read.includes(
+          action.payload.publication_release_id.toString()
+        );
+        let publicationReleaseIds = !publicationReleaseIdExist
+          ? [...state.user.publication_releases_read, action.payload.publication_release_id]
+          : state.user.publication_releases_read.filter(
+              item => item != action.payload.publication_release_id
+            );
+        return {
+          ...state,
+          user: {
+            ...state.user,
+            publication_releases_read: publicationReleaseIds,
           },
         };
       } catch (e) {

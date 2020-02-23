@@ -8,6 +8,7 @@ import {
   TOGGLE_HAS_LOGIN_ERRORS,
   SET_LOGIN_ERRORS,
   TOGGLE_USER_FOLLOWEES,
+  TOGGLE_PUBLICATION_RELEASES_READ,
 } from "../types/auth";
 
 export const toggleIsLoggingIn = () => {
@@ -21,6 +22,15 @@ export const toggleUserFollowees = followee_id => {
     type: TOGGLE_USER_FOLLOWEES,
     payload: {
       followee_id: followee_id.toString(),
+    },
+  };
+};
+
+export const togglePublicationReleasesRead = publication_release_id => {
+  return {
+    type: TOGGLE_PUBLICATION_RELEASES_READ,
+    payload: {
+      publication_release_id: publication_release_id.toString(),
     },
   };
 };
@@ -55,6 +65,7 @@ export function registerUser(payload) {
       axios
         .post(apiUrl("auth/register"), payload)
         .then(function({ data }) {
+          console.log(data.user);
           dispatch({
             type: SET_TOKEN,
             payload: data.access_token,
@@ -99,3 +110,20 @@ export function registerUser(payload) {
     });
   };
 }
+
+export const togglePublicationRelease = publication_release_id => {
+  return dispatch => {
+    return new Promise((resolve, reject) => {
+      axios
+        .post(apiUrl(`publication_releases/${publication_release_id}/toggle_read`))
+        .then(response => {
+          dispatch(togglePublicationReleasesRead(publication_release_id));
+          resolve();
+        })
+        .catch(({ response }) => {
+          console.log(response);
+          reject();
+        });
+    });
+  };
+};

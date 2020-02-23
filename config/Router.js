@@ -118,6 +118,17 @@ const HomeStack = createStackNavigator(
   }
 );
 
+HomeStack.navigationOptions = ({ navigation }) => {
+  let tabBarVisible = true;
+  if (navigation.state.index > 0) {
+    tabBarVisible = false;
+  }
+
+  return {
+    tabBarVisible,
+  };
+};
+
 const HomeTabNavigator = createBottomTabNavigator(
   {
     Home: HomeStack,
