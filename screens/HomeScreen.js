@@ -16,6 +16,18 @@ class HomeScreen extends React.Component {
     super(props);
   }
   componentDidMount() {
+    this.willFocusSubscription = this.props.navigation.addListener("willFocus", () => {
+      this._fetchMagazineData();
+    });
+  }
+
+  componentWillUnmount() {
+    if (this.willFocusSubscription) {
+      this.willFocusSubscription.remove();
+    }
+  }
+
+  _fetchMagazineData() {
     this.props.fetchLatestMagazineReleases();
     this.props.fetchLatestPodcast();
     this.props.fetchLatestArticles();

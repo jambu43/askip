@@ -91,7 +91,7 @@ const HomeStack = createStackNavigator(
       screen: ArticleScreen,
     },
     Magazine: {
-      path: "magazine",
+      path: "magazine/:magazine_id",
       screen: MagazineScreen,
     },
     MagazineRecentlyRead: {
