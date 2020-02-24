@@ -6,6 +6,7 @@ import {
   SET_MAGAZINE_PUBLICATION_RELEASE,
 } from "../types/magazines";
 import { apiUrl } from "../../helpers";
+import { setMagazineArticles } from "./articles";
 
 export const togglePublicationReleasesLoading = state => {
   return {
@@ -63,7 +64,9 @@ export const fetchMagazineRelease = publication_release_id => {
     axios
       .get(apiUrl(`publication_releases/${publication_release_id}`))
       .then(({ data }) => {
-        dispatch(setMagazinePublicationRelease(data.data));
+        let magazineRelease = data.data;
+        dispatch(setMagazinePublicationRelease(magazineRelease));
+        dispatch(setMagazineArticles(magazineRelease.articles));
       })
       .catch(({ response }) => {
         console.log(response);

@@ -1,5 +1,9 @@
 import axios from "../../config/axios";
-import { TOGGLE_ARTICLE_LIST_LOADING, SET_ARTICLE_LIST } from "../types/newspaper";
+import {
+  TOGGLE_ARTICLE_LIST_LOADING,
+  SET_ARTICLE_LIST,
+  SET_MAGAZINE_ARTICLES,
+} from "../types/newspaper";
 import { apiUrl } from "../../helpers";
 
 export const toggleArticleListLoading = () => {
@@ -11,6 +15,15 @@ export const toggleArticleListLoading = () => {
 export const setArticleList = articles => {
   return {
     type: SET_ARTICLE_LIST,
+    payload: {
+      articles,
+    },
+  };
+};
+
+export const setMagazineArticles = articles => {
+  return {
+    type: SET_MAGAZINE_ARTICLES,
     payload: {
       articles,
     },
