@@ -10,6 +10,7 @@ import { fetchLatestPodcast } from "../store/actions/podcasts";
 import SectionLatestPodcast from "../components/home/SectionLatestPodcast";
 import { fetchLatestArticles } from "../store/actions/articles";
 import ArticleReleaseList from "../components/home/ArticleReleaseList";
+import { getMagazinesReleases } from "../store/selectors/magazine";
 
 class HomeScreen extends React.Component {
   constructor(props) {
@@ -63,13 +64,13 @@ class HomeScreen extends React.Component {
   }
 }
 
-const mapStateTopProps = ({ magazine, podcast, article }) => {
+const mapStateTopProps = state => {
   return {
-    magazines_publication_releases: magazine.magazines_publication_releases,
-    magazines_publication_releases_loading: magazine.magazines_publication_releases_loading,
-    latest_podcast: podcast.latest_podcast,
-    articles: article.article_list,
-    articles_loading: article.article_list_loading,
+    magazines_publication_releases: getMagazinesReleases(state),
+    magazines_publication_releases_loading: state.magazine.magazines_publication_releases_loading,
+    latest_podcast: state.podcast.latest_podcast,
+    articles: state.article.article_list,
+    articles_loading: state.article.article_list_loading,
   };
 };
 

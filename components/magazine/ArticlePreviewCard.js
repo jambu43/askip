@@ -5,7 +5,7 @@ import { darkLighten } from "../../config/variables";
 
 const ArticlePreviewCard = ({ article, navigation }) => {
   return (
-    <Container>
+    <Container onPress={() => navigation.navigate("Article", { article_id: article.id })}>
       <ArticleHeader>
         <ArticleHeaderImage source={{ uri: assetsUrl(article.featured_image) }} />
         <ArticleHeaderTitle>{article.title}</ArticleHeaderTitle>

@@ -5,7 +5,7 @@ import {
 } from "../types/magazines";
 
 const initialState = {
-  magazines_publication_releases: [],
+  magazines_publication_releases: {},
   magazines: [],
   magazines_publication_releases_loading: false,
   magazines_publication_release_loading: {},
@@ -20,22 +20,28 @@ export const magazinesReducer = (state = initialState, { type, payload }) => {
         magazines_publication_releases_loading: payload,
       };
     case SET_MAGAZINE_PUBLICATION_RELEASES:
+      let setMagazinePublicationReleasesPayload = {};
+      payload.publicationReleases.forEach(item => {
+        setMagazinePublicationReleasesPayload[item.id] = item;
+      });
+
       return {
         ...state,
-        magazines_publication_releases: [...payload.publicationReleases],
+        magazines_publication_releases: {
+          ...state.magazines_publication_releases,
+          ...setMagazinePublicationReleasesPayload,
+        },
       };
     case SET_MAGAZINE_PUBLICATION_RELEASE:
-      let publicationRelease = state.magazines_publication_releases.find(
-        item => item.id === payload.publicationRelease.id
-      );
-      let magazinesPublicationReleases = publicationRelease
-        ? state.magazines_publication_releases.map(item => {
-            return item.id === payload.publicationRelease.id ? payload.publicationRelease : item;
-          })
-        : [...state.magazines_publication_releases, payload.publicationRelease];
+      let setMagazinePublicationReleasePayload = {};
+      setMagazinePublicationReleasePayload[payload.publicationRelease.id] =
+        payload.publicationRelease;
       return {
         ...state,
-        magazines_publication_releases: magazinesPublicationReleases,
+        magazines_publication_releases: {
+          ...state.magazines_publication_releases,
+          ...setMagazinePublicationReleasePayload,
+        },
       };
     default:
       return state;

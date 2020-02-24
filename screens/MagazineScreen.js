@@ -144,7 +144,7 @@ const Content = styled.ScrollView``;
 const MagazineCoverWrapper = styled.View``;
 const MagazineCover = styled.Image`
   width: 100%;
-  height: 360px;
+  height: 320px;
 `;
 const MagazineContentWrapper = styled.View`
   padding: 15px;
