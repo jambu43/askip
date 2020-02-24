@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import styled from "styled-components";
 import { dark, darkLighten } from "../config/variables";
 import { getArticleById, getMagazineReleaseById } from "../store/selectors/magazine";
-import { AntDesign, Entypo } from "@expo/vector-icons";
+import { AntDesign, Entypo, MaterialIcons } from "@expo/vector-icons";
 import { assetsUrl, cutText } from "../helpers";
 
 class ArticleScreen extends React.Component {
@@ -34,6 +34,10 @@ class ArticleScreen extends React.Component {
             <Description>{article.preview}</Description>
           </ArticleContentWrapper>
         </Content>
+        <StickyBottomMenu>
+          <MaterialIcons name="format-size" size={24} color="#fff" />
+          <MaterialIcons name="bookmark" size={24} color="#fff" />
+        </StickyBottomMenu>
       </Container>
     );
   }
@@ -47,10 +51,16 @@ const Container = styled.View`
 `;
 
 const StickyHeader = styled.TouchableOpacity`
-  position: absolute;
   background: ${darkLighten};
-  top: 0px;
-  left: 0px;
+  align-items: center;
+  flex-direction: row;
+  z-index: 10px;
+  width: 100%;
+  padding: 10px;
+`;
+
+const StickyBottomMenu = styled.TouchableOpacity`
+  background: ${darkLighten};
   align-items: center;
   flex-direction: row;
   z-index: 10px;
@@ -74,7 +84,6 @@ const Title = styled.Text`
   font-weight: bold;
   margin-bottom: 10px;
   color: #fff;
-  margin-top: 60px;
 `;
 
 const Content = styled.ScrollView``;
