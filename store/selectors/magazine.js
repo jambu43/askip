@@ -12,6 +12,18 @@ export const getMagazineReleaseById = createSelector(
   }
 );
 
+export const getMagazineReleaseNextArticle = createSelector(
+  [_getMagazinesReleases, _getArticleId, getMagazineReleaseId],
+  (magazines_releases, article_id, magazine_release_id) => {
+    let magazinesRelease = magazines_releases[magazine_release_id];
+    if (!magazinesRelease || magazinesRelease.articles) {
+      return null;
+    }
+    let nextArticle = magazinesRelease.articles.find(item => item.id > article_id);
+    return nextArticle ? nextArticle : null;
+  }
+);
+
 export const getMagazinesReleases = createSelector([_getMagazinesReleases], magazines_releases => {
   return Object.keys(magazines_releases).map(release_id => magazines_releases[release_id]);
 });

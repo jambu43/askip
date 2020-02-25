@@ -11,12 +11,20 @@ const initialState = {
   magazine_articles: {},
 };
 
-export const newspaperReducers = (state = initialState, { type, payload }) => {
+export const articleReducers = (state = initialState, { type, payload }) => {
   switch (type) {
     case TOGGLE_ARTICLE_LIST_LOADING:
       return {
         ...state,
         article_list_loading: !state.article_list_loading,
+      };
+    case TOGGLE_ARTICLE_LOADING:
+      return {
+        ...state,
+        article_loading: {
+          ...state.article_loading,
+          ...{ [payload.article_id]: payload.state },
+        },
       };
     case SET_ARTICLE_LIST:
       return {

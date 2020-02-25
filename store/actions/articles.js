@@ -21,6 +21,16 @@ export const setArticleList = articles => {
   };
 };
 
+export const toggleArticleLoading = (article_id, state) => {
+  return {
+    type: TOGGLE_ARTICLE_LOADING,
+    payload: {
+      article_id,
+      state,
+    },
+  };
+};
+
 export const setMagazineArticles = articles => {
   return {
     type: SET_MAGAZINE_ARTICLES,
@@ -41,6 +51,34 @@ export const fetchLatestArticles = () => {
       })
       .catch(({ response }) => {
         dispatch(toggleArticleListLoading());
+      });
+  };
+};
+
+export const fetchArticleById = article_id => {
+  dispatch(toggleArticleLoading(article_id, true));
+  return dispatch => {
+    axios
+      .get(apiUrl(`articles/${article_id}`))
+      .then(({ data }) => {
+        dispatch(setMagazineArticles([data.data]));
+      })
+      .catch(({ response }) => {
+        console.log(response);
+      })
+      .finally(() => {
+        dispatch(toggleArticleLoading(article_id, false));
+      });
+  };
+};
+
+export const readArticle = article_id => {
+  return dispatch => {
+    axios
+      .get(apiUrl(`articles/${article_id}/read`))
+      .then(() => {})
+      .catch(({ response }) => {
+        console.log(response);
       });
   };
 };
