@@ -16,11 +16,25 @@ export const getMagazineReleaseNextArticle = createSelector(
   [_getMagazinesReleases, _getArticleId, getMagazineReleaseId],
   (magazines_releases, article_id, magazine_release_id) => {
     let magazinesRelease = magazines_releases[magazine_release_id];
-    if (!magazinesRelease || magazinesRelease.articles) {
+    if (!magazinesRelease || !magazinesRelease.articles) {
       return null;
     }
     let nextArticle = magazinesRelease.articles.find(item => item.id > article_id);
     return nextArticle ? nextArticle : null;
+  }
+);
+
+export const getMagazineReleasePrevArticle = createSelector(
+  [_getMagazinesReleases, _getArticleId, getMagazineReleaseId],
+  (magazines_releases, article_id, magazine_release_id) => {
+    let magazinesRelease = magazines_releases[magazine_release_id];
+    if (!magazinesRelease || !magazinesRelease.articles) {
+      return null;
+    }
+    let articles = magazinesRelease.articles;
+    articles.reverse();
+    let prevArticle = articles.find(item => item.id < article_id);
+    return prevArticle ? prevArticle : null;
   }
 );
 
