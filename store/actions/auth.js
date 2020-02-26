@@ -65,7 +65,6 @@ export function registerUser(payload) {
       axios
         .post(apiUrl("auth/register"), payload)
         .then(function({ data }) {
-          console.log(data.user);
           dispatch({
             type: SET_TOKEN,
             payload: data.access_token,

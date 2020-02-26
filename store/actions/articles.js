@@ -3,6 +3,7 @@ import {
   TOGGLE_ARTICLE_LIST_LOADING,
   SET_ARTICLE_LIST,
   SET_MAGAZINE_ARTICLES,
+  TOGGLE_ARTICLE_LOADING,
 } from "../types/newspaper";
 import { apiUrl } from "../../helpers";
 
@@ -56,8 +57,8 @@ export const fetchLatestArticles = () => {
 };
 
 export const fetchArticleById = article_id => {
-  dispatch(toggleArticleLoading(article_id, true));
   return dispatch => {
+    dispatch(toggleArticleLoading(article_id, true));
     axios
       .get(apiUrl(`articles/${article_id}`))
       .then(({ data }) => {

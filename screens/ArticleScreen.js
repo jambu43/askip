@@ -7,19 +7,48 @@ import {
   getArticleById,
   getMagazineReleaseById,
   getMagazineReleaseNextArticle,
+  getMagazineReleasePrevArticle,
 } from "../store/selectors/magazine";
 import { Entypo, MaterialIcons } from "@expo/vector-icons";
 import { assetsUrl, cutText } from "../helpers";
 import { fetchArticleById } from "../store/actions/articles";
 
 class ArticleScreen extends React.Component {
+  state = {
+    fontSize: "small",
+    fontSizes: ["small", "medium", "large"],
+  };
+
+  handleFontSizeChange() {
+    let fontSize = this.state.fontSize;
+    let nextFontSizeIndex =
+      (this.state.fontSizes.indexOf(fontSize) + 1) % this.state.fontSizes.length;
+    let nextFontSize = this.state.fontSizes[nextFontSizeIndex];
+    this.setState({
+      fontSize: nextFontSize,
+    });
+  }
   componentDidMount() {
     let article_id = this.props.navigation.getParam("article_id");
     this.props.fetchArticleById(article_id);
   }
+
   render() {
-    const { navigation, article, article_loading, nextArticle } = this.props;
+    const { fontSize } = this.state;
+    const { navigation, article, article_loading, nextArticle, prevArticle } = this.props;
     let isArticleLoading = article_loading[article.id] ? article_loading[article.id] : false;
+    let magazineReleaseId = navigation.getParam("magazine_release_id");
+    let pFontSize;
+    switch (fontSize) {
+      case "medium":
+        pFontSize = 18;
+        break;
+      case "large":
+        pFontSize = 20;
+        break;
+      default:
+        pFontSize = 16;
+    }
     return (
       <Container>
         <StickyHeader onPress={() => navigation.goBack()}>
@@ -34,9 +63,9 @@ class ArticleScreen extends React.Component {
         <Content>
           <ArticleContentWrapper>
             <Title>{article.title}</Title>
-            {!isArticleLoading ? (
+            {!isArticleLoading && article.read_time ? (
               <MetaWrapper>
-                <MetaItem>{Math.ceil(article.read_time / 60)}minute(s)</MetaItem>
+                <MetaItem>{Math.ceil(article.read_time / 60)} minute(s)</MetaItem>
               </MetaWrapper>
             ) : null}
           </ArticleContentWrapper>
@@ -46,19 +75,41 @@ class ArticleScreen extends React.Component {
             ></ArticleFeaturedImage>
           </ArticleFeaturedImageWrapper>
           <ArticleContentWrapper>
-            <Description>{article.preview}</Description>
             {!isArticleLoading ? (
-              <HTML html={article.content} tagsStyles={{ p: { color: "#fff" } }}></HTML>
+              <HTML
+                html={article.content}
+                tagsStyles={{ p: { color: "#fff", marginBottom: 5, fontSize: pFontSize } }}
+              ></HTML>
             ) : null}
           </ArticleContentWrapper>
         </Content>
         <StickyBottomMenu>
-          <FontSizeSwitcher>
+          {prevArticle ? (
+            <NextArticleWrapper
+              onPress={() =>
+                navigation.navigate("Article", {
+                  article_id: prevArticle.id,
+                  magazine_release_id: magazineReleaseId,
+                })
+              }
+            >
+              <Entypo name="chevron-left" size={24} color="#fff" />
+              <NextArticleTitle>{cutText(prevArticle.title, 15)}</NextArticleTitle>
+            </NextArticleWrapper>
+          ) : null}
+          <FontSizeSwitcher onPress={this.handleFontSizeChange.bind(this)}>
             <MaterialIcons name="format-size" size={24} color="#fff" />
           </FontSizeSwitcher>
           {nextArticle ? (
-            <NextArticleWrapper>
-              <NextArticleTitle>{cutText(nextArticle.title, 25)}</NextArticleTitle>
+            <NextArticleWrapper
+              onPress={() =>
+                navigation.navigate("Article", {
+                  article_id: nextArticle.id,
+                  magazine_release_id: magazineReleaseId,
+                })
+              }
+            >
+              <NextArticleTitle>{cutText(nextArticle.title, 15)}</NextArticleTitle>
               <Entypo name="chevron-right" size={24} color="#fff" />
             </NextArticleWrapper>
           ) : null}
@@ -84,10 +135,11 @@ const StickyHeader = styled.TouchableOpacity`
   padding: 10px;
 `;
 
-const StickyBottomMenu = styled.TouchableOpacity`
+const StickyBottomMenu = styled.View`
   background: ${darkLighten};
   align-items: center;
   flex-direction: row;
+  justify-content: space-between;
   z-index: 10px;
   width: 100%;
   padding: 10px;
@@ -135,20 +187,29 @@ const ArticleFeaturedImage = styled.Image`
 `;
 
 const FontSizeSwitcher = styled.TouchableOpacity``;
-const NextArticleWrapper = styled.TouchableOpacity``;
-const NextArticleTitle = styled.Text``;
+const NextArticleWrapper = styled.TouchableOpacity`
+  flex-direction: row;
+  align-items: center;
+`;
+const NextArticleTitle = styled.Text`
+  color: #fff;
+  font-size: 13px;
+`;
 
-const madDispatchToProps = dispatch => {
-  return {
-    fetchArticleById: article_id => dispatch(fetchArticleById(article_id)),
-  };
-};
 const mapStateToProps = (state, props) => {
   return {
     article: getArticleById(state, props),
     magazine_release: getMagazineReleaseById(state, props),
     article_loading: state.article.article_loading,
     nextArticle: getMagazineReleaseNextArticle(state, props),
+    prevArticle: getMagazineReleasePrevArticle(state, props),
   };
 };
+
+const madDispatchToProps = dispatch => {
+  return {
+    fetchArticleById: article_id => dispatch(fetchArticleById(article_id)),
+  };
+};
+
 export default connect(mapStateToProps, madDispatchToProps)(ArticleScreen);

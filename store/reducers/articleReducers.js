@@ -2,6 +2,7 @@ import {
   TOGGLE_ARTICLE_LIST_LOADING,
   SET_ARTICLE_LIST,
   SET_MAGAZINE_ARTICLES,
+  TOGGLE_ARTICLE_LOADING,
 } from "../types/newspaper";
 
 const initialState = {
@@ -34,9 +35,7 @@ export const articleReducers = (state = initialState, { type, payload }) => {
     case SET_MAGAZINE_ARTICLES:
       let setMagazineArticlesPayload = {};
       payload.articles.forEach(item => {
-        let prevArticle = setMagazineArticlesPayload[item.id]
-          ? setMagazineArticlesPayload[item.id]
-          : {};
+        let prevArticle = state.magazine_articles[item.id] ? state.magazine_articles[item.id] : {};
         setMagazineArticlesPayload[item.id] = {
           ...prevArticle,
           ...item,
