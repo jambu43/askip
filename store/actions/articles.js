@@ -76,7 +76,7 @@ export const fetchArticleById = article_id => {
 export const readArticle = article_id => {
   return dispatch => {
     axios
-      .get(apiUrl(`articles/${article_id}/read`))
+      .post(apiUrl(`articles/${article_id}/read`))
       .then(() => {})
       .catch(({ response }) => {
         console.log(response);

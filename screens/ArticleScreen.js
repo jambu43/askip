@@ -11,7 +11,7 @@ import {
 } from "../store/selectors/magazine";
 import { Entypo, MaterialIcons } from "@expo/vector-icons";
 import { assetsUrl, cutText } from "../helpers";
-import { fetchArticleById } from "../store/actions/articles";
+import { fetchArticleById, readArticle } from "../store/actions/articles";
 
 class ArticleScreen extends React.Component {
   state = {
@@ -31,6 +31,7 @@ class ArticleScreen extends React.Component {
   componentDidMount() {
     let article_id = this.props.navigation.getParam("article_id");
     this.props.fetchArticleById(article_id);
+    this.props.readArticle(article_id);
   }
 
   render() {
@@ -209,6 +210,7 @@ const mapStateToProps = (state, props) => {
 const madDispatchToProps = dispatch => {
   return {
     fetchArticleById: article_id => dispatch(fetchArticleById(article_id)),
+    readArticle: article_id => dispatch(readArticle(article_id)),
   };
 };
 
