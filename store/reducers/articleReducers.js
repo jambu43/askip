@@ -6,10 +6,10 @@ import {
 } from "../types/newspaper";
 
 const initialState = {
-  article_list: [],
-  article_list_loading: false,
-  article_loading: {},
-  magazine_articles: {},
+	article_list: [],
+	article_list_loading: false,
+	article_loading: {},
+	magazine_articles: {}
 };
 
 export const articleReducers = (state = initialState, { type, payload }) => {
