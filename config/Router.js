@@ -129,14 +129,30 @@ HomeStack.navigationOptions = ({ navigation }) => {
   };
 };
 
+const CreatePostStack = createStackNavigator(
+  {
+    CreatePost: {
+      screen: CreatePostScreen,
+    },
+  },
+  {
+    initialRouteName: "CreatePost",
+    headerMode: "none",
+    transitionConfig: configNavigation,
+  }
+);
+
+CreatePostStack.navigationOptions = ({ navigation }) => {
+  return {
+    tabBarVisible: false,
+  };
+};
+
 const HomeTabNavigator = createBottomTabNavigator(
   {
     Home: HomeStack,
     Explorer: ExplorerScreen,
-    CreatePost: {
-      screen: CreatePostScreen,
-      label: "Askip",
-    },
+    CreatePost: CreatePostStack,
     Notifications: NotificationsScreen,
     Profile: {
       screen: Profile,
