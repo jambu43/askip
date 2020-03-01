@@ -37,12 +37,14 @@ export const postReducers = (state = initialState, { type, payload }) => {
       payload.posts.forEach(item => {
         setPostList[item.id] = item;
       });
-
+      console.log(setPostList);
       return {
         ...state,
-        post_list: [...payload.posts],
+        post_list: {
+          ...state.post_list,
+          ...setPostList,
+        },
       };
-      break;
     default:
       return state;
   }

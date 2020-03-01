@@ -150,8 +150,8 @@ CreatePostStack.navigationOptions = ({ navigation }) => {
 
 const HomeTabNavigator = createBottomTabNavigator(
   {
-    Home: HomeStack,
     Explorer: ExplorerScreen,
+    Home: HomeStack,
     CreatePost: CreatePostStack,
     Notifications: NotificationsScreen,
     Profile: {
@@ -186,6 +186,7 @@ const HomeTabNavigator = createBottomTabNavigator(
       },
     },
     transitionConfig: configSlideNavigation,
+    initialRouteName: "Explorer",
   }
 );
 

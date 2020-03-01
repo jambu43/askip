@@ -43,7 +43,7 @@ export const togglePostLoading = (post_id, state) => {
   };
 };
 
-export const setPost = posts => {
+export const setPosts = posts => {
   return {
     type: SET_POST,
     payload: {
@@ -52,16 +52,17 @@ export const setPost = posts => {
   };
 };
 
-export const fetchLatestPost = () => {
+export const fetchPosts = (page = 1) => {
   return dispatch => {
     dispatch(togglePostListLoading());
     axios
-      .get(apiUrl("posts/getAllPost"))
+      .get(apiUrl("posts/feed"))
       .then(({ data }) => {
-        dispatch(setPost(data.data));
+        dispatch(setPostList(data.data));
         dispatch(togglePostListLoading());
       })
       .catch(({ response }) => {
+        console.log(response);
         dispatch(togglePostListLoading());
       });
   };
@@ -73,7 +74,7 @@ export const fetchPostId = post_id => {
     axios
       .get(apiUrl(`posts/get/${post_id}`))
       .then(({ data }) => {
-        dispatch(setPost([data.data]));
+        dispatch(setPosts([data.data]));
       })
       .catch(({ response }) => {
         console.log(response);
