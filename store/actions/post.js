@@ -1,37 +1,46 @@
 import axios from "../../config/axios";
 import {
-    TOGGLE_POST_LIST_LOADING,
-    TOGGLE_POST_LOADING,
-    SET_POST_LIST,
-    SET_POST
+  TOGGLE_POST_LIST_LOADING,
+  TOGGLE_POST_LOADING,
+  SET_POST_LIST,
+  SET_POST,
+  TOGGLE_POST_CREATING,
 } from "../types/post";
 
 import { apiUrl } from "../../helpers";
 
 export const togglePostListLoading = () => {
-    return {
-        type: TOGGLE_POST_LIST_LOADING,
-    };
+  return {
+    type: TOGGLE_POST_LIST_LOADING,
+  };
 };
 
-export const setpostList = posts => {
-    return {
-        type: SET_POST_LIST,
-        payload: {
-            posts,
-        },
-    };
+export const togglePostCreating = state => {
+  return {
+    type: TOGGLE_POST_CREATING,
+    payload: {
+      post_creating: state,
+    },
+  };
+};
+
+export const setPostList = posts => {
+  return {
+    type: SET_POST_LIST,
+    payload: {
+      posts,
+    },
+  };
 };
 
 export const togglePostLoading = (post_id, state) => {
-    return {
-        type: TOGGLE_POST_LOADING,
-        payload: {
-            post_id,
-            state,
-        }
-        ,
-    };
+  return {
+    type: TOGGLE_POST_LOADING,
+    payload: {
+      post_id,
+      state,
+    },
+  };
 };
 
 export const setPost = posts => {
@@ -54,9 +63,9 @@ export const fetchLatestPost = () => {
       })
       .catch(({ response }) => {
         dispatch(togglePostListLoading());
-      })
-  }
-}
+      });
+  };
+};
 
 export const fetchPostId = post_id => {
   return dispatch => {
@@ -73,5 +82,29 @@ export const fetchPostId = post_id => {
         dispatch(togglePostListLoading(post_id, false));
       });
   };
+};
 
+export const createPost = formData => {
+  return dispatch => {
+    const config = {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    };
+    dispatch(togglePostCreating(true));
+    return new Promise((resolve, reject) => {
+      axios
+        .post(apiUrl(`posts`), formData, config)
+        .then(data => {
+          console.log(data);
+          resolve();
+        })
+        .catch(response => {
+          reject();
+        })
+        .finally(() => {
+          dispatch(togglePostCreating(false));
+        });
+    });
+  };
 };

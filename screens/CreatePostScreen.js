@@ -3,11 +3,12 @@ import styled from "styled-components";
 import { connect } from "react-redux";
 import * as ImagePicker from "expo-image-picker";
 import { dark, darkLighten } from "../config/variables";
-import AppHeader from "../components/generic/AppHeader";
 import UserAvatar from "../components/generic/UserAvatar";
 import { Feather, AntDesign } from "@expo/vector-icons";
+import { togglePostCreating, createPost } from "../store/actions/post";
+import { ActivityIndicator, Platform } from "react-native";
 
-export default class CreatePostScreen extends React.Component {
+class CreatePostScreen extends React.Component {
   state = {
     post: {},
     colors: ["#70595F", "#333228", "#445257", "#5E6C70"],
@@ -35,7 +36,6 @@ export default class CreatePostScreen extends React.Component {
       let pickerResponse = await ImagePicker.launchCameraAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
         allowsEditing: true,
-        aspect: [16, 9],
       });
 
       if (!pickerResponse.cancelled) {
@@ -57,9 +57,7 @@ export default class CreatePostScreen extends React.Component {
       let pickerResponse = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
         allowsEditing: true,
-        aspect: [1, 1],
       });
-
       if (!pickerResponse.cancelled) {
         this.setState({
           selectedPicture: pickerResponse,
@@ -78,11 +76,44 @@ export default class CreatePostScreen extends React.Component {
     });
   }
 
-  handleSubmit() {}
+  handleSubmit() {
+    const { selectedColor, selectedPicture, content } = this.state;
+    const { navigation } = this.props;
+    let formData = new FormData();
+    if (selectedColor) {
+      formData.append("post_color", selectedColor);
+    }
+    if (content) {
+      formData.append("content", content);
+    }
+
+    if (selectedPicture) {
+      let arr = selectedPicture.uri.split("/");
+      let name = arr[arr.length - 1];
+      let arrExt = name.split(".");
+      let ext = arrExt[arrExt.length - 1];
+      formData.append("image_path", {
+        name,
+        type: `${selectedPicture.type}/${ext}`,
+        uri:
+          Platform.OS === "android"
+            ? selectedPicture.uri
+            : selectedPicture.uri.replace("file://", ""),
+      });
+    }
+    this.props.createPost(formData).then(() => {
+      this.setState({
+        selectedColor: this.state.colors[0],
+        selectedPicture: null,
+        content: "",
+      });
+      navigation.navigate("Home");
+    });
+  }
 
   render() {
     const { colors, selectedColor, selectedPicture, content } = this.state;
-    const { navigation } = this.props;
+    const { navigation, post_creating } = this.props;
     let colorMode = !selectedPicture && selectedColor && content.length < 144;
     let canSubmit = content || selectedPicture;
     return (
@@ -91,8 +122,15 @@ export default class CreatePostScreen extends React.Component {
           <TouchableIcon onPress={() => navigation.dismiss()}>
             <AntDesign name="close" size={24} color="#fff" />
           </TouchableIcon>
-          <TouchableIcon disabled={!canSubmit} onPress={this.handleSubmit.bind(this)}>
-            <AntDesign name="check" size={24} color="#fff" />
+          <TouchableIcon
+            disabled={!canSubmit || post_creating}
+            onPress={this.handleSubmit.bind(this)}
+          >
+            {post_creating ? (
+              <ActivityIndicator color="#fff" />
+            ) : (
+              <AntDesign name="check" size={24} color="#fff" />
+            )}
           </TouchableIcon>
         </StickyHeader>
         <PostFormHeader>
@@ -209,3 +247,17 @@ const ImagePickerButton = styled.TouchableOpacity`
   justify-content: center;
 `;
 const TouchableIcon = styled.TouchableOpacity``;
+
+const mapStateToProps = ({ post }) => {
+  return {
+    post_creating: post.post_creating,
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    createPost: formData => dispatch(createPost(formData)),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(CreatePostScreen);
