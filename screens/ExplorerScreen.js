@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import AppHeader from '../components/generic/AppHeader';
 import AskipReleaseList from '../components/home/AskipReleaseList';
 import { dark } from '../config/variables';
-import { fetchLatestPost } from '../store/actions/post';
+import { fetchLatestPosts } from '../store/actions/post';
 import { connect } from 'react-redux';
 
 class ExplorerScreen extends React.Component {
@@ -21,7 +21,7 @@ class ExplorerScreen extends React.Component {
 		}
 	}
 	_fetchPostData() {
-    this.props.fetchLatestPost();
+    this.props.fetchLatestPosts();
   }
 
 	render() {
@@ -49,7 +49,7 @@ const mapStateTopProps = state => {
 
 const mapDispatchToProps = dispatch => {
 	return {
-		fecthLatestPost: () => dispatch(fetchLatestPost()),
+		fetchLatestPosts: () => dispatch(fetchLatestPosts()),
 	};
 };
 export default connect(mapStateTopProps, mapDispatchToProps)(ExplorerScreen);

@@ -43,7 +43,7 @@ export const setPost = posts => {
   };
 };
 
-export const fetchLatestPost = () => {
+export const fetchLatestPosts = () => {
   return dispatch => {
     dispatch(togglePostListLoading());
     axios
