@@ -1,17 +1,18 @@
 import React from 'react';
 import styled from 'styled-components';
 import AppHeader from '../components/generic/AppHeader';
-import AskipReleaseList from '../components/home/AskipReleaseList';
-import { dark } from '../config/variables';
-import { fetchLatestPosts } from '../store/actions/post';
+import PostList from '../components/askip/PostList';
+import { dark, darkLighten } from '../config/variables';
+import { fetchPosts } from '../store/actions/post';
 import { connect } from 'react-redux';
+import { getPosts } from '../store/selectors/post';
 
 class ExplorerScreen extends React.Component {
-	constructor(props){
+	constructor(props) {
 		super(props);
 	}
 	componentDidMount() {
-		this.willFocusSubscription = this.props.navigation.addListener("willFocus", () => {
+		this.willFocusSubscription = this.props.navigation.addListener('willFocus', () => {
 			this._fetchPostData();
 		});
 	}
@@ -21,41 +22,36 @@ class ExplorerScreen extends React.Component {
 		}
 	}
 	_fetchPostData() {
-    this.props.fetchLatestPosts();
-  }
+		this.props.fetchPosts();
+	}
 
 	render() {
-		const {
-			navigation,
-			posts
-		} = this.props;
+		const { navigation, posts } = this.props;
 		return (
 			<Container>
 				<AppHeader />
-				<AskipReleaseList navigation={navigation} posts={posts} />
+				<PostList navigation={navigation} posts={posts} />
 			</Container>
 		);
 	}
-
 }
 
-const mapStateTopProps = state => {
-  return {
-		posts: state.post.post_list,
-		posts_loading: state.post.posts_loading,
-
-  };
+const mapStateTopProps = (state) => {
+	return {
+		posts: getPosts(state),
+		posts_loading: state.post.posts_loading
+	};
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
 	return {
-		fetchLatestPosts: () => dispatch(fetchLatestPosts()),
+		fetchPosts: () => dispatch(fetchPosts())
 	};
 };
 export default connect(mapStateTopProps, mapDispatchToProps)(ExplorerScreen);
 
 const Container = styled.View`
 	flex: 1;
-	background-color: ${dark};
+	background-color: ${darkLighten};
 `;
 const Text = styled.Text``;

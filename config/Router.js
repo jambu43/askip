@@ -129,14 +129,30 @@ HomeStack.navigationOptions = ({ navigation }) => {
   };
 };
 
-const HomeTabNavigator = createBottomTabNavigator(
+const CreatePostStack = createStackNavigator(
   {
-    Home: HomeStack,
-    Explorer: ExplorerScreen,
     CreatePost: {
       screen: CreatePostScreen,
-      label: "Askip",
     },
+  },
+  {
+    initialRouteName: "CreatePost",
+    headerMode: "none",
+    transitionConfig: configNavigation,
+  }
+);
+
+CreatePostStack.navigationOptions = ({ navigation }) => {
+  return {
+    tabBarVisible: false,
+  };
+};
+
+const HomeTabNavigator = createBottomTabNavigator(
+  {
+    Explorer: ExplorerScreen,
+    Home: HomeStack,
+    CreatePost: CreatePostStack,
     Notifications: NotificationsScreen,
     Profile: {
       screen: Profile,
@@ -170,6 +186,7 @@ const HomeTabNavigator = createBottomTabNavigator(
       },
     },
     transitionConfig: configSlideNavigation,
+    initialRouteName: "Explorer",
   }
 );
 
