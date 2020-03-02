@@ -72,7 +72,7 @@ export const fetchPostId = (post_id) => {
 	return (dispatch) => {
 		dispatch(togglePostListLoading(post_id, true));
 		axios
-			.get(apiUrl(`posts/get/${post_id}`))
+			.get(apiUrl(`posts/user/${post_id}`))
 			.then(({ data }) => {
 				dispatch(setPosts([ data.data ]));
 			})
@@ -84,6 +84,23 @@ export const fetchPostId = (post_id) => {
 			});
 	};
 };
+
+export const fetchPostUserId = (user_id) => {
+	return (dispatch) => {
+		dispatch(togglePostListLoading(user_id, true));
+		axios
+      .get(apiUrl(`posts/user/${user_id}`))
+      .then(({ data }) =>{
+        dispatch(setPosts([ data.data]));
+      })
+      .catch(({ response }) => {
+        console.log(response);
+      })
+      .finally(()=> {
+        dispatch(togglePostListLoading(user_id, false));
+      });
+	}
+}
 
 export const createPost = (formData) => {
 	return (dispatch) => {

@@ -20,7 +20,7 @@ class ProfileScreen extends React.Component {
 		this.props.fetchLatestArticles();
 	}
 	render() {
-		const { user, navigation, magazines_publication_releases, articles } = this.props;
+		const { user, navigation, magazines_publication_releases, articles, onClick } = this.props;
 
 		return (
 			<Container>
@@ -61,10 +61,10 @@ class ProfileScreen extends React.Component {
 						</ScrollView>
 					</CenterMagazineContent>
 					<ArticleReleaseList navigation={navigation} title="Mes Articles" articles={articles} />
-					<ShowAskip navigation={navigation} >
+					<ShowAskip navigation={navigation} onPress={() => navigation.push("ShowMypublication", { user_id: user.id })} >
 						<ShowAskipText>Voir mes Askip</ShowAskipText>
 					</ShowAskip>
-				</ScrollView>
+				</ScrollView> 
 			</Container>
 		);
 	}

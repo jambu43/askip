@@ -47,7 +47,7 @@ class HomeScreen extends React.Component {
         <ScrollView>
           <MagazineReleaseList
             navigation={navigation}
-            title="Nouvelles parutions"
+            title="Nouvzelles parutions"
             magazines={magazines_publication_releases}
           />
           <ArticleReleaseList navigation={navigation} title="À la une" articles={articles} />
