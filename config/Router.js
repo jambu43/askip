@@ -11,6 +11,7 @@ import HomeScreen from '../screens/HomeScreen';
 import PodcastScreen from '../screens/PodcastScreen';
 import PodcastsScreen from '../screens/PodcastsScreen';
 import ArtistScreen from '../screens/ArtistScreen';
+import NewsScreen from '../screens/NewsScreen';
 import NotificationsScreen from '../screens/NotificationsScreen';
 import WelcomeScreen from '../screens/WelcomeScreen';
 import UserAvatar from '../components/generic/UserAvatar';
@@ -19,7 +20,7 @@ import { NotificationIcon, SearchIcon, HomeIcon } from '../components/Icons';
 import { dark } from './variables';
 import MagazineRecentlyRead from '../screens/MagazineRecentlyRead';
 import AddPostIcon from '../components/generic/AddPostIcon';
-import ShowMypublicationScreen from '../screens/MyPublicationScreen';
+
 const BottomTransition = (index, position, height) => {
 	const sceneRange = [ index - 1, index, index + 1 ];
 	const outPutHeight = [ height, 0, 0 ];
@@ -83,12 +84,16 @@ const configSlideNavigation = () => {
 const HomeStack = createStackNavigator(
 	{
 		Article: {
-			path: 'article/:article_id',
+			path: 'article',
 			screen: ArticleScreen
 		},
 		Magazine: {
 			path: 'magazine/:magazine_id',
 			screen: MagazineScreen
+		},
+		News: {
+			path: 'news/:article_id',
+			screen: NewsScreen
 		},
 		MagazineRecentlyRead: {
 			path: 'magazine/:magazine_id',
@@ -105,10 +110,6 @@ const HomeStack = createStackNavigator(
 		Podcast: {
 			path: 'podcast/:podcast_id',
 			screen: PodcastScreen
-		},
-		ShowMypublication: {
-			path: 'post/:user_id',
-			screen: ShowMypublicationScreen
 		}
 	},
 	{
