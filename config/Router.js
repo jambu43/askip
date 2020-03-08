@@ -15,6 +15,7 @@ import HomeScreen from "../screens/HomeScreen";
 import PodcastScreen from "../screens/PodcastScreen";
 import PodcastsScreen from "../screens/PodcastsScreen";
 import ArtistScreen from "../screens/ArtistScreen";
+import NewsScreen from "../screens/NewsScreen";
 import NotificationsScreen from "../screens/NotificationsScreen";
 import WelcomeScreen from "../screens/WelcomeScreen";
 import UserAvatar from "../components/generic/UserAvatar";
@@ -93,6 +94,10 @@ const HomeStack = createStackNavigator(
     Magazine: {
       path: "magazine/:magazine_id",
       screen: MagazineScreen,
+    },
+    News: {
+      path: "news/:article_id",
+      screen: NewsScreen,
     },
     MagazineRecentlyRead: {
       path: "magazine/:magazine_id",
