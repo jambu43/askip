@@ -83,7 +83,7 @@ const configSlideNavigation = () => {
 const HomeStack = createStackNavigator(
 	{
 		Article: {
-			path: 'article',
+			path: 'article/:article_id',
 			screen: ArticleScreen
 		},
 		Magazine: {
