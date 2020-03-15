@@ -62,9 +62,6 @@ class ProfileScreen extends React.Component {
               </Publication>
             </Information>
           </Card>
-          <ShowAskip>
-            <ShowAskipText>Synchroniser depuis Facebook</ShowAskipText>
-          </ShowAskip>
 
           <MagazineRecentlyRead>Mes Magazine</MagazineRecentlyRead>
           <CenterMagazineContent>
