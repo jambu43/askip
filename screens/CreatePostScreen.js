@@ -6,7 +6,7 @@ import { dark, darkLighten } from "../config/variables";
 import UserAvatar from "../components/generic/UserAvatar";
 import { Feather, AntDesign } from "@expo/vector-icons";
 import { togglePostCreating, createPost } from "../store/actions/post";
-import { ActivityIndicator, Platform } from "react-native";
+import { ActivityIndicator, Platform, StatusBar } from "react-native";
 
 class CreatePostScreen extends React.Component {
   state = {
@@ -118,6 +118,7 @@ class CreatePostScreen extends React.Component {
     let canSubmit = content || selectedPicture;
     return (
       <Container>
+        <StatusBar backgroundColor={darkLighten} />
         <StickyHeader>
           <TouchableIcon onPress={() => navigation.dismiss()}>
             <AntDesign name="close" size={24} color="#fff" />
