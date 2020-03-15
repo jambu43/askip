@@ -8,7 +8,6 @@ import { connect } from "react-redux";
 import { fetchLatestMagazineReleases } from "../store/actions/magazines";
 import { fetchLatestArticles } from "../store/actions/articles";
 import ArticleReleaseList from "../components/home/ArticleReleaseList";
-import { StyleSheet } from "react-native";
 import { getMagazinesReleases } from "../store/selectors/magazine";
 import { getPosts } from "../store/selectors/post";
 import { fetchUserPost } from "../store/actions/post";
