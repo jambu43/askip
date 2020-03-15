@@ -13,6 +13,7 @@ import PodcastsScreen from '../screens/PodcastsScreen';
 import ArtistScreen from '../screens/ArtistScreen';
 import NewsScreen from '../screens/NewsScreen';
 import NotificationsScreen from '../screens/NotificationsScreen';
+import MyPublicationScreen from '../screens/MyPublicationScreen';
 import WelcomeScreen from '../screens/WelcomeScreen';
 import UserAvatar from '../components/generic/UserAvatar';
 import { NotificationIcon, SearchIcon, HomeIcon } from '../components/Icons';
@@ -110,6 +111,10 @@ const HomeStack = createStackNavigator(
 		Podcast: {
 			path: 'podcast/:podcast_id',
 			screen: PodcastScreen
+		},
+		ShowMypublication: {
+			path: 'post/:user_id',
+			screen: MyPublicationScreen
 		}
 	},
 	{

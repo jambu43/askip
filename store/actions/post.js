@@ -8,6 +8,7 @@ import {
 } from '../types/post';
 
 import { apiUrl } from '../../helpers';
+import { SET_USER_PUBLICATION_RELEASE } from '../types/auth';
 
 export const togglePostListLoading = () => {
 	return {
@@ -52,6 +53,15 @@ export const setPosts = (posts) => {
 	};
 };
 
+export const setUserPublicationRelease = (posts) => {
+	return {
+		type: SET_USER_PUBLICATION_RELEASE,
+		payload: {
+			publication_releases: posts
+		}
+	};
+};
+
 export const fetchPosts = (page = 1) => {
 	return (dispatch) => {
 		dispatch(togglePostListLoading());
@@ -85,22 +95,27 @@ export const fetchPostId = (post_id) => {
 	};
 };
 
-export const fetchPostUserId = (user_id) => {
+export const fetchUserPost = (user_id) => {
 	return (dispatch) => {
 		dispatch(togglePostListLoading(user_id, true));
 		axios
-      .get(apiUrl(`posts/user/${user_id}`))
-      .then(({ data }) =>{
-        dispatch(setPosts([ data.data]));
-      })
-      .catch(({ response }) => {
-        console.log(response);
-      })
-      .finally(()=> {
-        dispatch(togglePostListLoading(user_id, false));
-      });
-	}
-}
+			.get(apiUrl(`profile/user_posts/${user_id}`))
+			.then(({ data }) => {
+				console.log(data);
+				try {
+					dispatch(setUserPublicationRelease([ data.data ]));
+				} catch (error) {
+					console.log(error);
+				}
+			})
+			.catch(({ response }) => {
+				console.log(response);
+			})
+			.finally(() => {
+				dispatch(togglePostListLoading(user_id, false));
+			});
+	};
+};
 
 export const createPost = (formData) => {
 	return (dispatch) => {

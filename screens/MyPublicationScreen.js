@@ -1,17 +1,15 @@
-import React from "react";
-import styled from "styled-components";
-import AppHeader from "../components/generic/AppHeader";
-import { dark, darkLighten } from "../config/variables";
-import PostList from "../components/askip/PostList";
+import React from 'react';
+import styled from 'styled-components';
+import AppHeader from '../components/generic/AppHeader';
+import { dark, darkLighten } from '../config/variables';
+import PostList from '../components/askip/PostList';
 import { fetchPosts, fetchPostUserId } from '../store/actions/post';
-import { connect } from "react-redux";
-import { getPosts } from "../store/selectors/post";
-import { AntDesign } from "@expo/vector-icons";
-
+import { connect } from 'react-redux';
+import { getPosts } from '../store/selectors/post';
+import { AntDesign } from '@expo/vector-icons';
 
 class ShowMypublication extends React.Component {
-
-  constructor(props) {
+	constructor(props) {
 		super(props);
 	}
 	componentDidMount() {
@@ -28,19 +26,19 @@ class ShowMypublication extends React.Component {
 		this.props.fetchPostUserId();
 	}
 
-  render() {
-    const { navigation, posts } = this.props;
-    return (
-      <Container>
-         <StickyHeader onPress={() => navigation.goBack()}>
-          <AntDesign name="close" size={24} color="#fff" />
-        </StickyHeader>
+	render() {
+		const { navigation, posts } = this.props;
+		return (
+			<Container>
+				<StickyHeader onPress={() => navigation.goBack()}>
+					<AntDesign name="close" size={24} color="#fff" />
+				</StickyHeader>
 
-        <AppHeader />
-        <PostList navigation={navigation}  posts={posts}/>
-      </Container>
-    )
-  }
+				<AppHeader />
+				<PostList navigation={navigation} posts={posts} />
+			</Container>
+		);
+	}
 }
 const mapStateTopProps = (state) => {
 	return {
@@ -63,14 +61,14 @@ const Container = styled.View`
 `;
 
 const StickyHeader = styled.TouchableOpacity`
-  position: absolute;
-  width: 35px;
-  height: 35px;
-  background: ${darkLighten};
-  top: 35px;
-  left: 10px;
-  justify-content: center;
-  align-items: center;
-  z-index: 10px;
-  border-radius: 25px;
+	position: absolute;
+	width: 35px;
+	height: 35px;
+	background: ${darkLighten};
+	top: 35px;
+	left: 10px;
+	justify-content: center;
+	align-items: center;
+	z-index: 10px;
+	border-radius: 25px;
 `;

@@ -10,6 +10,9 @@ import { fetchLatestArticles } from '../store/actions/articles';
 import ArticleReleaseList from '../components/home/ArticleReleaseList';
 import { StyleSheet } from 'react-native';
 import { getMagazinesReleases } from '../store/selectors/magazine';
+import { getPosts } from '../store/selectors/post';
+import { fetchUserPost } from '../store/actions/post';
+import PostList from '../components/askip/PostList';
 
 class ProfileScreen extends React.Component {
 	constructor(props) {
@@ -18,9 +21,15 @@ class ProfileScreen extends React.Component {
 	componentDidMount() {
 		this.props.fetchLatestMagazineReleases();
 		this.props.fetchLatestArticles();
+		this._fetchPostData();
 	}
+
+	_fetchPostData() {
+		this.props.fetchUserPost(this.props.user.id);
+	}
+
 	render() {
-		const { user, navigation, magazines_publication_releases, articles, onClick } = this.props;
+		const { user, navigation, magazines_publication_releases, articles, onClick, posts } = this.props;
 
 		return (
 			<Container>
@@ -61,10 +70,9 @@ class ProfileScreen extends React.Component {
 						</ScrollView>
 					</CenterMagazineContent>
 					<ArticleReleaseList navigation={navigation} title="Mes Articles" articles={articles} />
-					<ShowAskip navigation={navigation} onPress={() => navigation.push("ShowMypublication", { user_id: user.id })} >
-						<ShowAskipText>Voir mes Askip</ShowAskipText>
-					</ShowAskip>
-				</ScrollView> 
+
+					<PostList navigation={navigation} posts={posts} />
+				</ScrollView>
 			</Container>
 		);
 	}
@@ -74,13 +82,16 @@ const mapStateToProps = (state) => {
 	return {
 		user: state.auth.user,
 		magazines_publication_releases: getMagazinesReleases(state),
-		articles: state.article.article_list
+		articles: state.article.article_list,
+		posts: getPosts(state),
+		posts_loading: state.post.posts_loading
 	};
 };
 const mapDispatchToProps = (dispatch) => {
 	return {
 		fetchLatestMagazineReleases: () => dispatch(fetchLatestMagazineReleases()),
-		fetchLatestArticles: () => dispatch(fetchLatestArticles())
+		fetchLatestArticles: () => dispatch(fetchLatestArticles()),
+		fetchUserPost: () => dispatch(fetchUserPost())
 	};
 };
 export default connect(mapStateToProps, mapDispatchToProps)(ProfileScreen);
