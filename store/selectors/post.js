@@ -1,9 +1,9 @@
-import { sortBy } from "lodash/sortBy";
+import orderBy from "lodash/orderBy";
 import { createSelector } from "reselect";
 
 export const _getPosts = state => state.post.post_list;
 
 export const getPosts = createSelector([_getPosts], posts => {
-  let posts = Object.values(posts);
-  return sortBy(posts, created_at);
+  let postCollection = Object.values(posts);
+  return orderBy(postCollection, "created_at", "desc");
 });
