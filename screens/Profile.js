@@ -47,7 +47,7 @@ class ProfileScreen extends React.Component {
 
               <Username>{user.name}</Username>
             </Count>
-            <Informations>
+            <Information>
               <Publication>
                 <Number>{user.posts_count}</Number>
                 <Title>Publications</Title>
@@ -60,7 +60,7 @@ class ProfileScreen extends React.Component {
                 <Number>{user.followees_count}</Number>
                 <Title>Abonnements</Title>
               </Publication>
-            </Informations>
+            </Information>
           </Card>
           <ShowAskip>
             <ShowAskipText>Synchroniser depuis Facebook</ShowAskipText>
@@ -129,7 +129,7 @@ const Avatar = styled.Image`
   background-color: #ffffff;
 `;
 
-const Informations = styled.View`
+const Information = styled.View`
   margin-top: 32px;
   flex-direction: row;
 `;
