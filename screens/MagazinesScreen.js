@@ -25,6 +25,17 @@ class MagazinesScreen extends React.Component {
     this.props.fetchMagazineReleases(this.state.page);
   }
 
+  _handleLoadMore = () => {
+    this.setState(
+      (prevState, nextProps) => ({
+        page: prevState.page + 1,
+      }),
+      () => {
+        this.props.fetchMagazineReleases(this.state.page);
+      }
+    );
+  };
+
   renderMagazine({ item, index }) {
     const { navigation } = this.props;
     return <MagazineReleaseCard size="lg" navigation={navigation} magazine={item} key={item.id} />;
@@ -59,6 +70,9 @@ class MagazinesScreen extends React.Component {
           renderItem={this.renderMagazine.bind(this)}
           showsVerticalScrollIndicator={false}
           numColumns={2}
+          onEndReached={this._handleLoadMore.bind(this)}
+          onEndReachedThreshold={0.5}
+          initialNumToRender={10}
         />
       </Container>
     );
