@@ -13,7 +13,7 @@ export const toggleArticleListLoading = () => {
   };
 };
 
-export const setArticleList = articles => {
+export const setArticleList = (articles) => {
   return {
     type: SET_ARTICLE_LIST,
     payload: {
@@ -32,7 +32,7 @@ export const toggleArticleLoading = (article_id, state) => {
   };
 };
 
-export const setMagazineArticles = articles => {
+export const setMagazineArticles = (articles) => {
   return {
     type: SET_MAGAZINE_ARTICLES,
     payload: {
@@ -42,7 +42,7 @@ export const setMagazineArticles = articles => {
 };
 
 export const fetchLatestArticles = () => {
-  return dispatch => {
+  return (dispatch) => {
     dispatch(toggleArticleListLoading());
     axios
       .get(apiUrl("latest_newspaper_articles"))
@@ -56,13 +56,18 @@ export const fetchLatestArticles = () => {
   };
 };
 
-export const fetchArticleById = article_id => {
-  return dispatch => {
+export const fetchArticleById = (article_id, isMagazineArticle = false) => {
+  return (dispatch) => {
     dispatch(toggleArticleLoading(article_id, true));
+    console.log("article_id", article_id);
     axios
       .get(apiUrl(`articles/${article_id}`))
       .then(({ data }) => {
-        dispatch(setMagazineArticles([data.data]));
+        if (isMagazineArticle) {
+          dispatch(setMagazineArticles([data.data]));
+        } else {
+          dispatch(setArticleList([data.data]));
+        }
       })
       .catch(({ response }) => {
         console.log(response);
@@ -73,13 +78,13 @@ export const fetchArticleById = article_id => {
   };
 };
 
-export const readArticle = article_id => {
-  return dispatch => {
+export const readArticle = (article_id) => {
+  return (dispatch) => {
     axios
       .post(apiUrl(`articles/${article_id}/read`))
       .then(() => {})
       .catch(({ response }) => {
-        console.log(response);
+        //console.log(response);
       });
   };
 };

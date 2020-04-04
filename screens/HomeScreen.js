@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { connect } from "react-redux";
-import { ScrollView, ActivityIndicator, RefreshControl } from "react-native";
+import { ScrollView, RefreshControl } from "react-native";
 import AppHeader from "../components/generic/AppHeader";
 import MagazineReleaseList from "../components/home/MagazineReleaseList";
 import { dark } from "../config/variables";
@@ -11,6 +11,7 @@ import SectionLatestPodcast from "../components/home/SectionLatestPodcast";
 import { fetchLatestArticles } from "../store/actions/articles";
 import ArticleReleaseList from "../components/home/ArticleReleaseList";
 import { getMagazinesReleases } from "../store/selectors/magazine";
+import { getNewsArticles } from "../store/selectors/news";
 
 class HomeScreen extends React.Component {
   constructor(props) {
@@ -81,7 +82,7 @@ const mapStateTopProps = (state) => {
     magazines_publication_releases: getMagazinesReleases(state).slice(0, 4),
     magazines_publication_releases_loading: state.magazine.magazines_publication_releases_loading,
     latest_podcast: state.podcast.latest_podcast,
-    articles: state.article.article_list,
+    articles: getNewsArticles(state).slice(0, 4),
     articles_loading: state.article.article_list_loading,
   };
 };

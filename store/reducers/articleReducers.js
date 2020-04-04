@@ -6,10 +6,10 @@ import {
 } from "../types/newspaper";
 
 const initialState = {
-	article_list: [],
-	article_list_loading: false,
-	article_loading: {},
-	magazine_articles: {}
+  news_articles: {},
+  article_list_loading: false,
+  article_loading: {},
+  magazine_articles: {},
 };
 
 export const articleReducers = (state = initialState, { type, payload }) => {
@@ -28,13 +28,24 @@ export const articleReducers = (state = initialState, { type, payload }) => {
         },
       };
     case SET_ARTICLE_LIST:
+      let setArticleList = {};
+      payload.articles.forEach((item) => {
+        let prevArticle = state.news_articles[item.id] ? state.news_articles[item.id] : {};
+        setArticleList[item.id] = {
+          ...prevArticle,
+          ...item,
+        };
+      });
       return {
         ...state,
-        article_list: [...payload.articles],
+        news_articles: {
+          ...state.news_articles,
+          ...setArticleList,
+        },
       };
     case SET_MAGAZINE_ARTICLES:
       let setMagazineArticlesPayload = {};
-      payload.articles.forEach(item => {
+      payload.articles.forEach((item) => {
         let prevArticle = state.magazine_articles[item.id] ? state.magazine_articles[item.id] : {};
         setMagazineArticlesPayload[item.id] = {
           ...prevArticle,

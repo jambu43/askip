@@ -207,10 +207,10 @@ const mapStateToProps = (state, props) => {
   };
 };
 
-const madDispatchToProps = dispatch => {
+const madDispatchToProps = (dispatch) => {
   return {
-    fetchArticleById: article_id => dispatch(fetchArticleById(article_id)),
-    readArticle: article_id => dispatch(readArticle(article_id)),
+    fetchArticleById: (article_id) => dispatch(fetchArticleById(article_id)),
+    readArticle: (article_id) => dispatch(readArticle(article_id)),
   };
 };
 
