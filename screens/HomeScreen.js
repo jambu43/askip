@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { connect } from "react-redux";
-import { ScrollView } from "react-native";
+import { ScrollView, ActivityIndicator, RefreshControl } from "react-native";
 import AppHeader from "../components/generic/AppHeader";
 import MagazineReleaseList from "../components/home/MagazineReleaseList";
 import { dark } from "../config/variables";
@@ -33,6 +33,10 @@ class HomeScreen extends React.Component {
     this.props.fetchLatestPodcast();
     this.props.fetchLatestArticles();
   }
+
+  _handleRefresh() {
+    this._fetchMagazineData();
+  }
   render() {
     const {
       navigation,
@@ -40,11 +44,19 @@ class HomeScreen extends React.Component {
       latest_podcast,
       articles,
       articles_loading,
+      magazines_publication_releases_loading,
     } = this.props;
     return (
       <Container>
         <AppHeader />
-        <ScrollView>
+        <ScrollView
+          refreshControl={
+            <RefreshControl
+              refreshing={magazines_publication_releases_loading}
+              onRefresh={this._handleRefresh.bind(this)}
+            />
+          }
+        >
           <MagazineReleaseList
             navigation={navigation}
             title="Nouvelles parutions"

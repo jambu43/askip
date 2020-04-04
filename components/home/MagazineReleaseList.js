@@ -39,7 +39,6 @@ export default MagazineReleaseList;
 
 const Container = styled.View`
   padding: 0 15px;
-  margin-bottom: 25px;
 `;
 const Title = styled.Text`
   font-size: 20px;
