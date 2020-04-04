@@ -22,7 +22,14 @@ class MagazinesScreen extends React.Component {
   }
 
   _handleRefresh() {
-    this.props.fetchMagazineReleases(this.state.page);
+    this.setState(
+      (prevState, nextProps) => ({
+        page: 1,
+      }),
+      () => {
+        this.props.fetchMagazineReleases(this.state.page);
+      }
+    );
   }
 
   _handleLoadMore = () => {
