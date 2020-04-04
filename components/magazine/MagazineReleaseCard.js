@@ -5,10 +5,13 @@ import { cutText, assetsUrl } from "../../helpers";
 
 export default class MagazineReleaseCard extends React.Component {
   render() {
-    const { magazine, navigation } = this.props;
+    const { magazine, size, navigation } = this.props;
     return (
-      <Container onPress={() => navigation.push("Magazine", { magazine_release_id: magazine.id })}>
-        <MagazineCover source={{ uri: assetsUrl(magazine.cover_image) }} />
+      <Container
+        size={size}
+        onPress={() => navigation.push("Magazine", { magazine_release_id: magazine.id })}
+      >
+        <MagazineCover size={size} source={{ uri: assetsUrl(magazine.cover_image) }} />
         <MagazineTitle>{cutText(magazine.title, 30)}</MagazineTitle>
         <MagazineReleaseEdition>
           {moment(magazine.publication_date).format("MMMM YYYY")}
@@ -20,13 +23,14 @@ export default class MagazineReleaseCard extends React.Component {
 }
 
 const Container = styled.TouchableOpacity`
-  width: 135px;
+  width: ${(props) => (props.size == "lg" ? "48%" : "135px")};
   height: auto;
-  margin-right: 15px;
+  margin-right: ${(props) => (props.size == "lg" ? "0px" : "15px")};
+  margin-bottom: 15px;
 `;
 const MagazineCover = styled.Image`
-  width: 135px;
-  height: 180px;
+  width: ${(props) => (props.size == "lg" ? "100%" : "135px")};
+  height: ${(props) => (props.size == "lg" ? "220px" : "180px")};
   border-radius: 5px;
   background: #f1f1f1;
   margin-bottom: 5px;

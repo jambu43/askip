@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { TouchableOpacity, ScrollView } from "react-native";
 import MagazineReleaseCard from "../magazine/MagazineReleaseCard";
+import { darkLighten } from "../../config/variables";
 
 const MagazineReleaseList = ({ show_more, onClick, title, magazines, navigation }) => {
   return (
@@ -13,9 +14,21 @@ const MagazineReleaseList = ({ show_more, onClick, title, magazines, navigation 
       </Header>
       <Content>
         <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-          {magazines.map(magazine => (
-            <MagazineReleaseCard navigation={navigation} magazine={magazine} key={magazine.id} />
+          {magazines.map((magazine) => (
+            <MagazineReleaseCard
+              size="md"
+              navigation={navigation}
+              magazine={magazine}
+              key={magazine.id}
+            />
           ))}
+          <ExploreMagazines
+            onPress={() => {
+              navigation.navigate("Magazines");
+            }}
+          >
+            <ExploreMagazinesText>Explorer les magazines</ExploreMagazinesText>
+          </ExploreMagazines>
         </ScrollView>
       </Content>
     </Container>
@@ -37,3 +50,17 @@ const Title = styled.Text`
 `;
 const Content = styled.View``;
 const Header = styled.View``;
+const ExploreMagazines = styled.TouchableOpacity`
+  width: 135px;
+  height: 180px;
+  background: ${darkLighten};
+  border-radius: 5px;
+  justify-content: center;
+`;
+
+const ExploreMagazinesText = styled.Text`
+  color: #fff;
+  text-transform: uppercase;
+  text-align: center;
+  font-size: 12px;
+`;

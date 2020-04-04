@@ -47,7 +47,7 @@ class HomeScreen extends React.Component {
         <ScrollView>
           <MagazineReleaseList
             navigation={navigation}
-            title="Nouvzelles parutions"
+            title="Nouvelles parutions"
             magazines={magazines_publication_releases}
           />
           <ArticleReleaseList navigation={navigation} title="À la une" articles={articles} />
@@ -64,7 +64,7 @@ class HomeScreen extends React.Component {
   }
 }
 
-const mapStateTopProps = state => {
+const mapStateTopProps = (state) => {
   return {
     magazines_publication_releases: getMagazinesReleases(state),
     magazines_publication_releases_loading: state.magazine.magazines_publication_releases_loading,
@@ -74,7 +74,7 @@ const mapStateTopProps = state => {
   };
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
     fetchLatestMagazineReleases: () => dispatch(fetchLatestMagazineReleases()),
     fetchLatestPodcast: () => dispatch(fetchLatestPodcast()),

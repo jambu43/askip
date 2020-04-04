@@ -8,7 +8,7 @@ import {
 import { apiUrl } from "../../helpers";
 import { setMagazineArticles } from "./articles";
 
-export const togglePublicationReleasesLoading = state => {
+export const togglePublicationReleasesLoading = (state) => {
   return {
     type: TOGGLE_MAGAZINES_PUBLICATION_RELEASES_LOADING,
     payload: state,
@@ -25,7 +25,7 @@ export const toggleMagazinePublicationReleaseLoading = (publication_release_id, 
   };
 };
 
-export const setPublicationReleases = publicationReleases => {
+export const setPublicationReleases = (publicationReleases) => {
   return {
     type: SET_MAGAZINE_PUBLICATION_RELEASES,
     payload: {
@@ -34,7 +34,7 @@ export const setPublicationReleases = publicationReleases => {
   };
 };
 
-export const setMagazinePublicationRelease = publicationRelease => {
+export const setMagazinePublicationRelease = (publicationRelease) => {
   return {
     type: SET_MAGAZINE_PUBLICATION_RELEASE,
     payload: {
@@ -44,7 +44,7 @@ export const setMagazinePublicationRelease = publicationRelease => {
 };
 
 export const fetchLatestMagazineReleases = () => {
-  return dispatch => {
+  return (dispatch) => {
     dispatch(togglePublicationReleasesLoading(true));
     axios
       .get(apiUrl("latest_magazines_releases"))
@@ -58,8 +58,23 @@ export const fetchLatestMagazineReleases = () => {
   };
 };
 
-export const fetchMagazineRelease = publication_release_id => {
-  return dispatch => {
+export const fetchMagazineReleases = (page = 1) => {
+  return (dispatch) => {
+    dispatch(togglePublicationReleasesLoading(true));
+    axios
+      .get(apiUrl(`latest_magazines_releases?page=${page}`))
+      .then(({ data }) => {
+        dispatch(setPublicationReleases(data.data));
+        dispatch(togglePublicationReleasesLoading(false));
+      })
+      .catch(() => {
+        dispatch(togglePublicationReleasesLoading(false));
+      });
+  };
+};
+
+export const fetchMagazineRelease = (publication_release_id) => {
+  return (dispatch) => {
     //dispatch(toggleMagazinePublicationReleaseLoading(publication_release_id, true));
     axios
       .get(apiUrl(`publication_releases/${publication_release_id}`))
