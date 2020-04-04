@@ -25,7 +25,7 @@ export default class MagazineReleaseCard extends React.Component {
 const Container = styled.TouchableOpacity`
   width: ${(props) => (props.size == "lg" ? "48%" : "135px")};
   height: auto;
-  margin-right: ${(props) => (props.size == "lg" ? "0px" : "15px")};
+  margin-right: ${(props) => (props.size == "lg" ? "15px" : "15px")};
   margin-bottom: 15px;
 `;
 const MagazineCover = styled.Image`

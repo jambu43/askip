@@ -66,7 +66,7 @@ class HomeScreen extends React.Component {
 
 const mapStateTopProps = (state) => {
   return {
-    magazines_publication_releases: getMagazinesReleases(state),
+    magazines_publication_releases: getMagazinesReleases(state).slice(0, 4),
     magazines_publication_releases_loading: state.magazine.magazines_publication_releases_loading,
     latest_podcast: state.podcast.latest_podcast,
     articles: state.article.article_list,

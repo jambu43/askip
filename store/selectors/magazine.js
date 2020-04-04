@@ -1,9 +1,10 @@
+import orderBy from "lodash/orderBy";
 import { createSelector } from "reselect";
 
 const getMagazineReleaseId = (state, props) => props.navigation.getParam("magazine_release_id");
-const _getMagazinesReleases = state => state.magazine.magazines_publication_releases;
+const _getMagazinesReleases = (state) => state.magazine.magazines_publication_releases;
 const _getArticleId = (state, props) => props.navigation.getParam("article_id");
-const _getArticles = state => state.article.magazine_articles;
+const _getArticles = (state) => state.article.magazine_articles;
 
 export const getMagazineReleaseById = createSelector(
   [getMagazineReleaseId, _getMagazinesReleases],
@@ -19,7 +20,7 @@ export const getMagazineReleaseNextArticle = createSelector(
     if (!magazinesRelease || !magazinesRelease.articles) {
       return null;
     }
-    let nextArticle = magazinesRelease.articles.find(item => item.id > article_id);
+    let nextArticle = magazinesRelease.articles.find((item) => item.id > article_id);
     return nextArticle ? nextArticle : null;
   }
 );
@@ -33,14 +34,20 @@ export const getMagazineReleasePrevArticle = createSelector(
     }
     let articles = magazinesRelease.articles;
     articles.reverse();
-    let prevArticle = articles.find(item => item.id < article_id);
+    let prevArticle = articles.find((item) => item.id < article_id);
     return prevArticle ? prevArticle : null;
   }
 );
 
-export const getMagazinesReleases = createSelector([_getMagazinesReleases], magazines_releases => {
-  return Object.keys(magazines_releases).map(release_id => magazines_releases[release_id]);
-});
+export const getMagazinesReleases = createSelector(
+  [_getMagazinesReleases],
+  (magazines_releases) => {
+    let magazineList = Object.keys(magazines_releases).map(
+      (release_id) => magazines_releases[release_id]
+    );
+    return orderBy(magazineList, "publication_date", "desc");
+  }
+);
 
 export const getArticleById = createSelector(
   [_getArticleId, _getArticles],
