@@ -20,7 +20,6 @@ class NewsScreen extends React.Component {
   render() {
     const { navigation, article, article_loading, similar_articles } = this.props;
     let isArticleLoading = article_loading[article.id] ? article_loading[article.id] : false;
-    console.log(similar_articles);
     return (
       <Container>
         <StickyHeader onPress={() => navigation.goBack()}>

@@ -14,7 +14,6 @@ import ArticleScreen from "../screens/ArticleScreen";
 import HomeScreen from "../screens/HomeScreen";
 import PodcastScreen from "../screens/PodcastScreen";
 import PodcastsScreen from "../screens/PodcastsScreen";
-import ArtistScreen from "../screens/ArtistScreen";
 import NewsScreen from "../screens/NewsScreen";
 import NotificationsScreen from "../screens/NotificationsScreen";
 import MyPublicationScreen from "../screens/MyPublicationScreen";
@@ -26,6 +25,7 @@ import { dark } from "./variables";
 import MagazineRecentlyRead from "../screens/MagazineRecentlyRead";
 import AddPostIcon from "../components/generic/AddPostIcon";
 import MagazinesScreen from "../screens/MagazinesScreen";
+import NewsExplorerScreen from "../screens/NewsExplorerScreen";
 
 const BottomTransition = (index, position, height) => {
   const sceneRange = [index - 1, index, index + 1];
@@ -125,6 +125,10 @@ const HomeStack = createStackNavigator(
       path: "post/:user_id",
       screen: MyPublicationScreen,
     },
+    NewsExplorer: {
+      path: "news",
+      screen: NewsExplorerScreen,
+    },
   },
   {
     initialRouteName: "Home",
@@ -193,10 +197,6 @@ const AppNavigator = createStackNavigator(
     Login: {
       path: "login",
       screen: LoginScreen,
-    },
-    Artist: {
-      path: "artiste",
-      screen: ArtistScreen,
     },
     Welcome: {
       path: "welcome",
