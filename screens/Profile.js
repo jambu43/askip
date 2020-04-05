@@ -7,44 +7,42 @@ import { ScrollView } from "react-native-gesture-handler";
 import { connect } from "react-redux";
 import { fetchLatestMagazineReleases } from "../store/actions/magazines";
 import { fetchLatestArticles } from "../store/actions/articles";
-import ArticleReleaseList from "../components/home/ArticleReleaseList";
 import { getMagazinesReleases } from "../store/selectors/magazine";
-import { getPosts } from "../store/selectors/post";
-import { fetchUserPost } from "../store/actions/post";
 import PostList from "../components/askip/PostList";
+import { RefreshControl, View } from "react-native";
+import { fetchMe } from "../store/actions/auth";
 
 class ProfileScreen extends React.Component {
   constructor(props) {
     super(props);
   }
+
   componentDidMount() {
     this.props.fetchLatestMagazineReleases();
     this.props.fetchLatestArticles();
-    this._fetchPostData();
+    this.props.fetchMe();
   }
 
-  _fetchPostData() {
-    this.props.fetchUserPost(this.props.user.id);
+  _handleRefresh() {
+    this.props.fetchMe();
   }
 
   render() {
-    const {
-      user,
-      navigation,
-      magazines_publication_releases,
-      articles,
-      onClick,
-      posts,
-    } = this.props;
-
+    const { user, isUserFetching, navigation, magazines_publication_releases } = this.props;
     return (
       <Container>
         <AppHeader />
-        <ScrollView>
+        <ScrollView
+          refreshControl={
+            <RefreshControl
+              refreshing={isUserFetching}
+              onRefresh={this._handleRefresh.bind(this)}
+            />
+          }
+        >
           <Card>
             <Count>
               <Avatar source={{ uri: user.avatar }} />
-
               <Username>{user.name}</Username>
             </Count>
             <Information>
@@ -66,35 +64,38 @@ class ProfileScreen extends React.Component {
           <MagazineRecentlyRead>Mes Magazine</MagazineRecentlyRead>
           <CenterMagazineContent>
             <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-              {magazines_publication_releases.map(magazine => (
-                <UserMagazine navigation={navigation} magazine={magazine} key={magazine.id} />
-              ))}
-              <ShowMore source={require("../assets/chevron_right.png")} />
+              {magazines_publication_releases
+                .filter((item) => user.publication_releases_read.includes(item.id.toString()))
+                .map((magazine) => (
+                  <UserMagazine navigation={navigation} magazine={magazine} key={magazine.id} />
+                ))}
             </ScrollView>
           </CenterMagazineContent>
-          <ArticleReleaseList navigation={navigation} title="Mes Articles" articles={articles} />
-
-          <PostList navigation={navigation} posts={posts} />
+          {user.posts.length ? (
+            <View>
+              <MagazineRecentlyRead>Mes publications</MagazineRecentlyRead>
+              <PostList navigation={navigation} posts={user.posts} />
+            </View>
+          ) : null}
         </ScrollView>
       </Container>
     );
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
     user: state.auth.user,
+    isUserFetching: state.auth.isUserFetching,
     magazines_publication_releases: getMagazinesReleases(state),
     articles: state.article.article_list,
-    posts: getPosts(state),
-    posts_loading: state.post.posts_loading,
   };
 };
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
     fetchLatestMagazineReleases: () => dispatch(fetchLatestMagazineReleases()),
     fetchLatestArticles: () => dispatch(fetchLatestArticles()),
-    fetchUserPost: user_id => dispatch(fetchUserPost(user_id)),
+    fetchMe: () => dispatch(fetchMe()),
   };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(ProfileScreen);

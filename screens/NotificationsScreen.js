@@ -11,10 +11,7 @@ export default class NotificationsScreen extends React.Component {
         <Content>
           <Image source={require("../assets/notifications.png")} />
           <Title> Aucune notification </Title>
-          <Text>
-            magnam dolores maxime at voluptates nihil iste hic fflibero architecto vitae quod veniam
-            ? Repellendus!magnam dolores.{" "}
-          </Text>
+          <Text>Vous n'avez auccune notification pour le moment.</Text>
         </Content>
       </Container>
     );
@@ -32,7 +29,7 @@ const Content = styled.View`
 `;
 
 const Image = styled.Image`
-  height: 140px;
+  height: 240px;
   width: 240px;
   margin: 0 auto;
   margin-bottom: 25px;

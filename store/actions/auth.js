@@ -9,6 +9,7 @@ import {
   SET_LOGIN_ERRORS,
   TOGGLE_USER_FOLLOWEES,
   TOGGLE_PUBLICATION_RELEASES_READ,
+  IS_USER_FETCHING,
 } from "../types/auth";
 
 export const toggleIsLoggingIn = () => {
@@ -17,7 +18,14 @@ export const toggleIsLoggingIn = () => {
   };
 };
 
-export const toggleUserFollowees = followee_id => {
+export const isUserFetching = (_isUserFetching) => {
+  return {
+    type: IS_USER_FETCHING,
+    payload: _isUserFetching,
+  };
+};
+
+export const toggleUserFollowees = (followee_id) => {
   return {
     type: TOGGLE_USER_FOLLOWEES,
     payload: {
@@ -26,7 +34,7 @@ export const toggleUserFollowees = followee_id => {
   };
 };
 
-export const togglePublicationReleasesRead = publication_release_id => {
+export const togglePublicationReleasesRead = (publication_release_id) => {
   return {
     type: TOGGLE_PUBLICATION_RELEASES_READ,
     payload: {
@@ -36,7 +44,7 @@ export const togglePublicationReleasesRead = publication_release_id => {
 };
 
 export function logOutUser() {
-  return function(dispatch) {
+  return function (dispatch) {
     return new Promise((resolve, reject) => {
       axios
         .post(apiUrl("auth/logout"))
@@ -59,12 +67,34 @@ export function logOutUser() {
   };
 }
 
+export function fetchMe() {
+  return function (dispatch) {
+    dispatch(isUserFetching(true));
+    return new Promise((resolve, reject) => {
+      axios
+        .get(apiUrl("profile/me"))
+        .then(function ({ data }) {
+          dispatch({
+            type: SET_AUTH_USER,
+            payload: data.data,
+          });
+
+          resolve();
+        })
+        .catch(function ({ response }) {})
+        .finally(function () {
+          dispatch(isUserFetching(false));
+        });
+    });
+  };
+}
+
 export function registerUser(payload) {
-  return function(dispatch) {
+  return function (dispatch) {
     return new Promise((resolve, reject) => {
       axios
         .post(apiUrl("auth/register"), payload)
-        .then(function({ data }) {
+        .then(function ({ data }) {
           dispatch({
             type: SET_TOKEN,
             payload: data.access_token,
@@ -84,7 +114,7 @@ export function registerUser(payload) {
 
           resolve();
         })
-        .catch(function({ response }) {
+        .catch(function ({ response }) {
           dispatch({
             type: TOGGLE_HAS_LOGIN_ERRORS,
           });
@@ -101,7 +131,7 @@ export function registerUser(payload) {
             });
           }
         })
-        .finally(function() {
+        .finally(function () {
           dispatch({
             type: TOGGLE_IS_LOGGING_IN,
           });
@@ -110,12 +140,12 @@ export function registerUser(payload) {
   };
 }
 
-export const togglePublicationRelease = publication_release_id => {
-  return dispatch => {
+export const togglePublicationRelease = (publication_release_id) => {
+  return (dispatch) => {
     return new Promise((resolve, reject) => {
       axios
         .post(apiUrl(`publication_releases/${publication_release_id}/toggle_read`))
-        .then(response => {
+        .then((response) => {
           dispatch(togglePublicationReleasesRead(publication_release_id));
           resolve();
         })
