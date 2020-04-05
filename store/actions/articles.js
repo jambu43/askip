@@ -78,6 +78,23 @@ export const fetchArticleById = (article_id, isMagazineArticle = false) => {
   };
 };
 
+export const fetchSimilarArticles = (article_id) => {
+  return (dispatch) => {
+    dispatch(toggleArticleLoading(article_id, true));
+    axios
+      .get(apiUrl(`articles/${article_id}/similar`))
+      .then(({ data }) => {
+        dispatch(setArticleList(data.data));
+      })
+      .catch(({ response }) => {
+        console.log(response);
+      })
+      .finally(() => {
+        dispatch(toggleArticleLoading(article_id, false));
+      });
+  };
+};
+
 export const readArticle = (article_id) => {
   return (dispatch) => {
     axios

@@ -72,7 +72,7 @@ class PodcastScreen extends React.Component {
   async handlePlayButtonClick() {
     const { podcast, now_playing } = this.props;
     Audio.requestPermissionsAsync()
-      .then(async permission => {
+      .then(async (permission) => {
         if (permission.granted) {
           let soundObject = null;
           if (now_playing.podcast_id === podcast.id) {
@@ -106,7 +106,7 @@ class PodcastScreen extends React.Component {
           }
         }
       })
-      .catch(error => {
+      .catch((error) => {
         console.log("Error", error);
       });
   }
@@ -132,7 +132,7 @@ class PodcastScreen extends React.Component {
       <Container>
         <Header>
           <TouchableOpacity onPress={() => navigation.goBack()}>
-            <BackIcon fill="#fff" size={34} />
+            <BackIcon fill="#fff" size={24} />
           </TouchableOpacity>
         </Header>
         <ContentWrapper>
@@ -204,7 +204,7 @@ const PlayingProgress = styled.View`
   border-radius: 5px;
   background: ${danger};
   height: 7px;
-  width: ${props => `${props.progress}%`};
+  width: ${(props) => `${props.progress}%`};
   position: absolute;
   left: 0px;
   top: 0px;
@@ -216,7 +216,7 @@ const BufferingProgress = styled.View`
   border-radius: 5px;
   background: #aaa;
   height: 7px;
-  width: ${props => `${props.progress}%`};
+  width: ${(props) => `${props.progress}%`};
   position: relative;
   left: 0px;
   top: 0px;
@@ -254,15 +254,15 @@ const mapStateToProps = (state, props) => {
   };
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
     setNowPlaying: ({ soundObject, playbackStatus, podcast_id }) => {
       return dispatch(setNowPlaying({ soundObject, playbackStatus, podcast_id }));
     },
-    setNowPlayingPlayBackStatus: playbackStatus => {
+    setNowPlayingPlayBackStatus: (playbackStatus) => {
       return dispatch(setNowPlayingPlayBackStatus(playbackStatus));
     },
-    setNowPlayingSoundObject: soundObject => {
+    setNowPlayingSoundObject: (soundObject) => {
       return dispatch(setNowPlayingSoundObject(soundObject));
     },
   };

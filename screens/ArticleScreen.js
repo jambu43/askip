@@ -11,7 +11,7 @@ import {
 } from "../store/selectors/magazine";
 import { Entypo, MaterialIcons } from "@expo/vector-icons";
 import { assetsUrl, cutText } from "../helpers";
-import { fetchArticleById, readArticle } from "../store/actions/articles";
+import { fetchArticleById, readArticle, getSimilarArticles } from "../store/actions/articles";
 
 class ArticleScreen extends React.Component {
   state = {

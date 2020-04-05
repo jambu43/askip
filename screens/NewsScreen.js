@@ -2,23 +2,25 @@ import React from "react";
 import styled from "styled-components";
 import { connect } from "react-redux";
 import { dark, darkLighten, danger } from "../config/variables";
-import { getArticleById } from "../store/selectors/magazine";
-import { fetchArticleById, readArticle } from "../store/actions/articles";
+import { fetchArticleById, readArticle, fetchSimilarArticles } from "../store/actions/articles";
 import { Entypo } from "@expo/vector-icons";
 import { cutText, assetsUrl } from "../helpers";
 import HTML from "react-native-render-html";
-import { getNewsArticleById } from "../store/selectors/news";
+import { getNewsArticleById, getSimilarArticles } from "../store/selectors/news";
+import SimilarArticleItem from "../components/magazine/SimilarArticleItem";
 
 class NewsScreen extends React.Component {
   componentDidMount() {
     let article_id = this.props.navigation.getParam("article_id");
     this.props.fetchArticleById(article_id, true);
     this.props.readArticle(article_id);
+    this.props.getSimilarArticles(article_id);
   }
 
   render() {
-    const { navigation, article, article_loading } = this.props;
+    const { navigation, article, article_loading, similar_articles } = this.props;
     let isArticleLoading = article_loading[article.id] ? article_loading[article.id] : false;
+    console.log(similar_articles);
     return (
       <Container>
         <StickyHeader onPress={() => navigation.goBack()}>
@@ -54,6 +56,12 @@ class NewsScreen extends React.Component {
                 }}
               ></HTML>
             ) : null}
+          </ArticleContentWrapper>
+          <ArticleContentWrapper>
+            <Title>A lire aussi</Title>
+            {similar_articles.map((item) => {
+              return <SimilarArticleItem key={item.id} article={item} navigation={navigation} />;
+            })}
           </ArticleContentWrapper>
         </Content>
       </Container>
@@ -121,6 +129,7 @@ const mapStateToProps = (state, props) => {
   return {
     article: getNewsArticleById(state, props),
     article_loading: state.article.article_loading,
+    similar_articles: getSimilarArticles(state, props),
   };
 };
 
@@ -128,6 +137,7 @@ const madDispatchToProps = (dispatch) => {
   return {
     fetchArticleById: (article_id) => dispatch(fetchArticleById(article_id)),
     readArticle: (article_id) => dispatch(readArticle(article_id)),
+    getSimilarArticles: (article_id) => dispatch(fetchSimilarArticles(article_id)),
   };
 };
 

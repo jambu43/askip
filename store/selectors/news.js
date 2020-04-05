@@ -15,3 +15,12 @@ export const getNewsArticles = createSelector([_getArticles], (posts) => {
   let postCollection = Object.values(posts);
   return orderBy(postCollection, "created_at", "desc");
 });
+
+export const getSimilarArticles = createSelector(
+  [getNewsArticleById, getNewsArticles],
+  (article, articles) => {
+    return articles.filter(
+      (item) => item.category.id === article.category.id && item.id != article.id
+    );
+  }
+);
