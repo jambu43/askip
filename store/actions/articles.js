@@ -41,11 +41,11 @@ export const setMagazineArticles = (articles) => {
   };
 };
 
-export const fetchLatestArticles = () => {
+export const fetchLatestArticles = (page = 1) => {
   return (dispatch) => {
     dispatch(toggleArticleListLoading());
     axios
-      .get(apiUrl("latest_newspaper_articles"))
+      .get(apiUrl(`latest_newspaper_articles?page=${page}`))
       .then(({ data }) => {
         dispatch(setArticleList(data.data));
         dispatch(toggleArticleListLoading());
