@@ -59,7 +59,6 @@ export const articleReducers = (state = initialState, { type, payload }) => {
           ...setMagazineArticlesPayload,
         },
       };
-      break;
     default:
       return state;
   }

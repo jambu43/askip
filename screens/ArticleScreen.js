@@ -30,7 +30,7 @@ class ArticleScreen extends React.Component {
   }
   componentDidMount() {
     let article_id = this.props.navigation.getParam("article_id");
-    this.props.fetchArticleById(article_id);
+    this.props.fetchArticleById(article_id, true);
     this.props.readArticle(article_id);
   }
 
@@ -209,7 +209,8 @@ const mapStateToProps = (state, props) => {
 
 const madDispatchToProps = (dispatch) => {
   return {
-    fetchArticleById: (article_id) => dispatch(fetchArticleById(article_id)),
+    fetchArticleById: (article_id, isMagazineArticle) =>
+      dispatch(fetchArticleById(article_id, isMagazineArticle)),
     readArticle: (article_id) => dispatch(readArticle(article_id)),
   };
 };

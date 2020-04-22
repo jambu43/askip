@@ -107,7 +107,7 @@ class CreatePostScreen extends React.Component {
         selectedPicture: null,
         content: "",
       });
-      navigation.navigate("Home");
+      navigation.navigate("Explorer");
     });
   }
 
@@ -163,7 +163,7 @@ class CreatePostScreen extends React.Component {
           <ImagePickerButton onPress={this.handleImagePickerButton.bind(this)}>
             <Feather name="image" size={30} color="#fff" />
           </ImagePickerButton>
-          {colors.map(item => {
+          {colors.map((item) => {
             return (
               <ColorPickerItem onPress={() => this.handleColorSelected(item)} bgColor={item} />
             );
@@ -194,17 +194,17 @@ const PostFormHeader = styled.View`
   padding: 15px;
 `;
 const PostInputWrapper = styled.View`
-  background: ${props => (props.colorMode ? props.bgColor : "transparent")};
-  padding: ${props => (props.colorMode ? 15 : 0)}px;
+  background: ${(props) => (props.colorMode ? props.bgColor : "transparent")};
+  padding: ${(props) => (props.colorMode ? 15 : 0)}px;
   border-radius: 5px;
   margin-left: 15px;
   flex: 1;
 `;
 const PostInput = styled.TextInput`
   color: #fff;
-  text-align: ${props => (props.colorMode ? "center" : "left")};
-  font-size: ${props => (props.colorMode ? 23 : 14)}px;
-  font-weight: ${props => (props.colorMode ? "bold" : 400)};
+  text-align: ${(props) => (props.colorMode ? "center" : "left")};
+  font-size: ${(props) => (props.colorMode ? 23 : 14)}px;
+  font-weight: ${(props) => (props.colorMode ? "bold" : 400)};
   padding: 15px 0px;
   line-height: 23px;
 `;
@@ -234,7 +234,7 @@ const ColorPickerWrapper = styled.View`
   justify-content: flex-end;
 `;
 const ColorPickerItem = styled.TouchableOpacity`
-  background: ${props => props.bgColor};
+  background: ${(props) => props.bgColor};
   height: 35px;
   width: 35px;
   border-radius: 5px;
@@ -255,9 +255,9 @@ const mapStateToProps = ({ post }) => {
   };
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
-    createPost: formData => dispatch(createPost(formData)),
+    createPost: (formData) => dispatch(createPost(formData)),
   };
 };
 

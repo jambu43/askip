@@ -2,13 +2,19 @@ import React from "react";
 import styled from "styled-components";
 import PostCard from "./PostCard";
 import { ScrollView } from "react-native-gesture-handler";
+import { RefreshControl } from "react-native";
 
-const PostList = ({ posts, navigation }) => {
+const PostList = ({ posts, post_loading, navigation, onRefresh }) => {
   return (
     <Container>
       <Header />
       <Content>
-        <ScrollView showsVerticalScrollIndicator={false}>
+        <ScrollView
+          refreshControl={
+            <RefreshControl refreshing={post_loading} onRefresh={() => onRefresh()} />
+          }
+          showsVerticalScrollIndicator={false}
+        >
           {posts.map((post) => (
             <PostCard post={post} navigation={navigation} key={post.id} />
           ))}

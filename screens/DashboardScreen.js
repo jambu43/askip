@@ -11,6 +11,8 @@ import { getMagazinesReleases } from "../store/selectors/magazine";
 import PostList from "../components/askip/PostList";
 import { RefreshControl, View } from "react-native";
 import { fetchMe } from "../store/actions/auth";
+import { getUsersPosts } from "../store/selectors/post";
+import { fetchUserPosts } from "../store/actions/post";
 
 class DashboardScreen extends React.Component {
   constructor(props) {
@@ -18,17 +20,27 @@ class DashboardScreen extends React.Component {
   }
 
   componentDidMount() {
+    const { user } = this.props;
     this.props.fetchLatestMagazineReleases();
     this.props.fetchLatestArticles();
     this.props.fetchMe();
+    this.props.fetchUserPosts(user.id);
   }
 
   _handleRefresh() {
+    const { user } = this.props;
     this.props.fetchMe();
+    this.props.fetchUserPosts(user.id);
   }
 
   render() {
-    const { user, isUserFetching, navigation, magazines_publication_releases } = this.props;
+    const {
+      user,
+      isUserFetching,
+      navigation,
+      magazines_publication_releases,
+      user_posts,
+    } = this.props;
     return (
       <Container>
         <AppHeader />
@@ -71,10 +83,15 @@ class DashboardScreen extends React.Component {
                 ))}
             </ScrollView>
           </CenterMagazineContent>
-          {user.posts.length ? (
+          {user_posts.length ? (
             <View>
               <MagazineRecentlyRead>Mes publications</MagazineRecentlyRead>
-              <PostList navigation={navigation} posts={user.posts} />
+              <PostList
+                post_loading={isUserFetching}
+                onRefresh={() => {}}
+                navigation={navigation}
+                posts={user_posts}
+              />
             </View>
           ) : null}
         </ScrollView>
@@ -83,12 +100,13 @@ class DashboardScreen extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state, ownProps) => {
   return {
     user: state.auth.user,
     isUserFetching: state.auth.isUserFetching,
     magazines_publication_releases: getMagazinesReleases(state),
     articles: state.article.article_list,
+    user_posts: getUsersPosts(state, ownProps),
   };
 };
 const mapDispatchToProps = (dispatch) => {
@@ -96,6 +114,7 @@ const mapDispatchToProps = (dispatch) => {
     fetchLatestMagazineReleases: () => dispatch(fetchLatestMagazineReleases()),
     fetchLatestArticles: () => dispatch(fetchLatestArticles()),
     fetchMe: () => dispatch(fetchMe()),
+    fetchUserPosts: (user_id) => dispatch(fetchUserPosts(user_id)),
   };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(DashboardScreen);

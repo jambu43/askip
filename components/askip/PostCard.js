@@ -19,11 +19,11 @@ export default class PostCard extends React.Component {
           <PostSocialInteraction>
             <IconGroup>
               <InteractionIcon source={require("../../assets/like-icone.png")} />
-              <SocialInteractionTitle>C'est vrai ?</SocialInteractionTitle>
+              <SocialInteractionTitle>C'est vrai</SocialInteractionTitle>
             </IconGroup>
             <IconGroup>
               <InteractionIcon source={require("../../assets/unlinke-icone.png")} />
-              <SocialInteractionTitle>C'est faux ?</SocialInteractionTitle>
+              <SocialInteractionTitle>C'est faux</SocialInteractionTitle>
             </IconGroup>
             <IconGroup>
               <InteractionIcon source={require("../../assets/share-icone.png")} />

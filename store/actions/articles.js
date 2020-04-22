@@ -59,7 +59,6 @@ export const fetchLatestArticles = (page = 1) => {
 export const fetchArticleById = (article_id, isMagazineArticle = false) => {
   return (dispatch) => {
     dispatch(toggleArticleLoading(article_id, true));
-    console.log("article_id", article_id);
     axios
       .get(apiUrl(`articles/${article_id}`))
       .then(({ data }) => {
