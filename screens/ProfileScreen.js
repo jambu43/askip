@@ -1,34 +1,11 @@
 import React from "react";
-import styled from "styled-components";
-import AppHeader from "../components/generic/AppHeader";
-import { dark } from "../config/variables";
-import UserMagazine from "../components/home/UserMagazine";
-import { ScrollView } from "react-native-gesture-handler";
+import styled from "styled-component";
 import { connect } from "react-redux";
-import { fetchLatestMagazineReleases } from "../store/actions/magazines";
-import { fetchLatestArticles } from "../store/actions/articles";
-import { getMagazinesReleases } from "../store/selectors/magazine";
 import PostList from "../components/askip/PostList";
-import { RefreshControl, View } from "react-native";
-import { fetchMe } from "../store/actions/auth";
 
-class DashboardScreen extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
-  componentDidMount() {
-    this.props.fetchLatestMagazineReleases();
-    this.props.fetchLatestArticles();
-    this.props.fetchMe();
-  }
-
-  _handleRefresh() {
-    this.props.fetchMe();
-  }
-
+class ProfileScreen extends React.Component {
   render() {
-    const { user, isUserFetching, navigation, magazines_publication_releases } = this.props;
+    const { user, isUserFetching, navigation } = this.props;
     return (
       <Container>
         <AppHeader />
@@ -61,16 +38,6 @@ class DashboardScreen extends React.Component {
             </Information>
           </Card>
 
-          <MagazineRecentlyRead>Mes Magazine</MagazineRecentlyRead>
-          <CenterMagazineContent>
-            <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-              {magazines_publication_releases
-                .filter((item) => user.publication_releases_read.includes(item.id.toString()))
-                .map((magazine) => (
-                  <UserMagazine navigation={navigation} magazine={magazine} key={magazine.id} />
-                ))}
-            </ScrollView>
-          </CenterMagazineContent>
           {user.posts.length ? (
             <View>
               <MagazineRecentlyRead>Mes publications</MagazineRecentlyRead>
@@ -82,23 +49,6 @@ class DashboardScreen extends React.Component {
     );
   }
 }
-
-const mapStateToProps = (state) => {
-  return {
-    user: state.auth.user,
-    isUserFetching: state.auth.isUserFetching,
-    magazines_publication_releases: getMagazinesReleases(state),
-    articles: state.article.article_list,
-  };
-};
-const mapDispatchToProps = (dispatch) => {
-  return {
-    fetchLatestMagazineReleases: () => dispatch(fetchLatestMagazineReleases()),
-    fetchLatestArticles: () => dispatch(fetchLatestArticles()),
-    fetchMe: () => dispatch(fetchMe()),
-  };
-};
-export default connect(mapStateToProps, mapDispatchToProps)(DashboardScreen);
 
 const Container = styled.View`
   flex: 1;
@@ -148,6 +98,7 @@ const Title = styled.Text`
   color: #ffffff;
   padding-left: 3px;
 `;
+
 const MagazineRecentlyRead = styled.Text`
   font-size: 20px;
   font-weight: bold;
@@ -156,8 +107,4 @@ const MagazineRecentlyRead = styled.Text`
   color: #fff;
   text-transform: uppercase;
   margin-left: 10px;
-`;
-
-const CenterMagazineContent = styled.View`
-  justify-content: center;
 `;
