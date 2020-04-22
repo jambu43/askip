@@ -6,6 +6,7 @@ import {
   SET_POST,
   TOGGLE_POST_CREATING,
   SET_USERS_POSTS,
+  TOGGLE_USERS_POSTS_LOADING,
 } from "../types/post";
 
 import { apiUrl } from "../../helpers";
@@ -116,13 +117,12 @@ export const fetchPostId = (post_id) => {
   };
 };
 
-export const fetchUserPost = (user_id) => {
+export const fetchUserPosts = (user_id) => {
   return (dispatch) => {
     dispatch(toggleUsersPostsLoading(user_id, true));
     axios
       .get(apiUrl(`profile/user_posts/${user_id}`))
       .then(({ data }) => {
-        console.log(data);
         try {
           dispatch(setUsersPosts(user_id, data.data));
         } catch (error) {

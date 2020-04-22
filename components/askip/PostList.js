@@ -1,17 +1,16 @@
 import React from "react";
 import styled from "styled-components";
 import PostCard from "./PostCard";
-import { TouchableOpacity, ScrollView } from "react-native-gesture-handler";
-import PlainTextPost from "./PlainTextPost";
+import { ScrollView } from "react-native-gesture-handler";
 
-const PostList = ({ posts }) => {
+const PostList = ({ posts, navigation }) => {
   return (
     <Container>
       <Header />
       <Content>
         <ScrollView showsVerticalScrollIndicator={false}>
-          {posts.map(post => (
-            <PostCard post={post} key={post.id} />
+          {posts.map((post) => (
+            <PostCard post={post} navigation={navigation} key={post.id} />
           ))}
         </ScrollView>
       </Content>

@@ -15,6 +15,7 @@ import HomeScreen from "../screens/HomeScreen";
 import PodcastScreen from "../screens/PodcastScreen";
 import PodcastsScreen from "../screens/PodcastsScreen";
 import NewsScreen from "../screens/NewsScreen";
+import ProfileScreen from "../screens/ProfileScreen";
 import NotificationsScreen from "../screens/NotificationsScreen";
 import MyPublicationScreen from "../screens/MyPublicationScreen";
 import WelcomeScreen from "../screens/WelcomeScreen";
@@ -87,6 +88,24 @@ const configSlideNavigation = () => {
   };
 };
 
+const ExplorerStack = createStackNavigator(
+  {
+    Profile: {
+      path: "users/:user_id",
+      screen: ProfileScreen,
+    },
+    Explorer: {
+      path: "posts",
+      screen: ExplorerScreen,
+    },
+  },
+  {
+    initialRouteName: "Explorer",
+    headerMode: "none",
+    transitionConfig: configNavigation,
+  }
+);
+
 const HomeStack = createStackNavigator(
   {
     Article: {
@@ -151,7 +170,7 @@ HomeStack.navigationOptions = ({ navigation }) => {
 const HomeTabNavigator = createBottomTabNavigator(
   {
     Home: HomeStack,
-    Explorer: ExplorerScreen,
+    Explorer: ExplorerStack,
     CreatePost: {
       screen: CreatePostScreen,
       label: "Askip",

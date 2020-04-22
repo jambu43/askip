@@ -1,20 +1,20 @@
-import { SET_USER, SET_USER_LOADING } from "../types/user";
+import { SET_USER, SET_USER_LOADING, SET_USERS } from "../types/user";
 
 const initialState = {
-  users: [],
+  users: {},
   userLoading: {},
 };
 
 export const userReducer = (state = initialState, { payload, type }) => {
   switch (type) {
     case SET_USER: {
-      let userExists = state.users.find(item => item.id === payload.user.id);
+      let setUser = { [payload.user.id]: payload.user };
       return {
-        users: !userExists
-          ? [...state.users, payload.user]
-          : state.users.map(item => {
-              return item.id === payload.user.id ? payload.user : item;
-            }),
+        ...state,
+        users: {
+          ...state.users,
+          ...setUser,
+        },
       };
     }
     case SET_USER_LOADING: {
@@ -22,10 +22,22 @@ export const userReducer = (state = initialState, { payload, type }) => {
         ...state,
         userLoading: {
           ...state.userLoading,
-          [payload.user_id]: payload.state,
+          [payload.user_id]: payload.isLoading,
         },
       };
     }
+    case SET_USERS:
+      let setUsers = {};
+      payload.users.map((item) => {
+        setUsers[item.id] = item;
+      });
+      return {
+        ...state,
+        users: {
+          ...state.users,
+          ...setUsers,
+        },
+      };
     default:
       return state;
   }

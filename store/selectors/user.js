@@ -6,12 +6,9 @@ const getUsers = (state, props) => state.user.users;
 const getUserLoading = (state, props) => state.user.userLoading;
 
 export const getUserById = createSelector([getUserId, getUsers], (userId, users) => {
-  return users.find(item => item.id === userId);
+  return users[userId] ? users[userId] : null;
 });
 
 export const isUserLoading = createSelector([getUserLoading, getUserId], (userLoading, userId) => {
-  if (!userLoading) {
-    return true;
-  }
   return userLoading[userId] ? userLoading[userId] : false;
 });
