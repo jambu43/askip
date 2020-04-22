@@ -22,7 +22,8 @@
       "bundleIdentifier": "com.makarios.askip"
     },
     "android": {
-      "package": "com.makarios.askip"
+      "package": "com.makarios.askip",
+      "versionCode": 2
     },
     "description": ""
   }

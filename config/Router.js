@@ -9,7 +9,7 @@ import LoginScreen from "../screens/LoginScreen";
 import CreatePostScreen from "../screens/CreatePostScreen";
 import MagazineScreen from "../screens/MagazineScreen";
 import ExplorerScreen from "../screens/ExplorerScreen";
-import Profile from "../screens/Profile";
+import DashboardScreen from "../screens/DashboardScreen";
 import ArticleScreen from "../screens/ArticleScreen";
 import HomeScreen from "../screens/HomeScreen";
 import PodcastScreen from "../screens/PodcastScreen";
@@ -157,8 +157,8 @@ const HomeTabNavigator = createBottomTabNavigator(
       label: "Askip",
     },
     Notifications: NotificationsScreen,
-    Profile: {
-      screen: Profile,
+    Dashboard: {
+      screen: DashboardScreen,
       label: "Moi",
     },
   },
@@ -167,7 +167,7 @@ const HomeTabNavigator = createBottomTabNavigator(
       tabBarIcon: ({ focused, horizontal, tintColor }) => {
         const { routeName } = navigation.state;
         switch (routeName) {
-          case "Profile":
+          case "Dashboard":
             return <UserAvatar />;
           case "Explorer":
             return <SearchIcon fill={tintColor} />;

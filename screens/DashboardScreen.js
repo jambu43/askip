@@ -12,7 +12,7 @@ import PostList from "../components/askip/PostList";
 import { RefreshControl, View } from "react-native";
 import { fetchMe } from "../store/actions/auth";
 
-class ProfileScreen extends React.Component {
+class DashboardScreen extends React.Component {
   constructor(props) {
     super(props);
   }
@@ -98,7 +98,7 @@ const mapDispatchToProps = (dispatch) => {
     fetchMe: () => dispatch(fetchMe()),
   };
 };
-export default connect(mapStateToProps, mapDispatchToProps)(ProfileScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(DashboardScreen);
 
 const Container = styled.View`
   flex: 1;
