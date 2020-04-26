@@ -1,11 +1,11 @@
 import React from "react";
 import styled from "styled-components";
 import AppHeader from "../components/generic/AppHeader";
-import PostList from "../components/askip/PostList";
 import { dark, darkLighten } from "../config/variables";
 import { fetchPosts } from "../store/actions/post";
 import { connect } from "react-redux";
 import { getPosts } from "../store/selectors/post";
+import PostCard from "../components/askip/PostCard";
 
 class ExplorerScreen extends React.Component {
   state = {
@@ -34,19 +34,42 @@ class ExplorerScreen extends React.Component {
     this._fetchPostData();
   }
   _fetchPostData() {
-    this.props.fetchPosts();
+    this.props.fetchPosts(this.state.page);
+  }
+
+  _handleLoadMore = () => {
+    this.setState(
+      (prevState, nextProps) => ({
+        page: prevState.page + 1,
+      }),
+      () => {
+        this._fetchPostData(this.state.page);
+      }
+    );
+  };
+
+  _renderPost({ item, index }) {
+    const { navigation } = this.props;
+    return <PostCard post={item} navigation={navigation} key={item.id} />;
   }
 
   render() {
-    const { navigation, posts, posts_loading } = this.props;
+    const { posts, posts_loading } = this.props;
     return (
       <Container>
         <AppHeader />
-        <PostList
+        <Content
+          keyExtractor={(item) => item.id.toString()}
+          extraData={posts}
+          data={posts}
+          refreshing={posts_loading}
           onRefresh={this._handleRefresh.bind(this)}
-          navigation={navigation}
-          posts={posts}
-          post_loading={posts_loading}
+          renderItem={this._renderPost.bind(this)}
+          showsVerticalScrollIndicator={true}
+          numColumns={1}
+          onEndReached={this._handleLoadMore.bind(this)}
+          onEndReachedThreshold={0.5}
+          initialNumToRender={10}
         />
       </Container>
     );
@@ -70,6 +93,8 @@ export default connect(mapStateTopProps, mapDispatchToProps)(ExplorerScreen);
 const Container = styled.View`
   flex: 1;
   background-color: ${darkLighten};
-  padding-bottom: 80px;
 `;
+
+const Content = styled.FlatList``;
+
 const Text = styled.Text``;

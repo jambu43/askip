@@ -99,7 +99,7 @@ export const fetchPosts = (page = 1) => {
   return (dispatch) => {
     dispatch(togglePostListLoading());
     axios
-      .get(apiUrl("posts/feed"))
+      .get(apiUrl(`posts/feed?page=${page}`))
       .then(({ data }) => {
         dispatch(setPostList(data.data));
         dispatch(togglePostListLoading());
