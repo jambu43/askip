@@ -4,6 +4,11 @@ import { assetsUrl } from "../../helpers";
 import PlainTextPost from "./PlainTextPost";
 import { dark, darkLighten } from "../../config/variables";
 
+const likeIcon = require("../../assets/like-icon.png");
+const likeIconActive = require("../../assets/like-icon-active.png");
+const unLikeIcon = require("../../assets/unlinke-icon.png");
+const unLikeIconActive = require("../../assets/unlinke-icon-active.png");
+
 export default class PostCard extends React.Component {
   render() {
     const { post, navigation } = this.props;
@@ -18,12 +23,18 @@ export default class PostCard extends React.Component {
         <CardGroup>
           <PostSocialInteraction>
             <IconGroup>
-              <InteractionIcon source={require("../../assets/like-icone.png")} />
-              <SocialInteractionTitle>C'est vrai</SocialInteractionTitle>
+              <InteractionIcon source={!post.does_auth_confirmed ? likeIconActive : likeIcon} />
+              <SocialInteractionTitle active={!post.does_auth_confirmed}>
+                C'est vrai
+              </SocialInteractionTitle>
             </IconGroup>
             <IconGroup>
-              <InteractionIcon source={require("../../assets/unlinke-icone.png")} />
-              <SocialInteractionTitle>C'est faux</SocialInteractionTitle>
+              <InteractionIcon
+                source={!post.does_auth_invalidated ? unLikeIconActive : unLikeIcon}
+              />
+              <SocialInteractionTitle active={!post.does_auth_invalidated}>
+                C'est faux
+              </SocialInteractionTitle>
             </IconGroup>
             <IconGroup>
               <InteractionIcon source={require("../../assets/share-icone.png")} />
@@ -62,7 +73,8 @@ const InteractionIcon = styled.Image`
   margin-right: 10px;
 `;
 const SocialInteractionTitle = styled.Text`
-  color: #ffffff;
+  color: ${(props) => (props.active ? "#2d88ff" : "#ffffff")};
+  font-weight: ${(props) => (props.active ? "bold" : "normal")};
 `;
 const ShareTime = styled.Text`
   color: #ffffff;
