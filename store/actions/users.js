@@ -70,17 +70,9 @@ export const togglePostConfirmation = (post_id) => {
     dispatch(togglePostLiking(post_id, true));
     axios
       .post(apiUrl(`posts/${post_id}/toggle_post_confirmation`))
-      .then(({ status }) => {
-        let hasLiked = status === 201;
+      .then(({ data }) => {
         try {
-          dispatch(
-            setPostList([
-              {
-                id: post_id,
-                does_auth_confirmed: hasLiked,
-              },
-            ])
-          );
+          dispatch(setPostList([data.data]));
         } catch (e) {
           console.log(e);
         }
@@ -98,16 +90,8 @@ export const togglePostInvalidation = (post_id) => {
     dispatch(togglePostLiking(post_id, true));
     axios
       .post(apiUrl(`posts/${post_id}/toggle_post_invalidation`))
-      .then(({ status }) => {
-        let hasLiked = status === 201;
-        dispatch(
-          setPostList([
-            {
-              id: post_id,
-              does_auth_invalidated: hasLiked,
-            },
-          ])
-        );
+      .then(({ data }) => {
+        dispatch(setPostList([data.data]));
         dispatch(togglePostLiking(post_id, false));
       })
       .catch(({ response }) => {

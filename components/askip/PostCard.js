@@ -6,9 +6,10 @@ import PlainTextPost from "./PlainTextPost";
 import { dark, darkLighten } from "../../config/variables";
 import { togglePostConfirmation, togglePostInvalidation } from "../../store/actions/users";
 import { ActivityIndicator } from "react-native";
+import PostSocialStats from "./PostSocialStats";
 
-const likeIcon = require("../../assets/like-icon.png");
 const likeIconActive = require("../../assets/like-icon-active.png");
+const likeIcon = require("../../assets/like-icon.png");
 const unLikeIcon = require("../../assets/un-like-icon.png");
 const unLikeIconActive = require("../../assets/un-like-icon-active.png");
 
@@ -26,6 +27,11 @@ class PostCard extends React.Component {
   render() {
     const { post, navigation, post_liking } = this.props;
     let isPostLiking = post_liking[post.id] ? post_liking[post.id] : false;
+    let hasSocialInteraction =
+      post.post_confirmations ||
+      post.post_invalidations ||
+      post.comments_count ||
+      post.post_shares_count;
     return (
       <Container>
         <AuthorGroup onPress={() => navigation.navigate("Profile", { user_id: post.author.id })}>
@@ -34,6 +40,7 @@ class PostCard extends React.Component {
         </AuthorGroup>
         {post.content ? <PlainTextPost post={post} /> : null}
         {post.image_path ? <PostPicture source={{ uri: assetsUrl(post.image_path) }} /> : null}
+        {hasSocialInteraction ? <PostSocialStats post={post} /> : null}
         <CardGroup>
           <PostSocialInteraction>
             <IconGroup
