@@ -1,17 +1,31 @@
 import React from "react";
 import styled from "styled-components";
+import { connect } from "react-redux";
 import { assetsUrl } from "../../helpers";
 import PlainTextPost from "./PlainTextPost";
 import { dark, darkLighten } from "../../config/variables";
+import { togglePostConfirmation, togglePostInvalidation } from "../../store/actions/users";
+import { ActivityIndicator } from "react-native";
 
 const likeIcon = require("../../assets/like-icon.png");
 const likeIconActive = require("../../assets/like-icon-active.png");
-const unLikeIcon = require("../../assets/unlinke-icon.png");
-const unLikeIconActive = require("../../assets/unlinke-icon-active.png");
+const unLikeIcon = require("../../assets/un-like-icon.png");
+const unLikeIconActive = require("../../assets/un-like-icon-active.png");
 
-export default class PostCard extends React.Component {
+class PostCard extends React.Component {
+  handleTogglePostConfirm() {
+    this.props.togglePostConfirmation(this.props.post.id);
+  }
+
+  handleTogglePostInvalidate() {
+    this.props.togglePostInvalidation(this.props.post.id);
+  }
+
+  handlePostShare() {}
+
   render() {
-    const { post, navigation } = this.props;
+    const { post, navigation, post_liking } = this.props;
+    let isPostLiking = post_liking[post.id] ? post_liking[post.id] : false;
     return (
       <Container>
         <AuthorGroup onPress={() => navigation.navigate("Profile", { user_id: post.author.id })}>
@@ -22,21 +36,35 @@ export default class PostCard extends React.Component {
         {post.image_path ? <PostPicture source={{ uri: assetsUrl(post.image_path) }} /> : null}
         <CardGroup>
           <PostSocialInteraction>
-            <IconGroup>
-              <InteractionIcon source={post.does_auth_confirmed ? likeIconActive : likeIcon} />
+            <IconGroup
+              disabled={isPostLiking || post.does_auth_invalidated}
+              onPress={this.handleTogglePostConfirm.bind(this)}
+            >
+              {isPostLiking ? (
+                <ActivityIndicator color="#fff" />
+              ) : (
+                <InteractionIcon source={post.does_auth_confirmed ? likeIconActive : likeIcon} />
+              )}
               <SocialInteractionTitle active={post.does_auth_confirmed}>
                 C'est vrai
               </SocialInteractionTitle>
             </IconGroup>
-            <IconGroup>
-              <InteractionIcon
-                source={post.does_auth_invalidated ? unLikeIconActive : unLikeIcon}
-              />
+            <IconGroup
+              disabled={isPostLiking || post.does_auth_confirmed}
+              onPress={this.handleTogglePostInvalidate.bind(this)}
+            >
+              {isPostLiking ? (
+                <ActivityIndicator color="#fff" />
+              ) : (
+                <InteractionIcon
+                  source={post.does_auth_invalidated ? unLikeIconActive : unLikeIcon}
+                />
+              )}
               <SocialInteractionTitle active={post.does_auth_invalidated}>
                 C'est faux
               </SocialInteractionTitle>
             </IconGroup>
-            <IconGroup>
+            <IconGroup disabled={isPostLiking} onPress={this.handlePostShare.bind(this)}>
               <InteractionIcon source={require("../../assets/share-icone.png")} />
               <SocialInteractionTitle>Partager</SocialInteractionTitle>
             </IconGroup>
@@ -124,3 +152,18 @@ const CommentInput = styled.TextInput`
   border-radius: 5px;
   width: 100%;
 `;
+
+const mapStateToProps = (state) => {
+  return {
+    post_liking: state.post.post_liking,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    togglePostConfirmation: (post_id) => dispatch(togglePostConfirmation(post_id)),
+    togglePostInvalidation: (post_id) => dispatch(togglePostInvalidation(post_id)),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(PostCard);

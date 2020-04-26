@@ -2,7 +2,7 @@ import axios from "../../config/axios";
 import { SET_USER, SET_USER_LOADING, SET_USERS } from "../types/user";
 import { apiUrl } from "../../helpers";
 import { toggleUserFollowees } from "./auth";
-import { togglePostLiking } from "./post";
+import { togglePostLiking, setPosts, setPostList } from "./post";
 
 export const setUser = (user) => {
   return {
@@ -70,7 +70,16 @@ export const togglePostConfirmation = (post_id) => {
     dispatch(togglePostLiking(post_id, true));
     axios
       .post(apiUrl(`posts/${post_id}/toggle_post_confirmation`))
-      .then(() => {
+      .then(({ status }) => {
+        let hasLiked = status === 201;
+        dispatch(
+          setPostList([
+            {
+              id: post_id,
+              does_auth_confirmed: hasLiked,
+            },
+          ])
+        );
         dispatch(togglePostLiking(post_id, false));
       })
       .catch(({ response }) => {
@@ -85,7 +94,16 @@ export const togglePostInvalidation = (post_id) => {
     dispatch(togglePostLiking(post_id, true));
     axios
       .post(apiUrl(`posts/${post_id}/toggle_post_invalidation`))
-      .then(() => {
+      .then(({ status }) => {
+        let hasLiked = status === 201;
+        dispatch(
+          setPostList([
+            {
+              id: post_id,
+              does_auth_invalidated: hasLiked,
+            },
+          ])
+        );
         dispatch(togglePostLiking(post_id, false));
       })
       .catch(({ response }) => {

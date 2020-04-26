@@ -45,14 +45,18 @@ export const postReducers = (state = initialState, { type, payload }) => {
       return {
         ...state,
         post_liking: {
-          ...state.post_loading,
+          ...state.post_liking,
           ...{ [payload.post_id]: payload.state },
         },
       };
     case SET_POST_LIST:
       let setPostList = {};
       payload.posts.forEach((item) => {
-        setPostList[item.id] = item;
+        let oldPost = state.post_list[item.id] ? state.post_list[item.id] : {};
+        setPostList[item.id] = {
+          ...oldPost,
+          ...item,
+        };
       });
       return {
         ...state,
