@@ -5,7 +5,10 @@ export default class PlainTextPost extends React.Component {
   render() {
     const { post } = this.props;
     let postColor = !post.image_path ? post.post_color : "transparent";
-    let isPlainTextPost = !post.image_path;
+    let isPlainTextPost = !post.image_path && post.content.length < 144;
+    if (!isPlainTextPost) {
+      postColor = "transparent";
+    }
     return (
       <Container>
         <PostContentWrapper isPlainTextPost={isPlainTextPost} postColor={postColor}>
@@ -18,14 +21,14 @@ export default class PlainTextPost extends React.Component {
 
 const Container = styled.View``;
 const PostContentWrapper = styled.View`
-  height: ${props => (props.isPlainTextPost ? "220px" : "auto")};
-  background: ${props => props.postColor};
+  height: ${(props) => (props.isPlainTextPost ? "220px" : "auto")};
+  background: ${(props) => props.postColor};
   justify-content: center;
   padding: 5px 15px;
 `;
 const PostContent = styled.Text`
-  font-weight: ${props => (props.isPlainTextPost ? "bold" : 100)};
+  font-weight: ${(props) => (props.isPlainTextPost ? "bold" : 100)};
   color: #ffffff;
-  font-size: ${props => (props.isPlainTextPost ? 20 : 14)}px;
-  text-align: ${props => (props.isPlainTextPost ? "center" : "left")};
+  font-size: ${(props) => (props.isPlainTextPost ? 20 : 14)}px;
+  text-align: ${(props) => (props.isPlainTextPost ? "center" : "left")};
 `;
