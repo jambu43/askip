@@ -5,12 +5,14 @@ import {
   TOGGLE_POST_CREATING,
   TOGGLE_USERS_POSTS_LOADING,
   SET_USERS_POSTS,
+  TOGGLE_POST_LIKING,
 } from "../types/post";
 
 const initialState = {
   post_list: {},
   post_list_loading: false,
   post_loading: {},
+  post_liking: {},
   post_creating: false,
   /**
    * {List<String, Array<Object>>}
@@ -35,6 +37,14 @@ export const postReducers = (state = initialState, { type, payload }) => {
       return {
         ...state,
         post_loading: {
+          ...state.post_loading,
+          ...{ [payload.post_id]: payload.state },
+        },
+      };
+    case TOGGLE_POST_LIKING:
+      return {
+        ...state,
+        post_liking: {
           ...state.post_loading,
           ...{ [payload.post_id]: payload.state },
         },

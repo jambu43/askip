@@ -7,6 +7,7 @@ import {
   TOGGLE_POST_CREATING,
   SET_USERS_POSTS,
   TOGGLE_USERS_POSTS_LOADING,
+  TOGGLE_POST_LIKING,
 } from "../types/post";
 
 import { apiUrl } from "../../helpers";
@@ -39,6 +40,16 @@ export const setPostList = (posts) => {
 export const togglePostLoading = (post_id, state) => {
   return {
     type: TOGGLE_POST_LOADING,
+    payload: {
+      post_id,
+      state,
+    },
+  };
+};
+
+export const togglePostLiking = (post_id, state) => {
+  return {
+    type: TOGGLE_POST_LIKING,
     payload: {
       post_id,
       state,

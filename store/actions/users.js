@@ -2,6 +2,7 @@ import axios from "../../config/axios";
 import { SET_USER, SET_USER_LOADING, SET_USERS } from "../types/user";
 import { apiUrl } from "../../helpers";
 import { toggleUserFollowees } from "./auth";
+import { togglePostLiking } from "./post";
 
 export const setUser = (user) => {
   return {
@@ -60,6 +61,36 @@ export const fetchUserById = (user_id) => {
       .catch(({ response }) => {
         console.log(response);
         dispatch(setUserLoading(user_id, false));
+      });
+  };
+};
+
+export const togglePostConfirmation = (post_id) => {
+  return function (dispatch) {
+    dispatch(togglePostLiking(post_id, true));
+    axios
+      .post(apiUrl(`posts/${post_id}/toggle_post_confirmation`))
+      .then(() => {
+        dispatch(togglePostLiking(post_id, false));
+      })
+      .catch(({ response }) => {
+        console.log(response);
+        dispatch(togglePostLiking(post_id, false));
+      });
+  };
+};
+
+export const togglePostInvalidation = (post_id) => {
+  return function (dispatch) {
+    dispatch(togglePostLiking(post_id, true));
+    axios
+      .post(apiUrl(`posts/${post_id}/toggle_post_invalidation`))
+      .then(() => {
+        dispatch(togglePostLiking(post_id, false));
+      })
+      .catch(({ response }) => {
+        console.log(response);
+        dispatch(togglePostLiking(post_id, false));
       });
   };
 };

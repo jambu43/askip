@@ -23,16 +23,16 @@ export default class PostCard extends React.Component {
         <CardGroup>
           <PostSocialInteraction>
             <IconGroup>
-              <InteractionIcon source={!post.does_auth_confirmed ? likeIconActive : likeIcon} />
-              <SocialInteractionTitle active={!post.does_auth_confirmed}>
+              <InteractionIcon source={post.does_auth_confirmed ? likeIconActive : likeIcon} />
+              <SocialInteractionTitle active={post.does_auth_confirmed}>
                 C'est vrai
               </SocialInteractionTitle>
             </IconGroup>
             <IconGroup>
               <InteractionIcon
-                source={!post.does_auth_invalidated ? unLikeIconActive : unLikeIcon}
+                source={post.does_auth_invalidated ? unLikeIconActive : unLikeIcon}
               />
-              <SocialInteractionTitle active={!post.does_auth_invalidated}>
+              <SocialInteractionTitle active={post.does_auth_invalidated}>
                 C'est faux
               </SocialInteractionTitle>
             </IconGroup>
