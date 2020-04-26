@@ -17,10 +17,12 @@ import {
   StatusBar,
 } from "react-native";
 import { BackIcon } from "../components/Icons";
+import PostCard from "../components/askip/PostCard";
 
 class ProfileScreen extends React.Component {
   state = {
     following_channel: false,
+    page: 1,
   };
 
   componentDidMount() {
@@ -55,14 +57,76 @@ class ProfileScreen extends React.Component {
       });
   }
 
-  render() {
-    const { following_channel } = this.state;
-    const { user, user_loading, user_posts, navigation } = this.props;
+  renderHeader() {
+    const { user } = this.props;
     let has_followed = user ? this.props.followees_ids.includes(user.id.toString()) : null;
+    const { following_channel } = this.state;
     let followIcon = has_followed
       ? require("../assets/followed.png")
       : require("../assets/plus.png");
+    return (
+      <View>
+        <Card>
+          <Avatar source={{ uri: user.avatar }} />
+          <Information>
+            <Username>{user.name}</Username>
+            <CountWrapper>
+              <Publication>
+                <Number>{user.posts_count}</Number>
+                <Title>Publications</Title>
+              </Publication>
+              <Publication>
+                <Number>{user.followers_count}</Number>
+                <Title>Abonnés</Title>
+              </Publication>
+              <Publication>
+                <Number>{user.followees_count}</Number>
+                <Title>Abonnements</Title>
+              </Publication>
+            </CountWrapper>
+          </Information>
+        </Card>
+        <ProfileDetails>
+          <ChannelFollowButton
+            onPress={this.toggleFollowUser.bind(this)}
+            disabled={following_channel}
+          >
+            {following_channel ? (
+              <ActivityIndicator size="small" color="#fff" />
+            ) : (
+              <FollowIcon source={followIcon}></FollowIcon>
+            )}
+            <ChannelFollowButtonText>S'abonner</ChannelFollowButtonText>
+          </ChannelFollowButton>
+        </ProfileDetails>
+        <MagazineRecentlyRead>Mes publications</MagazineRecentlyRead>
+      </View>
+    );
+  }
+
+  _handleLoadMore = () => {
+    const { navigation } = this.props;
+    let user_id = navigation.getParam("user_id");
+    this.setState(
+      (prevState, nextProps) => ({
+        page: prevState.page + 1,
+      }),
+      () => {
+        this.props.fetchUserPosts(user_id, this.state.page);
+      }
+    );
+  };
+
+  _renderPost({ item, index }) {
+    const { navigation } = this.props;
+    return <PostCard post={item} navigation={navigation} key={item.id} />;
+  }
+
+  render() {
+    const { user, user_posts, users_posts_loading, navigation } = this.props;
     let isLoading = !user;
+    let user_id = navigation.getParam("user_id");
+    let isUsersPostsLoading = users_posts_loading[user_id] ? users_posts_loading[user_id] : false;
     return (
       <Container>
         <Header>
@@ -71,55 +135,22 @@ class ProfileScreen extends React.Component {
           </TouchableOpacity>
         </Header>
         {!isLoading ? (
-          <ScrollView
-            refreshControl={
-              <RefreshControl
-                refreshing={user_loading}
-                onRefresh={this._handleRefresh.bind(this)}
-              />
-            }
-          >
-            <Card>
-              <Avatar source={{ uri: user.avatar }} />
-              <Information>
-                <Username>{user.name}</Username>
-                <CountWrapper>
-                  <Publication>
-                    <Number>{user.posts_count}</Number>
-                    <Title>Publications</Title>
-                  </Publication>
-                  <Publication>
-                    <Number>{user.followers_count}</Number>
-                    <Title>Abonnés</Title>
-                  </Publication>
-                  <Publication>
-                    <Number>{user.followees_count}</Number>
-                    <Title>Abonnements</Title>
-                  </Publication>
-                </CountWrapper>
-              </Information>
-            </Card>
-            <ProfileDetails>
-              <ChannelFollowButton
-                onPress={this.toggleFollowUser.bind(this)}
-                disabled={following_channel}
-              >
-                {following_channel ? (
-                  <ActivityIndicator size="small" color="#fff" />
-                ) : (
-                  <FollowIcon source={followIcon}></FollowIcon>
-                )}
-                <ChannelFollowButtonText>S'abonner</ChannelFollowButtonText>
-              </ChannelFollowButton>
-            </ProfileDetails>
-            {user_posts.length ? (
-              <View>
-                <MagazineRecentlyRead>Mes publications</MagazineRecentlyRead>
-                <PostList navigation={navigation} posts={user_posts} />
-              </View>
-            ) : null}
-          </ScrollView>
-        ) : null}
+          <Content
+            keyExtractor={(item) => item.id.toString()}
+            extraData={user_posts}
+            data={user_posts}
+            refreshing={isUsersPostsLoading}
+            onRefresh={this._handleRefresh.bind(this)}
+            ListHeaderComponent={this.renderHeader.bind(this)}
+            renderItem={this._renderPost.bind(this)}
+            showsVerticalScrollIndicator={true}
+            onEndReached={this._handleLoadMore.bind(this)}
+            onEndReachedThreshold={0.5}
+            initialNumToRender={10}
+          />
+        ) : (
+          <ActivityIndicator color="#fff" />
+        )}
       </Container>
     );
   }
@@ -130,6 +161,8 @@ const Container = styled.View`
   background-color: ${dark};
   padding: 10px 0px;
 `;
+
+const Content = styled.FlatList``;
 
 const Header = styled.View`
   margin-top: 15px;
@@ -214,7 +247,7 @@ const ChannelFollowButtonText = styled.Text`
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    fetchUserPosts: (user_id) => dispatch(fetchUserPosts(user_id)),
+    fetchUserPosts: (user_id, page) => dispatch(fetchUserPosts(user_id, page)),
     fetchUserById: (user_id) => dispatch(fetchUserById(user_id)),
     followUser: (followee_id) => dispatch(followUser(followee_id)),
   };
@@ -225,6 +258,7 @@ const mapStateToProps = (state, ownProps) => {
     user: getUserById(state, ownProps),
     user_loading: isUserLoading(state, ownProps),
     user_posts: getUsersPosts(state, ownProps),
+    users_posts_loading: state.post.users_posts_loading,
     followees_ids: state.auth.user.followees_ids,
   };
 };

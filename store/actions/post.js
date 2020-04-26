@@ -128,11 +128,11 @@ export const fetchPostId = (post_id) => {
   };
 };
 
-export const fetchUserPosts = (user_id) => {
+export const fetchUserPosts = (user_id, page = 1) => {
   return (dispatch) => {
     dispatch(toggleUsersPostsLoading(user_id, true));
     axios
-      .get(apiUrl(`profile/user_posts/${user_id}`))
+      .get(apiUrl(`profile/user_posts/${user_id}?page=${page}`))
       .then(({ data }) => {
         try {
           dispatch(setUsersPosts(user_id, data.data));
