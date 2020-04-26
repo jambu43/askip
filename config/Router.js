@@ -7,6 +7,7 @@ import {
 
 import LoginScreen from "../screens/LoginScreen";
 import CreatePostScreen from "../screens/CreatePostScreen";
+import PostScreen from "../screens/PostScreen";
 import MagazineScreen from "../screens/MagazineScreen";
 import ExplorerScreen from "../screens/ExplorerScreen";
 import DashboardScreen from "../screens/DashboardScreen";
@@ -94,6 +95,10 @@ const ExplorerStack = createStackNavigator(
       path: "users/:user_id",
       screen: ProfileScreen,
     },
+    Post: {
+      path: "posts/:post_id",
+      screen: PostScreen,
+    },
     Explorer: {
       path: "posts",
       screen: ExplorerScreen,
@@ -105,6 +110,17 @@ const ExplorerStack = createStackNavigator(
     transitionConfig: configNavigation,
   }
 );
+
+ExplorerStack.navigationOptions = ({ navigation }) => {
+  let tabBarVisible = true;
+  if (navigation.state.index > 0) {
+    tabBarVisible = false;
+  }
+
+  return {
+    tabBarVisible,
+  };
+};
 
 const HomeStack = createStackNavigator(
   {

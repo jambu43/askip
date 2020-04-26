@@ -1,21 +1,12 @@
 import React from "react";
 import styled from "styled-components";
 import { connect } from "react-redux";
-import PostList from "../components/askip/PostList";
 import { getUserById, isUserLoading } from "../store/selectors/user";
 import { fetchUserPosts } from "../store/actions/post";
 import { fetchUserById, followUser } from "../store/actions/users";
 import { getUsersPosts } from "../store/selectors/post";
 import { dark, darkLighten } from "../config/variables";
-import AppHeader from "../components/generic/AppHeader";
-import {
-  ScrollView,
-  RefreshControl,
-  View,
-  ActivityIndicator,
-  TouchableOpacity,
-  StatusBar,
-} from "react-native";
+import { View, ActivityIndicator, TouchableOpacity } from "react-native";
 import { BackIcon } from "../components/Icons";
 import PostCard from "../components/askip/PostCard";
 
