@@ -72,14 +72,18 @@ export const togglePostConfirmation = (post_id) => {
       .post(apiUrl(`posts/${post_id}/toggle_post_confirmation`))
       .then(({ status }) => {
         let hasLiked = status === 201;
-        dispatch(
-          setPostList([
-            {
-              id: post_id,
-              does_auth_confirmed: hasLiked,
-            },
-          ])
-        );
+        try {
+          dispatch(
+            setPostList([
+              {
+                id: post_id,
+                does_auth_confirmed: hasLiked,
+              },
+            ])
+          );
+        } catch (e) {
+          console.log(e);
+        }
         dispatch(togglePostLiking(post_id, false));
       })
       .catch(({ response }) => {

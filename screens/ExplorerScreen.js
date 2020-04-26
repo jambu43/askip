@@ -70,5 +70,6 @@ export default connect(mapStateTopProps, mapDispatchToProps)(ExplorerScreen);
 const Container = styled.View`
   flex: 1;
   background-color: ${darkLighten};
+  padding-bottom: 80px;
 `;
 const Text = styled.Text``;

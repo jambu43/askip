@@ -49,22 +49,41 @@ export const postReducers = (state = initialState, { type, payload }) => {
           ...{ [payload.post_id]: payload.state },
         },
       };
-    case SET_POST_LIST:
+    case SET_POST_LIST: {
       let setPostList = {};
+      let setUsersPosts = {
+        ...state.users_posts,
+      };
+
       payload.posts.forEach((item) => {
         let oldPost = state.post_list[item.id] ? state.post_list[item.id] : {};
-        setPostList[item.id] = {
+        let newPost = {
           ...oldPost,
           ...item,
         };
+
+        setPostList[item.id] = newPost;
+        /**
+         * To handle case when a post is in both user feed and explorer.
+         */
+        let authorId = oldPost.author ? oldPost.author.id : null;
+        if (setUsersPosts[authorId] && setUsersPosts[authorId][item.id]) {
+          setUsersPosts[authorId][item.id] = newPost;
+        }
       });
+
       return {
         ...state,
         post_list: {
           ...state.post_list,
           ...setPostList,
         },
+        users_posts: {
+          ...state.users_posts,
+          ...setUsersPosts,
+        },
       };
+    }
     case TOGGLE_USERS_POSTS_LOADING:
       let toggleUsersPostsLoading = { [payload.user_id]: payload.isLoading };
       return {
@@ -74,10 +93,25 @@ export const postReducers = (state = initialState, { type, payload }) => {
           ...toggleUsersPostsLoading,
         },
       };
-    case SET_USERS_POSTS:
+    case SET_USERS_POSTS: {
       let setUsersPosts = {};
+      let setPostList = {};
       payload.posts.forEach((item) => {
-        setUsersPosts[item.id] = item;
+        let oldPost = state.users_posts[item.id] ? state.users_posts[item.id] : {};
+        setUsersPosts[item.id] = {
+          ...oldPost,
+          ...item,
+        };
+
+        /**
+         * To handle case when a post is in both user feed and explorer.
+         */
+        if (state.post_list[item.id]) {
+          setPostList[item.id] = {
+            ...oldPost,
+            ...item,
+          };
+        }
       });
 
       if (state.users_posts[payload.user_id]) {
@@ -95,7 +129,12 @@ export const postReducers = (state = initialState, { type, payload }) => {
             ...setUsersPosts,
           },
         },
+        post_list: {
+          ...state.post_list,
+          ...setPostList,
+        },
       };
+    }
     default:
       return state;
   }
