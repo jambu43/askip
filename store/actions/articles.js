@@ -1,11 +1,11 @@
 import axios from "../../config/axios";
+import { apiUrl } from "../../helpers";
 import {
   TOGGLE_ARTICLE_LIST_LOADING,
   SET_ARTICLE_LIST,
   SET_MAGAZINE_ARTICLES,
   TOGGLE_ARTICLE_LOADING,
 } from "../types/newspaper";
-import { apiUrl } from "../../helpers";
 
 export const toggleArticleListLoading = () => {
   return {
