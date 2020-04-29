@@ -161,7 +161,6 @@ export const createPost = (formData) => {
       axios
         .post(apiUrl(`posts`), formData, config)
         .then((data) => {
-          console.log(data);
           resolve();
         })
         .catch((response) => {
