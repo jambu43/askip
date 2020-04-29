@@ -4,7 +4,7 @@ import moment from "moment";
 import { connect } from "react-redux";
 import { darkLighten, dark } from "../config/variables";
 import { BackIcon } from "../components/Icons";
-import { TouchableOpacity } from "react-native";
+import { TouchableOpacity, View } from "react-native";
 import { getUserPostById, getPostById } from "../store/selectors/post";
 import PostSocialInteraction from "../components/askip/PostSocialInteraction";
 import PlainTextPost from "../components/askip/PlainTextPost";
@@ -125,6 +125,7 @@ class PostScreen extends React.Component {
             <CommentSendButtonText>Envoyer</CommentSendButtonText>
           </CommentSendButton>
         </CommentFormWrapper>
+        <View style={{ height: 0 }} />
       </Container>
     );
   }

@@ -21,7 +21,7 @@ class PostCard extends React.Component {
       post.post_shares_count;
     return (
       <Container>
-        <AuthorGroup onPress={() => navigation.navigate("Profile", { post_id: post.author.id })}>
+        <AuthorGroup onPress={() => navigation.navigate("Profile", { user_id: post.author.id })}>
           <AuthorImage source={{ uri: post.author.avatar }} />
           <AuthorGroupDetails>
             <Author>{post.author.name}</Author>
