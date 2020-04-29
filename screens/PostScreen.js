@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import moment from "moment";
 import { connect } from "react-redux";
 import { darkLighten, dark } from "../config/variables";
 import { BackIcon } from "../components/Icons";
@@ -8,7 +9,7 @@ import { getUserPostById, getPostById } from "../store/selectors/post";
 import PostSocialInteraction from "../components/askip/PostSocialInteraction";
 import PlainTextPost from "../components/askip/PlainTextPost";
 import PostSocialStats from "../components/askip/PostSocialStats";
-import { assetsUrl } from "../helpers";
+import { assetsUrl, apiUrl } from "../helpers";
 import { getPostComments, getPostCommentsLoading } from "../store/selectors/comment";
 import { fetchPostComment, addComment } from "../store/actions/comments";
 
@@ -43,10 +44,15 @@ class PostScreen extends React.Component {
     );
   }
 
-  renderComment() {
+  renderComment({ item }) {
     return (
       <CommentWrapper>
-        <CommentBody>Hello from here!</CommentBody>
+        <CommentAuthorAvatar source={{ uri: item.author.avatar }} />
+        <CommentBodyWrapper>
+          <CommentAuthorName>{item.author.name}</CommentAuthorName>
+          <CommentContent>{item.content}</CommentContent>
+          <CommentDate>{moment(item.created_at).fromNow()}</CommentDate>
+        </CommentBodyWrapper>
       </CommentWrapper>
     );
   }
@@ -89,7 +95,7 @@ class PostScreen extends React.Component {
     const { navigation, comments, post_comment_loading } = this.props;
     const { content } = this.state;
     return (
-      <Container>
+      <Container behavior="padding">
         <Header>
           <TouchableOpacity onPress={() => navigation.goBack()}>
             <BackIcon fill="#fff" size={24} />
@@ -112,6 +118,7 @@ class PostScreen extends React.Component {
           <CommentInput
             placeholder="Votre commentaire..."
             value={content}
+            multiline={true}
             onChangeText={this.handleCommentChange.bind(this)}
           />
           <CommentSendButton disabled={!content} onPress={this.handleCommentSubmit.bind(this)}>
@@ -123,11 +130,12 @@ class PostScreen extends React.Component {
   }
 }
 
-const Container = styled.View`
+const Container = styled.KeyboardAvoidingView`
   flex: 1;
   background-color: ${dark};
   padding: 10px 0px 0px;
   position: relative;
+  flex-grow: 1;
 `;
 const PostContentWrapper = styled.View``;
 
@@ -143,8 +151,35 @@ const PostPicture = styled.Image`
 `;
 
 const Content = styled.FlatList``;
-const CommentWrapper = styled.View``;
-const CommentBody = styled.Text``;
+const CommentWrapper = styled.View`
+  flex-direction: row;
+  padding: 0 10px;
+  margin-bottom: 10px;
+`;
+const CommentBodyWrapper = styled.View`
+  background-color: ${darkLighten};
+  padding: 7.5px;
+  border-radius: 15px;
+  max-width: 270px;
+`;
+const CommentContent = styled.Text`
+  color: #fff;
+  margin-bottom: 5px;
+`;
+const CommentDate = styled.Text`
+  color: #fff;
+  font-size: 10px;
+`;
+const CommentAuthorName = styled.Text`
+  color: #fff;
+  font-weight: bold;
+`;
+const CommentAuthorAvatar = styled.Image`
+  width: 40px;
+  height: 40px;
+  border-radius: 20px;
+  margin-right: 10px;
+`;
 
 const CommentFormWrapper = styled.View`
   flex-direction: row;

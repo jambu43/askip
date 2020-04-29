@@ -1,6 +1,7 @@
 import axios from "../../config/axios";
 import { apiUrl } from "../../helpers";
 import { SET_POST_COMMENTS, POST_COMMENT_LOADING } from "../types/comment";
+import { setPostList } from "./post";
 
 export const setPostComments = (comments) => {
   return {
@@ -42,7 +43,12 @@ export const addComment = (post_id, payload) => {
     axios
       .post(apiUrl(`posts/${post_id}/add_comment`), payload)
       .then(({ data }) => {
-        console.log(data);
+        try {
+          dispatch(setPostList([data.post]));
+          dispatch(setPostComments([data.comment]));
+        } catch (e) {
+          console.log(e);
+        }
       })
       .catch(({ response }) => {
         console.log(response);

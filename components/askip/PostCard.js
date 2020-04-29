@@ -7,6 +7,7 @@ import { dark, darkLighten } from "../../config/variables";
 import { togglePostConfirmation, togglePostInvalidation } from "../../store/actions/users";
 import PostSocialStats from "./PostSocialStats";
 import PostSocialInteraction from "./PostSocialInteraction";
+import moment from "moment";
 
 class PostCard extends React.Component {
   handlePostShare() {}
@@ -22,7 +23,10 @@ class PostCard extends React.Component {
       <Container>
         <AuthorGroup onPress={() => navigation.navigate("Profile", { post_id: post.author.id })}>
           <AuthorImage source={{ uri: post.author.avatar }} />
-          <Author>{post.author.name}</Author>
+          <AuthorGroupDetails>
+            <Author>{post.author.name}</Author>
+            <PostDate>{moment(post.created_at).fromNow()}</PostDate>
+          </AuthorGroupDetails>
         </AuthorGroup>
         <CardGroup
           onPress={() =>
@@ -55,17 +59,23 @@ const AuthorGroup = styled.TouchableOpacity`
   margin-bottom: 5px;
   align-items: center;
 `;
+const AuthorGroupDetails = styled.View`
+  margin-left: 5px;
+`;
+const PostDate = styled.Text`
+  color: #fff;
+  font-size: 10px;
+`;
 const AuthorImage = styled.Image`
   background-color: ${darkLighten};
   border-radius: 15px;
-  height: 30px;
-  width: 30px;
+  height: 35px;
+  width: 35px;
 `;
 const Author = styled.Text`
   text-transform: uppercase;
   color: #ffffff;
   font-size: 13px;
-  margin-left: 5px;
 `;
 const CardGroup = styled.TouchableOpacity``;
 
