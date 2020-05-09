@@ -1,18 +1,23 @@
 import React from "react";
 import styled from "styled-components";
 import { darkLighten } from "../../config/variables";
+import { ActivityIndicator } from "react-native";
 
-export default ({ content, onChange, onSubmit }) => {
+export default ({ content, onChange, onSubmit, submitting }) => {
   return (
     <CommentFormWrapper>
       <CommentInput
         placeholder="Votre commentaire..."
         value={content}
         multiline={true}
+        editable={!submitting}
         onChangeText={onChange}
       />
-      <CommentSendButton disabled={!content} onPress={onSubmit}>
-        <CommentSendButtonText>Envoyer</CommentSendButtonText>
+      <CommentSendButton disabled={!content || submitting} onPress={onSubmit}>
+        {submitting ? null : (
+          <CommentSendButtonText disabled={!content}>Envoyer</CommentSendButtonText>
+        )}
+        {submitting ? <ActivityIndicator color="#fff" /> : null}
       </CommentSendButton>
     </CommentFormWrapper>
   );
@@ -31,5 +36,5 @@ const CommentInput = styled.TextInput`
 `;
 const CommentSendButton = styled.TouchableOpacity``;
 const CommentSendButtonText = styled.Text`
-  color: #fff;
+  color: ${(props) => (props.disabled ? "#aaa" : "#fff")};
 `;

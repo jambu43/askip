@@ -19,6 +19,7 @@ class PostScreen extends React.Component {
   state = {
     page: 1,
     content: "",
+    commenting: false,
   };
 
   componentDidMount() {
@@ -75,18 +76,29 @@ class PostScreen extends React.Component {
 
   handleCommentSubmit() {
     let post_id = this.props.navigation.getParam("post_id");
-    this.props.addComment(post_id, {
-      content: this.state.content,
-    });
-
     this.setState({
-      content: "",
+      commenting: true,
     });
+    this.props
+      .addComment(post_id, {
+        content: this.state.content,
+      })
+      .then(() => {
+        this.setState({
+          content: "",
+          commenting: false,
+        });
+      })
+      .catch(() => {
+        this.setState({
+          commenting: false,
+        });
+      });
   }
 
   render() {
     const { navigation, comments, post_comment_loading } = this.props;
-    const { content } = this.state;
+    const { content, commenting } = this.state;
     return (
       <Container behavior="padding">
         <Header>
@@ -108,6 +120,7 @@ class PostScreen extends React.Component {
           initialNumToRender={10}
         />
         <PostCommentInput
+          submitting={commenting}
           content={content}
           onSubmit={this.handleCommentSubmit.bind(this)}
           onChange={this.handleCommentChange.bind(this)}

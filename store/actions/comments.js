@@ -56,18 +56,22 @@ export const fetchCommentFeed = (comment_id, page = 1) => {
 
 export const addComment = (post_id, payload) => {
   return (dispatch) => {
-    axios
-      .post(apiUrl(`posts/${post_id}/add_comment`), payload)
-      .then(({ data }) => {
-        try {
-          dispatch(setPostList([data.post]));
-          dispatch(setPostComments(data.comments));
-        } catch (e) {
-          console.log(e);
-        }
-      })
-      .catch(({ response }) => {
-        console.log(response);
-      });
+    return new Promise((resolve, reject) => {
+      axios
+        .post(apiUrl(`posts/${post_id}/add_comment`), payload)
+        .then(({ data }) => {
+          try {
+            dispatch(setPostList([data.post]));
+            dispatch(setPostComments(data.comments));
+            resolve();
+          } catch (e) {
+            console.log(e);
+          }
+        })
+        .catch(({ response }) => {
+          reject();
+          console.log(response);
+        });
+    });
   };
 };

@@ -20,7 +20,7 @@ export const getCommentFeed = createSelector(
   (comment_id, post_comments) => {
     let comments = Object.values(post_comments);
     comments = comments.filter((item) => item.comment_id == comment_id);
-    return orderBy(comments, "created_at", "desc");
+    return orderBy(comments, "created_at", "asc");
   }
 );
 

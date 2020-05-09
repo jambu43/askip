@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { darkLighten } from "../../config/variables";
 import moment from "moment";
+import { simplePlural } from "../../helpers";
 
 export default ({ comment, navigation, showFeedBackButton = true, setBack = false }) => {
   return (
@@ -21,7 +22,9 @@ export default ({ comment, navigation, showFeedBackButton = true, setBack = fals
           >
             <CommentFeedBackButtonText>
               {comment.commentsCount
-                ? `${comment.commentsCount} réponses`
+                ? `Voir ${simplePlural(comment.commentsCount, "les", "la")} ${
+                    comment.commentsCount > 1 ? comment.commentsCount : "seule"
+                  } ${simplePlural(comment.commentsCount, "réponses", "réponse")}`
                 : `Répondre à ${comment.author.name}`}
             </CommentFeedBackButtonText>
           </CommentFeedBackButton>

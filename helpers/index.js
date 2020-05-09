@@ -13,6 +13,9 @@ export const assetsUrl = (pathname) => {
   return `http://askip.ngangeli.com/storage/${pathname}`;
 };
 
+export const simplePlural = (count, plural, singular) => {
+  return count > 1 ? plural : singular;
+};
 export const processPlaybackStatus = ({
   playableDurationMillis,
   durationMillis,

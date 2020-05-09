@@ -13,6 +13,7 @@ class CommentFeedScreen extends React.Component {
   state = {
     content: "",
     page: 1,
+    commenting: false,
   };
 
   renderHeader() {
@@ -56,21 +57,32 @@ class CommentFeedScreen extends React.Component {
   }
 
   handleCommentSubmit() {
+    this.setState({
+      commenting: true,
+    });
     let comment_id = this.props.navigation.getParam("comment_id");
     let post_id = this.props.navigation.getParam("post_id");
-    this.props.addComment(post_id, {
-      content: this.state.content,
-      comment_id,
-    });
-
-    this.setState({
-      content: "",
-    });
+    this.props
+      .addComment(post_id, {
+        content: this.state.content,
+        comment_id,
+      })
+      .then(() => {
+        this.setState({
+          content: "",
+          commenting: false,
+        });
+      })
+      .catch(() => {
+        this.setState({
+          commenting: false,
+        });
+      });
   }
 
   render() {
     const { navigation, comments } = this.props;
-    const { content } = this.state;
+    const { content, commenting } = this.state;
     return (
       <Container behavior="padding">
         <Header>
@@ -93,6 +105,7 @@ class CommentFeedScreen extends React.Component {
           initialNumToRender={10}
         />
         <PostCommentInput
+          submitting={commenting}
           content={content}
           onSubmit={this.handleCommentSubmit.bind(this)}
           onChange={this.handleCommentChange.bind(this)}
