@@ -12,6 +12,7 @@ import PostSocialStats from "../components/askip/PostSocialStats";
 import { assetsUrl, apiUrl } from "../helpers";
 import { getPostComments, getPostCommentsLoading } from "../store/selectors/comment";
 import { fetchPostComment, addComment } from "../store/actions/comments";
+import CommentItem from "../components/askip/CommentItem";
 
 class PostScreen extends React.Component {
   state = {
@@ -45,16 +46,7 @@ class PostScreen extends React.Component {
   }
 
   renderComment({ item }) {
-    return (
-      <CommentWrapper>
-        <CommentAuthorAvatar source={{ uri: item.author.avatar }} />
-        <CommentBodyWrapper>
-          <CommentAuthorName>{item.author.name}</CommentAuthorName>
-          <CommentContent>{item.content}</CommentContent>
-          <CommentDate>{moment(item.created_at).fromNow()}</CommentDate>
-        </CommentBodyWrapper>
-      </CommentWrapper>
-    );
+    return <CommentItem comment={item} navigation={this.props.navigation} />;
   }
 
   _handleRefresh() {
@@ -152,35 +144,6 @@ const PostPicture = styled.Image`
 `;
 
 const Content = styled.FlatList``;
-const CommentWrapper = styled.View`
-  flex-direction: row;
-  padding: 0 10px;
-  margin-bottom: 10px;
-`;
-const CommentBodyWrapper = styled.View`
-  background-color: ${darkLighten};
-  padding: 7.5px;
-  border-radius: 15px;
-  max-width: 270px;
-`;
-const CommentContent = styled.Text`
-  color: #fff;
-  margin-bottom: 5px;
-`;
-const CommentDate = styled.Text`
-  color: #fff;
-  font-size: 10px;
-`;
-const CommentAuthorName = styled.Text`
-  color: #fff;
-  font-weight: bold;
-`;
-const CommentAuthorAvatar = styled.Image`
-  width: 40px;
-  height: 40px;
-  border-radius: 20px;
-  margin-right: 10px;
-`;
 
 const CommentFormWrapper = styled.View`
   flex-direction: row;

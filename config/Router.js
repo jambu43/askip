@@ -8,6 +8,7 @@ import {
 import LoginScreen from "../screens/LoginScreen";
 import CreatePostScreen from "../screens/CreatePostScreen";
 import PostScreen from "../screens/PostScreen";
+import CommentFeedScreen from "../screens/CommentFeedScreen";
 import MagazineScreen from "../screens/MagazineScreen";
 import ExplorerScreen from "../screens/ExplorerScreen";
 import DashboardScreen from "../screens/DashboardScreen";
@@ -99,6 +100,10 @@ const ExplorerStack = createStackNavigator(
       path: "posts/:post_id",
       screen: PostScreen,
     },
+    Comment: {
+      path: "comments/:comment_id",
+      screen: CommentFeedScreen,
+    },
     Explorer: {
       path: "posts",
       screen: ExplorerScreen,
@@ -185,16 +190,29 @@ HomeStack.navigationOptions = ({ navigation }) => {
 
 const HomeTabNavigator = createBottomTabNavigator(
   {
-    Home: HomeStack,
-    Explorer: ExplorerStack,
+    Home: {
+      screen: HomeStack,
+      navigationOptions: {
+        tabBarLabel: "Média",
+      },
+    },
+    Explorer: {
+      screen: ExplorerStack,
+      navigationOptions: {
+        tabBarLabel: "Explorer",
+      },
+    },
     CreatePost: {
       screen: CreatePostScreen,
-      label: "Askip",
+      navigationOptions: {
+        tabBarLabel: "Nouveau",
+      },
     },
-    Notifications: NotificationsScreen,
     Dashboard: {
       screen: DashboardScreen,
-      label: "Moi",
+      navigationOptions: {
+        tabBarLabel: "Moi",
+      },
     },
   },
   {
@@ -218,7 +236,7 @@ const HomeTabNavigator = createBottomTabNavigator(
     tabBarOptions: {
       activeTintColor: "#fff",
       inactiveTintColor: "#92929d",
-      showLabel: false,
+      showLabel: true,
       style: {
         backgroundColor: dark,
       },
