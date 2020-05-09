@@ -1,14 +1,15 @@
 import { NavigationActions } from "react-navigation";
 
 export const cutText = (text, length, more = "...") => {
+  text = text ? text : "";
   return `${text.length > length ? text.slice(0, length) + more : text}`;
 };
 
-export const apiUrl = pathname => {
+export const apiUrl = (pathname) => {
   return `http://askip.ngangeli.com/api/v1/${pathname}`;
 };
 
-export const assetsUrl = pathname => {
+export const assetsUrl = (pathname) => {
   return `http://askip.ngangeli.com/storage/${pathname}`;
 };
 
