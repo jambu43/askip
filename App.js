@@ -1,6 +1,7 @@
 import React from "react";
 import { Provider } from "react-redux";
 import Rooter from "./config/Router";
+import moment from "./config/moment";
 import store from "./store/createStore";
 console.disableYellowBox = true;
 
