@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { darkLighten } from "../../config/variables";
 import moment from "moment";
 
-export default ({ comment, navigation }) => {
+export default ({ comment, navigation, showFeedBackButton = true }) => {
   return (
     <CommentWrapper>
       <CommentAuthorAvatar source={{ uri: comment.author.avatar }} />
@@ -13,15 +13,19 @@ export default ({ comment, navigation }) => {
           <CommentContent>{comment.content}</CommentContent>
           <CommentDate>{moment(comment.created_at).fromNow()}</CommentDate>
         </CommentBody>
-        <CommentFeedBackButton
-          onPress={() => navigation.navigate("Comment", { comment_id: comment.id })}
-        >
-          <CommentFeedBackButtonText>
-            {comment.commentsCount
-              ? `${comment.commentsCount} réponses`
-              : `Répondre à ${comment.author.name}`}
-          </CommentFeedBackButtonText>
-        </CommentFeedBackButton>
+        {showFeedBackButton ? (
+          <CommentFeedBackButton
+            onPress={() =>
+              navigation.navigate("Comment", { comment_id: comment.id, post_id: comment.post_id })
+            }
+          >
+            <CommentFeedBackButtonText>
+              {comment.commentsCount
+                ? `${comment.commentsCount} réponses`
+                : `Répondre à ${comment.author.name}`}
+            </CommentFeedBackButtonText>
+          </CommentFeedBackButton>
+        ) : null}
       </CommentBodyWrapper>
     </CommentWrapper>
   );

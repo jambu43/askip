@@ -13,6 +13,7 @@ import { assetsUrl, apiUrl } from "../helpers";
 import { getPostComments, getPostCommentsLoading } from "../store/selectors/comment";
 import { fetchPostComment, addComment } from "../store/actions/comments";
 import CommentItem from "../components/askip/CommentItem";
+import PostCommentInput from "../components/askip/PostCommentInput";
 
 class PostScreen extends React.Component {
   state = {
@@ -106,17 +107,11 @@ class PostScreen extends React.Component {
           onEndReachedThreshold={0.5}
           initialNumToRender={10}
         />
-        <CommentFormWrapper>
-          <CommentInput
-            placeholder="Votre commentaire..."
-            value={content}
-            multiline={true}
-            onChangeText={this.handleCommentChange.bind(this)}
-          />
-          <CommentSendButton disabled={!content} onPress={this.handleCommentSubmit.bind(this)}>
-            <CommentSendButtonText>Envoyer</CommentSendButtonText>
-          </CommentSendButton>
-        </CommentFormWrapper>
+        <PostCommentInput
+          content={content}
+          onSubmit={this.handleCommentSubmit.bind(this)}
+          onChange={this.handleCommentChange.bind(this)}
+        />
         <View style={{ height: 0 }} />
       </Container>
     );
@@ -144,22 +139,6 @@ const PostPicture = styled.Image`
 `;
 
 const Content = styled.FlatList``;
-
-const CommentFormWrapper = styled.View`
-  flex-direction: row;
-  align-items: center;
-  padding: 15px;
-  border-top-color: ${darkLighten};
-  border-top-width: 1px;
-`;
-const CommentInput = styled.TextInput`
-  flex: 1;
-  color: #fff;
-`;
-const CommentSendButton = styled.TouchableOpacity``;
-const CommentSendButtonText = styled.Text`
-  color: #fff;
-`;
 
 const mapStateToProps = (state, props) => {
   return {
