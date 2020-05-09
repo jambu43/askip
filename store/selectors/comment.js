@@ -15,6 +15,15 @@ export const getPostComments = createSelector(
   }
 );
 
+export const getCommentFeed = createSelector(
+  [_getCommentId, _getPostComments],
+  (comment_id, post_comments) => {
+    let comments = Object.values(post_comments);
+    comments = comments.filter((item) => item.comment_id == comment_id);
+    return orderBy(comments, "created_at", "desc");
+  }
+);
+
 export const getPostCommentsLoading = createSelector(
   [_getPostId, _getPostCommentsLoading],
   (post_id, post_comment_loading) => {

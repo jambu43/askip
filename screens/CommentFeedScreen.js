@@ -4,25 +4,50 @@ import { dark } from "../config/variables";
 import { connect } from "react-redux";
 import { TouchableOpacity, View } from "react-native";
 import { BackIcon } from "../components/Icons";
-import { getCommentById } from "../store/selectors/comment";
+import { getCommentById, getCommentFeed } from "../store/selectors/comment";
 import CommentItem from "../components/askip/CommentItem";
 import PostCommentInput from "../components/askip/PostCommentInput";
+import { addComment, fetchCommentFeed } from "../store/actions/comments";
 
 class CommentFeedScreen extends React.Component {
   state = {
     content: "",
+    page: 1,
   };
-
-  _handleRefresh() {}
 
   renderHeader() {
     const { navigation, comment } = this.props;
     return <CommentItem comment={comment} navigation={navigation} showFeedBackButton={false} />;
   }
 
-  renderComment() {}
+  renderComment({ item }) {
+    const { navigation } = this.props;
+    return (
+      <CommentItem
+        setBack={true}
+        comment={item}
+        navigation={navigation}
+        showFeedBackButton={false}
+      />
+    );
+  }
 
-  _handleLoadMore() {}
+  _handleRefresh() {
+    let comment_id = this.props.navigation.getParam("comment_id");
+    this.props.fetchCommentFeed(comment_id, 1);
+  }
+
+  _handleLoadMore() {
+    let comment_id = this.props.navigation.getParam("comment_id");
+    this.setState(
+      (prevState, nextProps) => ({
+        page: prevState.page + 1,
+      }),
+      () => {
+        this.props.fetchCommentFeed(comment_id, this.state.page);
+      }
+    );
+  }
 
   handleCommentChange(text) {
     this.setState({
@@ -31,9 +56,11 @@ class CommentFeedScreen extends React.Component {
   }
 
   handleCommentSubmit() {
-    let post_id = this.props.navigation.getParam("comment_id");
+    let comment_id = this.props.navigation.getParam("comment_id");
+    let post_id = this.props.navigation.getParam("post_id");
     this.props.addComment(post_id, {
       content: this.state.content,
+      comment_id,
     });
 
     this.setState({
@@ -42,7 +69,7 @@ class CommentFeedScreen extends React.Component {
   }
 
   render() {
-    const { navigation, comment } = this.props;
+    const { navigation, comments } = this.props;
     const { content } = this.state;
     return (
       <Container behavior="padding">
@@ -54,8 +81,8 @@ class CommentFeedScreen extends React.Component {
         </Header>
         <Content
           keyExtractor={(item) => item.id.toString()}
-          extraData={[]}
-          data={[]}
+          extraData={comments}
+          data={comments}
           refreshing={false}
           onRefresh={this._handleRefresh.bind(this)}
           ListHeaderComponent={this.renderHeader.bind(this)}
@@ -100,10 +127,18 @@ const HeaderTitle = styled.Text`
 
 const Content = styled.FlatList``;
 
-const mapStateToProps = (state, props) => {
+const mapDispatchToProps = (dispatch) => {
   return {
-    comment: getCommentById(state, props),
+    fetchCommentFeed: (comment_id, page) => dispatch(fetchCommentFeed(comment_id, page)),
+    addComment: (post_id, comment) => dispatch(addComment(post_id, comment)),
   };
 };
 
-export default connect(mapStateToProps)(CommentFeedScreen);
+const mapStateToProps = (state, props) => {
+  return {
+    comment: getCommentById(state, props),
+    comments: getCommentFeed(state, props),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(CommentFeedScreen);

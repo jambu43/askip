@@ -38,6 +38,22 @@ export const fetchPostComment = (post_id, page = 1) => {
   };
 };
 
+export const fetchCommentFeed = (comment_id, page = 1) => {
+  return (dispatch) => {
+    dispatch(togglePostCommentLoading(comment_id, true));
+    axios
+      .get(apiUrl(`posts/get_comment_feed/${comment_id}?page=${page}`))
+      .then(({ data }) => {
+        dispatch(setPostComments(data.data));
+        dispatch(togglePostCommentLoading(comment_id, false));
+      })
+      .catch(({ response }) => {
+        console.log(response);
+        dispatch(togglePostCommentLoading(comment_id, false));
+      });
+  };
+};
+
 export const addComment = (post_id, payload) => {
   return (dispatch) => {
     axios
@@ -45,7 +61,7 @@ export const addComment = (post_id, payload) => {
       .then(({ data }) => {
         try {
           dispatch(setPostList([data.post]));
-          dispatch(setPostComments([data.comment]));
+          dispatch(setPostComments(data.comments));
         } catch (e) {
           console.log(e);
         }

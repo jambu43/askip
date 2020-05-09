@@ -3,9 +3,9 @@ import styled from "styled-components";
 import { darkLighten } from "../../config/variables";
 import moment from "moment";
 
-export default ({ comment, navigation, showFeedBackButton = true }) => {
+export default ({ comment, navigation, showFeedBackButton = true, setBack = false }) => {
   return (
-    <CommentWrapper>
+    <CommentWrapper setBack={setBack}>
       <CommentAuthorAvatar source={{ uri: comment.author.avatar }} />
       <CommentBodyWrapper>
         <CommentBody>
@@ -35,6 +35,7 @@ const CommentWrapper = styled.View`
   flex-direction: row;
   padding: 0 10px;
   margin-bottom: 10px;
+  padding-left: ${(props) => (props.setBack ? "60px" : "10px")};
 `;
 const CommentBodyWrapper = styled.View``;
 const CommentBody = styled.View`
