@@ -68,6 +68,12 @@ class LoginScreen extends React.Component {
           <ButtonIcon source={require("../assets/facebook.png")}></ButtonIcon>
           <ButtonFacebookText>CONTINUER AVEC FACEBOOK</ButtonFacebookText>
         </ButtonFacebook>
+
+        <ButtonGmail disabled={isLoggingIn} onPress={() => navigation.navigate("HomeStack")}>
+          <ButtonIcon source={require("../assets/google.png")}></ButtonIcon>
+          <ButtonGmailText>CONTINUER AVEC GMAIL</ButtonGmailText>
+        </ButtonGmail>
+
         {isLoggingIn ? (
           <LoadingMessage>
             <ActivityIndicator color={danger} />
@@ -79,13 +85,13 @@ class LoginScreen extends React.Component {
   }
 }
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
-    registerUser: payload => dispatch(registerUser(payload)),
+    registerUser: (payload) => dispatch(registerUser(payload)),
     toggleIsLoggingIn: () => dispatch(toggleIsLoggingIn()),
   };
 };
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
     isLoggingIn: state.auth.isLoggingIn,
     isLoggedIn: state.auth.isLoggedIn,
