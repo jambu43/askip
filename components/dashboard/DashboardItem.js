@@ -6,7 +6,7 @@ export default ({ title, count, isBadge, onPress, even }) => {
   return (
     <Container even={even} onPress={onPress}>
       <Title>{title}</Title>
-      <Counter isBadge={isBadge}>{count}</Counter>
+      {count ? <Counter isBadge={isBadge}>{count}</Counter> : null}
     </Container>
   );
 };

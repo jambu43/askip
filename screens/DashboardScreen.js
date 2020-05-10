@@ -74,7 +74,7 @@ class DashboardScreen extends React.Component {
           <View>
             <DashboardItem
               title="Mes notifications"
-              count={user.followees_count}
+              count={user.notifications_count}
               isBadge={true}
               onPress={() => navigation.navigate("Notifications")}
             />

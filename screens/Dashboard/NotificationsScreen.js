@@ -54,6 +54,7 @@ class NotificationsScreen extends React.Component {
 
   render() {
     const { navigation, notifications, notifications_loading } = this.props;
+    console.log(notifications);
     return (
       <Container>
         <AppHeader navigation={navigation} showBack={true} showAvatar={false} />
@@ -61,7 +62,7 @@ class NotificationsScreen extends React.Component {
           keyExtractor={(item) => item.id.toString()}
           extraData={notifications}
           data={notifications}
-          ListFooterComponent={this._renderEmptyList}
+          ListEmptyComponent={this._renderEmptyList}
           refreshing={notifications_loading}
           onRefresh={this._handleRefresh.bind(this)}
           renderItem={this._renderNotification.bind(this)}
@@ -86,7 +87,9 @@ const EmptyNotificationWrapper = styled.View`
   min-height: 400px;
 `;
 
-const Content = styled.FlatList``;
+const Content = styled.FlatList`
+  padding: 10px;
+`;
 
 const Image = styled.Image`
   height: 240px;
