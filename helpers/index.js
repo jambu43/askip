@@ -10,7 +10,13 @@ export const apiUrl = (pathname) => {
 };
 
 export const assetsUrl = (pathname) => {
-  return `http://askip.ngangeli.com/storage/${pathname}`;
+  if (pathname) {
+    if (pathname.match("^file://")) return pathname;
+    if (pathname.match("^http://") || pathname.match("^https://")) return pathname;
+    return `http://askip.ngangeli.com/storage/${pathname}`;
+  }
+
+  return `http://askip.ngangeli.com/storage/`;
 };
 
 export const simplePlural = (count, plural, singular) => {

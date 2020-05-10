@@ -2,16 +2,76 @@ import React from "react";
 import styled from "styled-components";
 import AppHeader from "../../components/generic/AppHeader";
 import { dark } from "../../config/variables";
+import { connect } from "react-redux";
+import { getUserFollowees } from "../../store/selectors/user";
+import { fetchUserFollowees } from "../../store/actions/users";
+import UserCard from "../../components/user/UserCard";
 
-export default class UserFolloweesScreen extends React.Component {
+class UserFolloweesScreen extends React.Component {
+  state = {
+    page: 1,
+  };
+
+  componentDidMount() {
+    this.fetchUserFollowees();
+  }
+
+  _handleRefresh() {
+    this.setState({
+      page: 1,
+    });
+    this.fetchUserFollowees();
+  }
+
+  _handleLoadMore = () => {
+    this.setState(
+      (prevState, nextProps) => ({
+        page: prevState.page + 1,
+      }),
+      () => {
+        this.fetchUserFollowees(this.state.page);
+      }
+    );
+  };
+
+  fetchUserFollowees() {
+    this.props.fetchUserFollowees(this.state.page);
+  }
+
+  _renderFollower({ item }) {
+    return <UserCard user={item} navigation={this.props.navigation} />;
+  }
+
+  renderHeader() {
+    return (
+      <ContentHeader>
+        <ContentHeaderTitle>Mes abonnements</ContentHeaderTitle>
+        <ContentHeaderDescription>
+          Les réseaux sociaux, c'est l'amitié sans engagement.
+        </ContentHeaderDescription>
+      </ContentHeader>
+    );
+  }
+
   render() {
-    const { navigation } = this.props;
+    const { navigation, followees, followees_loading } = this.props;
     return (
       <Container>
         <AppHeader navigation={navigation} showBack={true} showAvatar={false} />
-        <Content>
-          <Text>Vous n'avez auccune notification pour le moment.</Text>
-        </Content>
+        <Content
+          keyExtractor={(item) => item.id.toString()}
+          extraData={followees}
+          data={followees}
+          refreshing={followees_loading}
+          onRefresh={this._handleRefresh.bind(this)}
+          renderItem={this._renderFollower.bind(this)}
+          ListHeaderComponent={this.renderHeader.bind(this)}
+          showsVerticalScrollIndicator={true}
+          numColumns={2}
+          onEndReached={this._handleLoadMore.bind(this)}
+          onEndReachedThreshold={1}
+          initialNumToRender={10}
+        />
       </Container>
     );
   }
@@ -21,30 +81,35 @@ const Container = styled.View`
   flex: 1;
   background: ${dark};
 `;
+const Content = styled.FlatList``;
 
-const Content = styled.View`
-  flex: 1;
-  justify-content: center;
+const ContentHeader = styled.View`
+  width: 100%;
+  margin-bottom: 10px;
+  padding: 0px 10px;
 `;
-
-const Image = styled.Image`
-  height: 240px;
-  width: 240px;
-  margin: 0 auto;
-  margin-bottom: 25px;
-`;
-
-const Title = styled.Text`
-  font-size: 30px;
+const ContentHeaderTitle = styled.Text`
+  color: #fff;
+  font-size: 25px;
   font-weight: bold;
-  line-height: 32px;
+  margin-bottom: 10px;
+`;
+const ContentHeaderDescription = styled.Text`
   color: #fff;
-  margin-bottom: 15px;
-  text-align: center;
+  font-size: 18px;
 `;
 
-const Text = styled.Text`
-  color: #fff;
-  margin-bottom: 15px;
-  text-align: center;
-`;
+const mapStateToProps = (state, props) => {
+  return {
+    followees: getUserFollowees(state, props),
+    followees_loading: state.user.currentUserFolloweesLoading,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    fetchUserFollowees: (page) => dispatch(fetchUserFollowees(page)),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(UserFolloweesScreen);

@@ -34,7 +34,7 @@ export const setCurrentUserFollowees = (users) => {
   return {
     type: SET_CURRENT_USER_FOLLOWEES,
     payload: {
-      user: users,
+      users: users,
     },
   };
 };
@@ -43,7 +43,7 @@ export const setCurrentUserFollowers = (users) => {
   return {
     type: SET_CURRENT_USER_FOLLOWERS,
     payload: {
-      user: users,
+      users: users,
     },
   };
 };
@@ -119,7 +119,7 @@ export const fetchUserFollowers = (page = 1) => {
         dispatch(toggleCurrentUserFollowersLoading(false));
       })
       .catch(({ response }) => {
-        console.log(response);
+        console.log("response", response);
         dispatch(toggleCurrentUserFollowersLoading(false));
       });
   };

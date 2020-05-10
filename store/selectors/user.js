@@ -24,7 +24,7 @@ export const getUserFollowers = createSelector([_getUserFollowers], (followers) 
   return orderBy(followersCollection, "name", "asc");
 });
 
-export const getUserFollowees = createSelector([_getUserFollowees], (followers) => {
-  let followersCollection = Object.values(followers);
-  return orderBy(followersCollection, "name", "asc");
+export const getUserFollowees = createSelector([_getUserFollowees], (followees) => {
+  let followeesCollection = Object.values(followees);
+  return orderBy(followeesCollection, "name", "asc");
 });
