@@ -2,23 +2,62 @@ import React from "react";
 import { connect } from "react-redux";
 import styled from "styled-components";
 import * as Facebook from "expo-facebook";
+import * as Google from "expo-google-app-auth";
+
 import { registerUser, toggleIsLoggingIn } from "../store/actions/auth";
 import { NavigationActions, StackActions } from "react-navigation";
 import { ActivityIndicator } from "react-native";
 import { danger } from "../config/variables";
 
+import { GOOGLE_ANDROID_CLIENT_ID, GOOGLE_IOS_CLIENT_ID, FACEBOOK_APP_ID } from "../config/env";
+
 class LoginScreen extends React.Component {
+  async handleGoogleLoginClick() {
+    await this.props.toggleIsLoggingIn();
+    try {
+      const result = await Google.logInAsync({
+        androidClientId: GOOGLE_ANDROID_CLIENT_ID,
+        iosClientId: GOOGLE_IOS_CLIENT_ID,
+        iosStandaloneAppClientId: GOOGLE_IOS_CLIENT_ID,
+        androidStandaloneAppClientId: GOOGLE_ANDROID_CLIENT_ID,
+        scopes: ["profile", "email"],
+      });
+      if (result.type === "success") {
+        const user = result.user;
+        this.props
+          .registerUser({
+            avatar: user.photoUrl,
+            email: user.email,
+            name: `${user.givenName} ${user.familyName}`,
+            email: user.email,
+            social_auth_provider: "google",
+            social_auth_id: user.id,
+          })
+          .then(() => {
+            this.goToHomeScreen();
+          })
+          .catch(() => {
+            this.props.toggleIsLoggingIn();
+          });
+      } else {
+        this.props.toggleIsLoggingIn();
+      }
+    } catch (e) {
+      this.props.toggleIsLoggingIn();
+    }
+  }
+
   async handleLoginClick() {
     try {
       this.props.toggleIsLoggingIn();
-      Facebook.initializeAsync("458865114989418");
+      Facebook.initializeAsync(FACEBOOK_APP_ID);
       const {
         type,
         token,
         expires,
         permissions,
         declinedPermissions,
-      } = await Facebook.logInWithReadPermissionsAsync("458865114989418", {
+      } = await Facebook.logInWithReadPermissionsAsync(FACEBOOK_APP_ID, {
         permissions: ["public_profile", "email"],
       });
       if (type === "success") {
@@ -69,7 +108,7 @@ class LoginScreen extends React.Component {
           <ButtonFacebookText>CONTINUER AVEC FACEBOOK</ButtonFacebookText>
         </ButtonFacebook>
 
-        <ButtonGmail disabled={isLoggingIn} onPress={() => navigation.navigate("HomeStack")}>
+        <ButtonGmail disabled={isLoggingIn} onPress={this.handleGoogleLoginClick.bind(this)}>
           <ButtonIcon source={require("../assets/google.png")}></ButtonIcon>
           <ButtonGmailText>CONTINUER AVEC GMAIL</ButtonGmailText>
         </ButtonGmail>
