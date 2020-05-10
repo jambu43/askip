@@ -1,5 +1,13 @@
 import axios from "../../config/axios";
-import { SET_USER, SET_USER_LOADING, SET_USERS } from "../types/user";
+import {
+  SET_USER,
+  SET_USER_LOADING,
+  SET_USERS,
+  SET_CURRENT_USER_FOLLOWEES,
+  SET_CURRENT_USER_FOLLOWERS,
+  TOGGLE_CURRENT_USER_FOLLOWEES_LOADING,
+  TOGGLE_CURRENT_USER_FOLLOWERS_LOADING,
+} from "../types/user";
 import { apiUrl } from "../../helpers";
 import { toggleUserFollowees } from "./auth";
 import { togglePostLiking, setPosts, setPostList } from "./post";
@@ -22,11 +30,47 @@ export const setUsers = (users) => {
   };
 };
 
+export const setCurrentUserFollowees = (users) => {
+  return {
+    type: SET_CURRENT_USER_FOLLOWEES,
+    payload: {
+      user: users,
+    },
+  };
+};
+
+export const setCurrentUserFollowers = (users) => {
+  return {
+    type: SET_CURRENT_USER_FOLLOWERS,
+    payload: {
+      user: users,
+    },
+  };
+};
+
 export const setUserLoading = (user_id, isLoading) => {
   return {
     type: SET_USER_LOADING,
     payload: {
       user_id,
+      isLoading,
+    },
+  };
+};
+
+export const toggleCurrentUserFolloweesLoading = (isLoading) => {
+  return {
+    type: TOGGLE_CURRENT_USER_FOLLOWEES_LOADING,
+    payload: {
+      isLoading,
+    },
+  };
+};
+
+export const toggleCurrentUserFollowersLoading = (isLoading) => {
+  return {
+    type: TOGGLE_CURRENT_USER_FOLLOWERS_LOADING,
+    payload: {
       isLoading,
     },
   };
@@ -61,6 +105,38 @@ export const fetchUserById = (user_id) => {
       .catch(({ response }) => {
         console.log(response);
         dispatch(setUserLoading(user_id, false));
+      });
+  };
+};
+
+export const fetchUserFollowers = (page = 1) => {
+  return function (dispatch) {
+    dispatch(toggleCurrentUserFollowersLoading(true));
+    axios
+      .get(apiUrl(`profile/followers?page=${page}`))
+      .then(({ data }) => {
+        dispatch(setCurrentUserFollowers(data.data));
+        dispatch(toggleCurrentUserFollowersLoading(false));
+      })
+      .catch(({ response }) => {
+        console.log(response);
+        dispatch(toggleCurrentUserFollowersLoading(false));
+      });
+  };
+};
+
+export const fetchUserFollowees = (page = 1) => {
+  return function (dispatch) {
+    dispatch(toggleCurrentUserFolloweesLoading(true));
+    axios
+      .get(apiUrl(`profile/followees?page=${page}`))
+      .then(({ data }) => {
+        dispatch(setCurrentUserFollowees(data.data));
+        dispatch(toggleCurrentUserFolloweesLoading(false));
+      })
+      .catch(({ response }) => {
+        console.log(response);
+        dispatch(toggleCurrentUserFolloweesLoading(false));
       });
   };
 };

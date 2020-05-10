@@ -2,8 +2,19 @@ import React from "react";
 import styled from "styled-components";
 import AppHeader from "../../components/generic/AppHeader";
 import { dark } from "../../config/variables";
+import { connect } from "react-redux";
+import { getUserFollowers } from "../../store/selectors/user";
+import { fetchUserFollowers } from "../../store/actions/users";
 
-export default class UserFollowersScreen extends React.Component {
+class UserFollowersScreen extends React.Component {
+  state = {
+    page: 1,
+  };
+
+  componentDidMount() {
+    this.props.fetchUserFollowers(1);
+  }
+
   render() {
     const { navigation } = this.props;
     return (
@@ -48,3 +59,18 @@ const Text = styled.Text`
   margin-bottom: 15px;
   text-align: center;
 `;
+
+const mapStateToProps = (state, props) => {
+  return {
+    followers: getUserFollowers(state, props),
+    followers_loading: state.user.currentUserFollowersLoading,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    fetchUserFollowers: (page) => dispatch(fetchUserFollowers(page)),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(UserFollowersScreen);
