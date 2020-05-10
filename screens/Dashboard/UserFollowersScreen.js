@@ -1,16 +1,15 @@
 import React from "react";
 import styled from "styled-components";
-import AppHeader from "../components/generic/AppHeader";
-import { dark } from "../config/variables";
+import AppHeader from "../../components/generic/AppHeader";
+import { dark } from "../../config/variables";
 
-export default class NotificationsScreen extends React.Component {
+export default class UserFollowersScreen extends React.Component {
   render() {
+    const { navigation } = this.props;
     return (
       <Container>
-        <AppHeader />
+        <AppHeader navigation={navigation} showBack={true} showAvatar={false} />
         <Content>
-          <Image source={require("../assets/notifications.png")} />
-          <Title> Aucune notification </Title>
           <Text>Vous n'avez auccune notification pour le moment.</Text>
         </Content>
       </Container>

@@ -19,7 +19,7 @@ import PodcastScreen from "../screens/PodcastScreen";
 import PodcastsScreen from "../screens/PodcastsScreen";
 import NewsScreen from "../screens/NewsScreen";
 import ProfileScreen from "../screens/ProfileScreen";
-import NotificationsScreen from "../screens/NotificationsScreen";
+import NotificationsScreen from "../screens/Dashboard/NotificationsScreen";
 import MyPublicationScreen from "../screens/MyPublicationScreen";
 import WelcomeScreen from "../screens/WelcomeScreen";
 import UserAvatar from "../components/generic/UserAvatar";
@@ -30,6 +30,9 @@ import MagazineRecentlyRead from "../screens/MagazineRecentlyRead";
 import AddPostIcon from "../components/generic/AddPostIcon";
 import MagazinesScreen from "../screens/MagazinesScreen";
 import NewsExplorerScreen from "../screens/NewsExplorerScreen";
+import UserFollowersScreen from "../screens/Dashboard/UserFollowersScreen";
+import UserFolloweesScreen from "../screens/Dashboard/UserFolloweesScreen";
+import UserPublicationsScreen from "../screens/Dashboard/UserPublicationsScreen";
 
 const BottomTransition = (index, position, height) => {
   const sceneRange = [index - 1, index, index + 1];
@@ -193,6 +196,38 @@ HomeStack.navigationOptions = ({ navigation }) => {
   };
 };
 
+const DashboardStack = createStackNavigator(
+  {
+    Dashboard: {
+      screen: DashboardScreen,
+      navigationOptions: {
+        tabBarLabel: "Moi",
+      },
+    },
+    Notifications: {
+      path: "article",
+      screen: NotificationsScreen,
+    },
+    UserFollowers: {
+      path: "user_followers",
+      screen: UserFollowersScreen,
+    },
+    UserFollowees: {
+      path: "user_followees",
+      screen: UserFolloweesScreen,
+    },
+    UserPublications: {
+      path: "user_followees",
+      screen: UserPublicationsScreen,
+    },
+  },
+  {
+    initialRouteName: "Dashboard",
+    headerMode: "none",
+    transitionConfig: configNavigation,
+  }
+);
+
 const HomeTabNavigator = createBottomTabNavigator(
   {
     Home: {
@@ -214,7 +249,7 @@ const HomeTabNavigator = createBottomTabNavigator(
       },
     },
     Dashboard: {
-      screen: DashboardScreen,
+      screen: DashboardStack,
       navigationOptions: {
         tabBarLabel: "Moi",
       },

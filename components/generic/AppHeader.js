@@ -5,10 +5,12 @@ import { TouchableOpacity, View } from "react-native";
 import { BackIcon } from "../Icons";
 import { dark } from "../../config/variables";
 
-const AppHeader = ({ showAvatar = true, showBack = false, user }) => (
+const AppHeader = ({ showAvatar = true, showBack = false, navigation }) => (
   <Container>
     <Wrapper centerLogo={showAvatar}>
-      {showBack && <BackIcon size={24} />}
+      <TouchableOpacity onPress={() => navigation.goBack()}>
+        {showBack && <BackIcon fill="#fff" size={24} />}
+      </TouchableOpacity>
       {showAvatar && (
         <TouchableOpacity>
           <Logo source={require("../../assets/askip.png")} />
@@ -19,7 +21,7 @@ const AppHeader = ({ showAvatar = true, showBack = false, user }) => (
 );
 
 const Container = styled.View`
-  padding: 10px 20px;
+  padding: 10px 10px;
   width: 100%;
   flex-direction: row;
   justify-content: space-between;
@@ -36,7 +38,7 @@ const MenuIcon = styled.Image`
 const Wrapper = styled.View`
   flex-direction: row;
   align-items: center;
-  justify-content: ${props => (props.centerLogo ? "center" : "space-between")};
+  justify-content: ${(props) => (props.centerLogo ? "center" : "space-between")};
   flex: 1;
 `;
 const Logo = styled.Image`
@@ -45,7 +47,7 @@ const Logo = styled.Image`
   border-radius: 17px;
 `;
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
     user: state.auth.user,
   };

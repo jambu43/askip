@@ -1,18 +1,17 @@
 import React from "react";
 import styled from "styled-components";
 import AppHeader from "../components/generic/AppHeader";
-import { dark } from "../config/variables";
-import UserMagazine from "../components/home/UserMagazine";
-import { ScrollView } from "react-native-gesture-handler";
+import { dark, darkLighten } from "../config/variables";
+import { ScrollView } from "react-native";
 import { connect } from "react-redux";
 import { fetchLatestMagazineReleases } from "../store/actions/magazines";
 import { fetchLatestArticles } from "../store/actions/articles";
 import { getMagazinesReleases } from "../store/selectors/magazine";
-import PostList from "../components/askip/PostList";
 import { RefreshControl, View } from "react-native";
 import { fetchMe } from "../store/actions/auth";
 import { getUsersPosts } from "../store/selectors/post";
 import { fetchUserPosts } from "../store/actions/post";
+import DashboardItem from "../components/dashboard/DashboardItem";
 
 class DashboardScreen extends React.Component {
   constructor(props) {
@@ -53,47 +52,50 @@ class DashboardScreen extends React.Component {
           }
         >
           <Card>
-            <Count>
-              <Avatar source={{ uri: user.avatar }} />
-              <Username>{user.name}</Username>
-            </Count>
+            <Avatar source={{ uri: user.avatar }} />
             <Information>
-              <Publication>
-                <Number>{user.posts_count}</Number>
-                <Title>Publications</Title>
-              </Publication>
-              <Publication>
-                <Number>{user.followers_count}</Number>
-                <Title>Abonnés</Title>
-              </Publication>
-              <Publication>
-                <Number>{user.followees_count}</Number>
-                <Title>Abonnements</Title>
-              </Publication>
+              <Username>{user.name}</Username>
+              <CountWrapper>
+                <Publication>
+                  <Number>{user.posts_count}</Number>
+                  <Title>Publications</Title>
+                </Publication>
+                <Publication>
+                  <Number>{user.followers_count}</Number>
+                  <Title>Abonnés</Title>
+                </Publication>
+                <Publication>
+                  <Number>{user.followees_count}</Number>
+                  <Title>Abonnements</Title>
+                </Publication>
+              </CountWrapper>
             </Information>
           </Card>
-
-          <MagazineRecentlyRead>Mes Magazine</MagazineRecentlyRead>
-          <CenterMagazineContent>
-            <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-              {magazines_publication_releases
-                .filter((item) => user.publication_releases_read.includes(item.id.toString()))
-                .map((magazine) => (
-                  <UserMagazine navigation={navigation} magazine={magazine} key={magazine.id} />
-                ))}
-            </ScrollView>
-          </CenterMagazineContent>
-          {user_posts.length ? (
-            <View>
-              <MagazineRecentlyRead>Mes publications</MagazineRecentlyRead>
-              <PostList
-                post_loading={isUserFetching}
-                onRefresh={() => {}}
-                navigation={navigation}
-                posts={user_posts}
-              />
-            </View>
-          ) : null}
+          <View>
+            <DashboardItem
+              title="Mes notifications"
+              count={user.followees_count}
+              isBadge={true}
+              onPress={() => navigation.navigate("Notifications")}
+            />
+            <DashboardItem
+              even={true}
+              title="Mes publications"
+              count={user.posts_count}
+              onPress={() => navigation.navigate("UserPublications")}
+            />
+            <DashboardItem
+              title="Mes abonnés"
+              count={user.followers_count}
+              onPress={() => navigation.navigate("UserFollowers")}
+            />
+            <DashboardItem
+              even={true}
+              title="Mes abonnements"
+              count={user.followees_count}
+              onPress={() => navigation.navigate("UserFollowees")}
+            />
+          </View>
         </ScrollView>
       </Container>
     );
@@ -128,15 +130,15 @@ const Card = styled.View`
   margin: 10px 10px;
   flex-direction: row;
 `;
-const Count = styled.View``;
+const CountWrapper = styled.View`
+  flex-direction: row;
+`;
 
 const Username = styled.Text`
   color: #fff;
-  text-align: center;
-  margin-top: 10px;
-  font-size: 13px;
-  font-weight: 800;
-  width: 100px;
+  margin-left: 10px;
+  font-size: 20px;
+  font-weight: bold;
 `;
 
 const Avatar = styled.Image`
@@ -147,8 +149,7 @@ const Avatar = styled.Image`
 `;
 
 const Information = styled.View`
-  margin-top: 32px;
-  flex-direction: row;
+  margin-top: 10px;
 `;
 
 const Publication = styled.View`
@@ -167,16 +168,8 @@ const Title = styled.Text`
   color: #ffffff;
   padding-left: 3px;
 `;
-const MagazineRecentlyRead = styled.Text`
-  font-size: 20px;
-  font-weight: bold;
-  margin-bottom: 10px;
-  margin-top: 10px;
-  color: #fff;
-  text-transform: uppercase;
-  margin-left: 10px;
-`;
 
-const CenterMagazineContent = styled.View`
-  justify-content: center;
+const Divider = styled.View`
+  background-color: ${darkLighten};
+  padding: 5px;
 `;

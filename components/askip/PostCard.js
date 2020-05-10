@@ -14,9 +14,6 @@ class PostCard extends React.Component {
 
   render() {
     const { post, showSocialInteraction, isSharedPost, navigation } = this.props;
-    if (post.sourcePost) {
-      console.log(post.sourcePost);
-    }
     let hasSocialInteraction =
       post.post_confirmations ||
       post.post_invalidations ||
