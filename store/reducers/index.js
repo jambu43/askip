@@ -6,6 +6,8 @@ import { articleReducers } from "./articleReducers";
 import { userReducer } from "./userReducer";
 import { postReducers } from "./postReducer";
 import { commentReducers } from "./commentReducers";
+import { notificationReducers } from "./notificationReducers";
+
 export default combineReducers({
   auth: authReducers,
   magazine: magazinesReducer,
@@ -14,4 +16,5 @@ export default combineReducers({
   user: userReducer,
   post: postReducers,
   post_comment: commentReducers,
+  notification: notificationReducers,
 });

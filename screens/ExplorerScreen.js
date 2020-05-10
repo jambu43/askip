@@ -33,9 +33,6 @@ class ExplorerScreen extends React.Component {
 
     this._fetchPostData();
   }
-  _fetchPostData() {
-    this.props.fetchPosts(this.state.page);
-  }
 
   _handleLoadMore = () => {
     this.setState(
@@ -47,6 +44,10 @@ class ExplorerScreen extends React.Component {
       }
     );
   };
+
+  _fetchPostData() {
+    this.props.fetchPosts(this.state.page);
+  }
 
   _renderPost({ item, index }) {
     const { navigation } = this.props;
