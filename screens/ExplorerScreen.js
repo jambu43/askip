@@ -50,7 +50,9 @@ class ExplorerScreen extends React.Component {
 
   _renderPost({ item, index }) {
     const { navigation } = this.props;
-    return <PostCard post={item} navigation={navigation} key={item.id} />;
+    return (
+      <PostCard post={item} showSocialInteraction={true} navigation={navigation} key={item.id} />
+    );
   }
 
   render() {

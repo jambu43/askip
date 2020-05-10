@@ -14,6 +14,7 @@ import { getPostComments, getPostCommentsLoading } from "../store/selectors/comm
 import { fetchPostComment, addComment } from "../store/actions/comments";
 import CommentItem from "../components/askip/CommentItem";
 import PostCommentInput from "../components/askip/PostCommentInput";
+import PostCard from "../components/askip/PostCard";
 
 class PostScreen extends React.Component {
   state = {
@@ -28,7 +29,7 @@ class PostScreen extends React.Component {
   }
 
   renderHeader() {
-    const { post, userPost } = this.props;
+    const { post, userPost, navigation } = this.props;
     const postData = post ? post : userPost;
     let hasSocialInteraction =
       postData.post_confirmations ||
@@ -41,8 +42,11 @@ class PostScreen extends React.Component {
         {postData.image_path ? (
           <PostPicture source={{ uri: assetsUrl(postData.image_path) }} />
         ) : null}
+        {postData.sourcePost ? (
+          <PostCard showSocialInteraction={false} isSharedPost={true} post={postData.sourcePost} />
+        ) : null}
         {hasSocialInteraction ? <PostSocialStats post={postData} /> : null}
-        <PostSocialInteraction post={postData} />
+        <PostSocialInteraction navigation={navigation} post={postData} />
       </PostContentWrapper>
     );
   }

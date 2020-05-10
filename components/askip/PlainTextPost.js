@@ -4,8 +4,8 @@ import styled from "styled-components";
 export default class PlainTextPost extends React.Component {
   render() {
     const { post } = this.props;
-    let postColor = !post.image_path ? post.post_color : "transparent";
-    let isPlainTextPost = !post.image_path && post.content.length < 144;
+    let postColor = !post.image_path && post.post_color ? post.post_color : "transparent";
+    let isPlainTextPost = !post.image_path && post.content.length < 144 && !post.sourcePost;
     if (!isPlainTextPost) {
       postColor = "transparent";
     }
@@ -24,7 +24,8 @@ const PostContentWrapper = styled.View`
   height: ${(props) => (props.isPlainTextPost ? "220px" : "auto")};
   background: ${(props) => props.postColor};
   justify-content: center;
-  padding: 5px 15px;
+  padding: 0 15px;
+  margin-bottom: 10px;
 `;
 const PostContent = styled.Text`
   font-weight: ${(props) => (props.isPlainTextPost ? "bold" : 100)};

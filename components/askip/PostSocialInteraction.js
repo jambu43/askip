@@ -14,6 +14,7 @@ const PostSocialInteraction = ({
   post_liking,
   togglePostInvalidation,
   togglePostConfirmation,
+  navigation,
 }) => {
   let isPostLiking = post_liking[post.id] ? post_liking[post.id] : false;
   return (
@@ -44,7 +45,13 @@ const PostSocialInteraction = ({
           C'est faux
         </SocialInteractionTitle>
       </IconGroup>
-      <IconGroup disabled={isPostLiking} onPress={() => null}>
+      <IconGroup
+        disabled={isPostLiking}
+        onPress={() => {
+          let post_id = post.sourcePost ? post.sourcePost.id : post.id;
+          navigation.navigate("SharePost", { post_id: post_id });
+        }}
+      >
         <InteractionIcon source={require("../../assets/share-icone.png")} />
         <SocialInteractionTitle>Partager</SocialInteractionTitle>
       </IconGroup>

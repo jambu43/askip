@@ -13,14 +13,17 @@ class PostCard extends React.Component {
   handlePostShare() {}
 
   render() {
-    const { post, navigation } = this.props;
+    const { post, showSocialInteraction, isSharedPost, navigation } = this.props;
+    if (post.sourcePost) {
+      console.log(post.sourcePost);
+    }
     let hasSocialInteraction =
       post.post_confirmations ||
       post.post_invalidations ||
       post.comments_count ||
       post.post_shares_count;
     return (
-      <Container>
+      <Container isSharedPost={isSharedPost}>
         <AuthorGroup onPress={() => navigation.navigate("Profile", { user_id: post.author.id })}>
           <AuthorImage source={{ uri: post.author.avatar }} />
           <AuthorGroupDetails>
@@ -29,15 +32,21 @@ class PostCard extends React.Component {
           </AuthorGroupDetails>
         </AuthorGroup>
         <CardGroup
+          disabled={isSharedPost}
           onPress={() =>
             navigation.navigate("Post", { post_id: post.id, post_author_id: post.author.id })
           }
         >
           {post.content ? <PlainTextPost post={post} /> : null}
           {post.image_path ? <PostPicture source={{ uri: assetsUrl(post.image_path) }} /> : null}
-          {hasSocialInteraction ? <PostSocialStats post={post} /> : null}
+          {post.sourcePost ? (
+            <PostCard showSocialInteraction={false} isSharedPost={true} post={post.sourcePost} />
+          ) : null}
+          {hasSocialInteraction && showSocialInteraction ? <PostSocialStats post={post} /> : null}
         </CardGroup>
-        <PostSocialInteraction post={post} />
+        {showSocialInteraction ? (
+          <PostSocialInteraction post={post} navigation={navigation} />
+        ) : null}
       </Container>
     );
   }
@@ -45,7 +54,9 @@ class PostCard extends React.Component {
 
 const Container = styled.View`
   background: ${dark};
-  margin: 2.5px 0;
+  margin: ${(props) => (props.isSharedPost ? `0px 15px` : `2.5px 0`)};
+  border-width: ${(props) => (props.isSharedPost ? `1px` : `0px`)};
+  border-color: ${(props) => (props.isSharedPost ? `${darkLighten}` : `transparent`)};
 `;
 const PostPicture = styled.Image`
   height: 250px;

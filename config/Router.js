@@ -8,6 +8,7 @@ import {
 import LoginScreen from "../screens/LoginScreen";
 import CreatePostScreen from "../screens/CreatePostScreen";
 import PostScreen from "../screens/PostScreen";
+import SharePostScreen from "../screens/SharePostScreen";
 import CommentFeedScreen from "../screens/CommentFeedScreen";
 import MagazineScreen from "../screens/MagazineScreen";
 import ExplorerScreen from "../screens/ExplorerScreen";
@@ -103,6 +104,10 @@ const ExplorerStack = createStackNavigator(
     Comment: {
       path: "comments/:comment_id",
       screen: CommentFeedScreen,
+    },
+    SharePost: {
+      path: "post/:post_id/share",
+      screen: SharePostScreen,
     },
     Explorer: {
       path: "posts",

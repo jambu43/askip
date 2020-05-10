@@ -172,3 +172,35 @@ export const createPost = (formData) => {
     });
   };
 };
+
+export const sharePost = (post_id, formData) => {
+  return (dispatch) => {
+    return new Promise((resolve, reject) => {
+      axios
+        .post(apiUrl(`posts/${post_id}/share`), formData)
+        .then(({ data }) => {
+          resolve();
+        })
+        .catch(({ response }) => {
+          console.log(response);
+          reject();
+        });
+    });
+  };
+};
+
+export const updatePost = (post_id, formData) => {
+  return (dispatch) => {
+    return new Promise((resolve, reject) => {
+      axios
+        .post(apiUrl(`posts/${post_id}/update`), formData)
+        .then(({ data }) => {
+          resolve();
+        })
+        .catch(({ response }) => {
+          console.log(response);
+          reject();
+        });
+    });
+  };
+};

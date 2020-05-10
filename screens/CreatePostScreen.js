@@ -11,7 +11,7 @@ import { ActivityIndicator, Platform, StatusBar } from "react-native";
 class CreatePostScreen extends React.Component {
   state = {
     post: {},
-    colors: ["#70595F", "#333228", "#445257", "#5E6C70"],
+    colors: ["#70595F", "#0D6294", "#445257", "#02661D", "#FF3D44"],
     selectedColor: "#70595F",
     selectedPicture: null,
     content: "",
@@ -134,8 +134,8 @@ class CreatePostScreen extends React.Component {
             )}
           </TouchableIcon>
         </StickyHeader>
+
         <PostFormHeader>
-          <UserAvatar />
           <PostInputWrapper colorMode={colorMode} bgColor={selectedColor}>
             <PostInput
               onChangeText={this.handleInputChange.bind(this)}
@@ -173,7 +173,6 @@ class CreatePostScreen extends React.Component {
     );
   }
 }
-
 const Container = styled.View`
   flex: 1;
   background-color: ${dark};
@@ -191,14 +190,15 @@ const StickyHeader = styled.View`
 `;
 const PostFormHeader = styled.View`
   flex-direction: row;
-  padding: 15px;
+  padding: 0;
 `;
 const PostInputWrapper = styled.View`
   background: ${(props) => (props.colorMode ? props.bgColor : "transparent")};
-  padding: ${(props) => (props.colorMode ? 15 : 0)}px;
-  border-radius: 5px;
-  margin-left: 15px;
+  padding: ${(props) => (props.colorMode ? 15 : 15)}px;
+  height: ${(props) => (props.colorMode ? "220px" : "auto")};
   flex: 1;
+  justify-content: center;
+  margin-bottom: 10px;
 `;
 const PostInput = styled.TextInput`
   color: #fff;
@@ -231,7 +231,7 @@ const PostPicture = styled.Image`
 const ColorPickerWrapper = styled.View`
   flex-direction: row;
   padding: 0 15px;
-  justify-content: flex-end;
+  justify-content: center;
 `;
 const ColorPickerItem = styled.TouchableOpacity`
   background: ${(props) => props.bgColor};
