@@ -45,7 +45,18 @@ class PostScreen extends React.Component {
         {postData.sourcePost ? (
           <PostCard showSocialInteraction={false} isSharedPost={true} post={postData.sourcePost} />
         ) : null}
-        {hasSocialInteraction ? <PostSocialStats post={postData} /> : null}
+        {hasSocialInteraction ? (
+          <PostSocialStats
+            likeGroupClickEnabled={true}
+            onLikeGroupClick={() =>
+              navigation.navigate("PostInteraction", {
+                post_id: postData.id,
+                showLikers: postData.post_confirmations > postData.post_invalidations,
+              })
+            }
+            post={postData}
+          />
+        ) : null}
         <PostSocialInteraction navigation={navigation} post={postData} />
       </PostContentWrapper>
     );

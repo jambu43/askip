@@ -5,10 +5,10 @@ import { darkLighten } from "../../config/variables";
 const likeIcon = require("../../assets/like-icon.png");
 const unLikeIcon = require("../../assets/un-like-icon.png");
 
-export default ({ post }) => {
+export default ({ post, onLikeGroupClick, likeGroupClickEnabled = false }) => {
   return (
     <Container>
-      <StatGroupWrapper>
+      <StatGroupWrapper disabled={!likeGroupClickEnabled} onPress={onLikeGroupClick}>
         {post.post_confirmations ? (
           <StatWrapper>
             <StatIcon source={likeIcon} />
@@ -22,7 +22,7 @@ export default ({ post }) => {
           </StatWrapper>
         ) : null}
       </StatGroupWrapper>
-      <StatGroupWrapper>
+      <StatGroupWrapper disabled={true}>
         {post.comments_count ? (
           <StatWrapper>
             <StatTitle>{post.comments_count} commentaires</StatTitle>
@@ -48,7 +48,7 @@ const Container = styled.View`
   justify-content: space-between;
 `;
 
-const StatGroupWrapper = styled.View`
+const StatGroupWrapper = styled.TouchableOpacity`
   flex-direction: row;
   align-items: center;
 `;

@@ -33,6 +33,7 @@ import NewsExplorerScreen from "../screens/NewsExplorerScreen";
 import UserFollowersScreen from "../screens/Dashboard/UserFollowersScreen";
 import UserFolloweesScreen from "../screens/Dashboard/UserFolloweesScreen";
 import UserPublicationsScreen from "../screens/Dashboard/UserPublicationsScreen";
+import PostInteractionScreen from "../screens/Post/PostInteractionScreen";
 
 const BottomTransition = (index, position, height) => {
   const sceneRange = [index - 1, index, index + 1];
@@ -111,6 +112,10 @@ const ExplorerStack = createStackNavigator(
     SharePost: {
       path: "post/:post_id/share",
       screen: SharePostScreen,
+    },
+    PostInteraction: {
+      path: "post/:post_id/interactions",
+      screen: PostInteractionScreen,
     },
     Explorer: {
       path: "posts",

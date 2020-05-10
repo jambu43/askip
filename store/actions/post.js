@@ -204,3 +204,33 @@ export const updatePost = (post_id, formData) => {
     });
   };
 };
+
+export const fetchPostLikers = (post_id, page) => {
+  return (dispatch) => {
+    return new Promise((resolve, reject) => {
+      axios
+        .get(apiUrl(`posts/get_post_likers/${post_id}?page=${page}`))
+        .then(({ data }) => {
+          resolve(data.data);
+        })
+        .catch(({ response }) => {
+          reject();
+        });
+    });
+  };
+};
+
+export const fetchPostHaters = (post_id, page) => {
+  return (dispatch) => {
+    return new Promise((resolve, reject) => {
+      axios
+        .get(apiUrl(`posts/get_post_haters/${post_id}?page=${page}`))
+        .then(({ data }) => {
+          resolve(data.data);
+        })
+        .catch(({ response }) => {
+          reject();
+        });
+    });
+  };
+};
