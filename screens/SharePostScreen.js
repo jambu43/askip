@@ -52,7 +52,7 @@ class SharePostScreen extends React.Component {
     return (
       <Container>
         <StickyHeader>
-          <TouchableIcon onPress={() => navigation.dismiss()}>
+          <TouchableIcon onPress={() => navigation.goBack()}>
             <AntDesign name="close" size={24} color="#fff" />
           </TouchableIcon>
           <TouchableIcon

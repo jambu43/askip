@@ -33,6 +33,9 @@ class CommentFeedScreen extends React.Component {
     );
   }
 
+  componentDidMount() {
+    this._handleRefresh();
+  }
   _handleRefresh() {
     let comment_id = this.props.navigation.getParam("comment_id");
     this.props.fetchCommentFeed(comment_id, 1);
