@@ -1,8 +1,20 @@
-import { SET_USER, SET_USER_LOADING, SET_USERS } from "../types/user";
+import {
+  SET_USER,
+  SET_USER_LOADING,
+  SET_USERS,
+  SET_CURRENT_USER_FOLLOWERS,
+  TOGGLE_CURRENT_USER_FOLLOWERS_LOADING,
+  SET_CURRENT_USER_FOLLOWEES,
+  TOGGLE_CURRENT_USER_FOLLOWEES_LOADING,
+} from "../types/user";
 
 const initialState = {
   users: {},
   userLoading: {},
+  currentUserFollowers: {},
+  currentUserFollowersLoading: true,
+  currentUserFollowees: {},
+  currentUserFolloweesLoading: true,
 };
 
 export const userReducer = (state = initialState, { payload, type }) => {
@@ -37,6 +49,40 @@ export const userReducer = (state = initialState, { payload, type }) => {
           ...state.users,
           ...setUsers,
         },
+      };
+    case SET_CURRENT_USER_FOLLOWERS:
+      let setCurrentUserFollowers = {};
+      payload.users.map((item) => {
+        setCurrentUserFollowers[item.id] = item;
+      });
+      return {
+        ...state,
+        currentUserFollowers: {
+          ...state.currentUserFollowers,
+          ...setCurrentUserFollowers,
+        },
+      };
+    case SET_CURRENT_USER_FOLLOWEES:
+      let setCurrentUserFollowees = {};
+      payload.users.map((item) => {
+        setCurrentUserFollowees[item.id] = item;
+      });
+      return {
+        ...state,
+        currentUserFollowees: {
+          ...state.currentUserFollowees,
+          ...setCurrentUserFollowees,
+        },
+      };
+    case TOGGLE_CURRENT_USER_FOLLOWERS_LOADING:
+      return {
+        ...state,
+        currentUserFollowersLoading: payload.isLoading,
+      };
+    case TOGGLE_CURRENT_USER_FOLLOWEES_LOADING:
+      return {
+        ...state,
+        currentUserFolloweesLoading: payload.isLoading,
       };
     default:
       return state;
