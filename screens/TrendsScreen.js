@@ -2,13 +2,10 @@ import React from "react";
 import styled from "styled-components";
 import { dark } from "../config/variables";
 import { connect } from "react-redux";
-import { fetchMagazineReleases } from "../store/actions/magazines";
-import { getMagazinesReleases } from "../store/selectors/magazine";
-import MagazineReleaseCard from "../components/magazine/MagazineReleaseCard";
 import { TouchableOpacity } from "react-native";
 import { BackIcon } from "../components/Icons";
 
-class MagazinesScreen extends React.Component {
+class TrendsScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -16,18 +13,12 @@ class MagazinesScreen extends React.Component {
     };
   }
 
-  componentDidMount() {
-    this.props.fetchMagazineReleases(this.state.page);
-  }
-
   _handleRefresh() {
     this.setState(
       (prevState, nextProps) => ({
         page: 1,
       }),
-      () => {
-        this.props.fetchMagazineReleases(this.state.page);
-      }
+      () => {}
     );
   }
 
@@ -36,29 +27,24 @@ class MagazinesScreen extends React.Component {
       (prevState, nextProps) => ({
         page: prevState.page + 1,
       }),
-      () => {
-        this.props.fetchMagazineReleases(this.state.page);
-      }
+      () => {}
     );
   };
 
-  renderMagazine({ item, index }) {
-    const { navigation } = this.props;
-    return <MagazineReleaseCard size="lg" navigation={navigation} magazine={item} key={item.id} />;
-  }
+  renderUser({ item, index }) {}
 
   renderHeader() {
     return (
       <ContentHeader>
-        <ContentHeaderTitle>Magazines</ContentHeaderTitle>
+        <ContentHeaderTitle>Tendances</ContentHeaderTitle>
         <ContentHeaderDescription>
-          La lecture, c'est une vertu irremplaçable qui enrichie le savoir et fortifie la mémoire.
+          La mode est ce que l'on porte. Ce qui est démodé, c'est ce que portent les autres.
         </ContentHeaderDescription>
       </ContentHeader>
     );
   }
   render() {
-    const { magazines, navigation, magazine_loading } = this.props;
+    const { navigation } = this.props;
     return (
       <Container>
         <Header>
@@ -68,12 +54,12 @@ class MagazinesScreen extends React.Component {
         </Header>
         <Content
           keyExtractor={(item) => item.id.toString()}
-          extraData={magazines}
-          data={magazines}
-          refreshing={magazine_loading}
+          extraData={[]}
+          data={[]}
+          refreshing={false}
           onRefresh={this._handleRefresh.bind(this)}
           ListHeaderComponent={this.renderHeader.bind(this)}
-          renderItem={this.renderMagazine.bind(this)}
+          renderItem={this.renderUser.bind(this)}
           showsVerticalScrollIndicator={false}
           numColumns={2}
           onEndReached={this._handleLoadMore.bind(this)}
@@ -116,14 +102,9 @@ const ContentHeaderDescription = styled.Text`
 `;
 
 const mapStateToProps = (state) => {
-  return {
-    magazines: getMagazinesReleases(state),
-    magazine_loading: state.magazine.magazines_publication_releases_loading,
-  };
+  return {};
 };
 const mapPropsToDispatch = (dispatch) => {
-  return {
-    fetchMagazineReleases: (page) => dispatch(fetchMagazineReleases(page)),
-  };
+  return {};
 };
-export default connect(mapStateToProps, mapPropsToDispatch)(MagazinesScreen);
+export default connect(mapStateToProps, mapPropsToDispatch)(TrendsScreen);

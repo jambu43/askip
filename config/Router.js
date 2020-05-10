@@ -5,8 +5,11 @@ import {
   createBottomTabNavigator,
 } from "react-navigation";
 
+import { Entypo } from "@expo/vector-icons";
+
 import LoginScreen from "../screens/LoginScreen";
 import CreatePostScreen from "../screens/CreatePostScreen";
+import TrendsScreen from "../screens/TrendsScreen";
 import PostScreen from "../screens/PostScreen";
 import SharePostScreen from "../screens/SharePostScreen";
 import CommentFeedScreen from "../screens/CommentFeedScreen";
@@ -257,6 +260,12 @@ const HomeTabNavigator = createBottomTabNavigator(
         tabBarLabel: "Explorer",
       },
     },
+    Trends: {
+      screen: TrendsScreen,
+      navigationOptions: {
+        tabBarLabel: "Tendances",
+      },
+    },
     CreatePost: {
       screen: CreatePostScreen,
       navigationOptions: {
@@ -285,6 +294,8 @@ const HomeTabNavigator = createBottomTabNavigator(
             return <NotificationIcon fill={tintColor} />;
           case "CreatePost":
             return <AddPostIcon />;
+          case "Trends":
+            return <Entypo name="compass" size={24} color={tintColor} />;
         }
       },
     }),
