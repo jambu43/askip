@@ -37,7 +37,12 @@ class PostCard extends React.Component {
           {post.content ? <PlainTextPost post={post} /> : null}
           {post.image_path ? <PostPicture source={{ uri: assetsUrl(post.image_path) }} /> : null}
           {post.sourcePost ? (
-            <PostCard showSocialInteraction={false} isSharedPost={true} post={post.sourcePost} />
+            <PostCard
+              navigation={navigation}
+              showSocialInteraction={false}
+              isSharedPost={true}
+              post={post.sourcePost}
+            />
           ) : null}
           {hasSocialInteraction && showSocialInteraction ? <PostSocialStats post={post} /> : null}
         </CardGroup>
