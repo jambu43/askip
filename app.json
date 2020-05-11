@@ -23,7 +23,7 @@
     },
     "android": {
       "package": "com.makarios.askip",
-      "versionCode": 4
+      "versionCode": 5
     },
     "description": ""
   }

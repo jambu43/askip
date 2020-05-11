@@ -45,6 +45,18 @@ class ExplorerScreen extends React.Component {
     );
   };
 
+  _renderEmptyList() {
+    return (
+      <EmptyNotificationWrapper>
+        <Title> Aucun contenu </Title>
+        <Text>
+          Vous n'avez aucun contenu pour le moment allez sur l'ecran des tendances pour vous abonner
+          aux profils.
+        </Text>
+      </EmptyNotificationWrapper>
+    );
+  }
+
   _fetchPostData() {
     this.props.fetchPosts(this.state.page);
   }
@@ -69,6 +81,7 @@ class ExplorerScreen extends React.Component {
           onRefresh={this._handleRefresh.bind(this)}
           renderItem={this._renderPost.bind(this)}
           showsVerticalScrollIndicator={true}
+          ListEmptyComponent={this._renderEmptyList}
           numColumns={1}
           onEndReached={this._handleLoadMore.bind(this)}
           onEndReachedThreshold={0.5}
@@ -100,4 +113,22 @@ const Container = styled.View`
 
 const Content = styled.FlatList``;
 
-const Text = styled.Text``;
+const EmptyNotificationWrapper = styled.View`
+  justify-content: center;
+  min-height: 400px;
+`;
+
+const Title = styled.Text`
+  font-size: 30px;
+  font-weight: bold;
+  line-height: 32px;
+  color: #fff;
+  margin-bottom: 15px;
+  text-align: center;
+`;
+
+const Text = styled.Text`
+  color: #fff;
+  margin-bottom: 15px;
+  text-align: center;
+`;
