@@ -97,7 +97,7 @@ class LoginScreen extends React.Component {
     return (
       <Container>
         <Image resizeMode="contain" source={require("../assets/login_simple_touch.jpg")} />
-        <Title>Rejoignez-nous avec un simple clique</Title>
+        <Title>Rejoignez-nous avec un simple clic</Title>
         <Text>
           Rejoignez la conversation en donnant votre avis sur les actualités et les rumeurs et
           accedez à des centaines de magazines et journaux.
