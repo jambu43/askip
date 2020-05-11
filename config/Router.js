@@ -246,6 +246,53 @@ DashboardStack.navigationOptions = ({ navigation }) => {
   };
 };
 
+const TrendsStack = createStackNavigator(
+  {
+    Profile: {
+      path: "users/:user_id",
+      screen: ProfileScreen,
+    },
+    Post: {
+      path: "posts/:post_id",
+      screen: PostScreen,
+    },
+    Comment: {
+      path: "comments/:comment_id",
+      screen: CommentFeedScreen,
+    },
+    SharePost: {
+      path: "post/:post_id/share",
+      screen: SharePostScreen,
+    },
+    PostInteraction: {
+      path: "post/:post_id/interactions",
+      screen: PostInteractionScreen,
+    },
+    Trends: {
+      screen: TrendsScreen,
+      navigationOptions: {
+        tabBarLabel: "Tendances",
+      },
+    },
+  },
+  {
+    initialRouteName: "Trends",
+    headerMode: "none",
+    transitionConfig: configNavigation,
+  }
+);
+
+TrendsStack.navigationOptions = ({ navigation }) => {
+  let tabBarVisible = true;
+  if (navigation.state.index > 0) {
+    tabBarVisible = false;
+  }
+
+  return {
+    tabBarVisible,
+  };
+};
+
 const HomeTabNavigator = createBottomTabNavigator(
   {
     Home: {
@@ -261,7 +308,7 @@ const HomeTabNavigator = createBottomTabNavigator(
       },
     },
     Trends: {
-      screen: TrendsScreen,
+      screen: TrendsStack,
       navigationOptions: {
         tabBarLabel: "Tendances",
       },

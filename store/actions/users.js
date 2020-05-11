@@ -155,7 +155,6 @@ export const togglePostConfirmation = (post_id) => {
         dispatch(togglePostLiking(post_id, false));
       })
       .catch(({ response }) => {
-        console.log(response);
         dispatch(togglePostLiking(post_id, false));
       });
   };
@@ -174,5 +173,20 @@ export const togglePostInvalidation = (post_id) => {
         console.log(response);
         dispatch(togglePostLiking(post_id, false));
       });
+  };
+};
+
+export const fetchTrends = (page) => {
+  return () => {
+    return new Promise((resolve, reject) => {
+      axios
+        .get(apiUrl(`users/trends?page=${page}`))
+        .then(({ data }) => {
+          resolve(data.data);
+        })
+        .catch(({ response }) => {
+          console.log(response);
+        });
+    });
   };
 };
