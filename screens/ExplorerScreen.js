@@ -6,6 +6,7 @@ import { fetchPosts } from "../store/actions/post";
 import { connect } from "react-redux";
 import { getPosts } from "../store/selectors/post";
 import PostCard from "../components/askip/PostCard";
+import EmptyListNotification from "../components/generic/EmptyListNotification";
 
 class ExplorerScreen extends React.Component {
   state = {
@@ -46,13 +47,17 @@ class ExplorerScreen extends React.Component {
   };
 
   _renderEmptyList() {
-    return (
-      <EmptyListNotification
-        title="Aucun contenu"
-        message="Vous n'avez aucun contenu pour le moment allez sur l'ecran des tendances pour vous abonner
+    const { posts, posts_loading } = this.props;
+    if (!posts_loading) {
+      return (
+        <EmptyListNotification
+          title="Aucun contenu"
+          message="Vous n'avez aucun contenu pour le moment allez sur l'ecran des tendances pour vous abonner
           aux profils."
-      />
-    );
+        />
+      );
+    }
+    return null;
   }
 
   _fetchPostData() {

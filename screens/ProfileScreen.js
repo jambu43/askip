@@ -186,6 +186,7 @@ const Avatar = styled.Image`
 
 const Information = styled.View`
   margin-top: 10px;
+  flex: 1;
 `;
 
 const Publication = styled.View`
