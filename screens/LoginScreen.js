@@ -85,6 +85,13 @@ class LoginScreen extends React.Component {
     }
   }
 
+  componentDidMount() {
+    const { isLoggedIn } = this.props;
+    if (isLoggedIn) {
+      this.goToHomeScreen();
+    }
+  }
+
   goToHomeScreen() {
     const resetAction = StackActions.reset({
       index: 0,

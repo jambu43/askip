@@ -11,3 +11,12 @@ export const getUnReadNotifications = createSelector([_getNotifications], (notif
     "desc"
   );
 });
+
+export const getReadNotifications = createSelector([_getNotifications], (notifications) => {
+  let notificationCollection = Object.values(notifications);
+  return orderBy(
+    notificationCollection.filter((item) => parseInt(item.read)),
+    "created_at",
+    "desc"
+  );
+});

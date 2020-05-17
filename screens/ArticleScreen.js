@@ -12,6 +12,7 @@ import {
 import { Entypo, MaterialIcons } from "@expo/vector-icons";
 import { assetsUrl, cutText } from "../helpers";
 import { fetchArticleById, readArticle, getSimilarArticles } from "../store/actions/articles";
+import { Text } from "react-native";
 
 class ArticleScreen extends React.Component {
   state = {
@@ -79,7 +80,17 @@ class ArticleScreen extends React.Component {
             {!isArticleLoading ? (
               <HTML
                 html={article.content}
-                tagsStyles={{ p: { color: "#fff", marginBottom: 5, fontSize: pFontSize } }}
+                tagsStyles={{
+                  p: { color: "#fff", marginBottom: 5, fontSize: pFontSize },
+                  li: { color: "#fff" },
+                }}
+                listsPrefixesRenderers={{
+                  ol: (htmlAttribs, children, convertedCSSStyles, passProps) => {
+                    return (
+                      <Text style={{ color: "#fff", marginRight: 5 }}>{passProps.index + 1})</Text>
+                    );
+                  },
+                }}
               ></HTML>
             ) : null}
           </ArticleContentWrapper>

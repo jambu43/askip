@@ -26,9 +26,15 @@ const PostSocialInteraction = ({
         {isPostLiking ? (
           <ActivityIndicator color="#fff" />
         ) : (
-          <InteractionIcon source={post.does_auth_confirmed ? likeIconActive : likeIcon} />
+          <InteractionIcon
+            disabled={isPostLiking || post.does_auth_invalidated}
+            source={post.does_auth_confirmed ? likeIconActive : likeIcon}
+          />
         )}
-        <SocialInteractionTitle active={post.does_auth_confirmed}>
+        <SocialInteractionTitle
+          disabled={isPostLiking || post.does_auth_invalidated}
+          active={post.does_auth_confirmed}
+        >
           C'est vrai
         </SocialInteractionTitle>
       </IconGroup>
@@ -39,9 +45,15 @@ const PostSocialInteraction = ({
         {isPostLiking ? (
           <ActivityIndicator color="#fff" />
         ) : (
-          <InteractionIcon source={post.does_auth_invalidated ? unLikeIconActive : unLikeIcon} />
+          <InteractionIcon
+            disabled={isPostLiking || post.does_auth_confirmed}
+            source={post.does_auth_invalidated ? unLikeIconActive : unLikeIcon}
+          />
         )}
-        <SocialInteractionTitle active={post.does_auth_invalidated}>
+        <SocialInteractionTitle
+          disabled={isPostLiking || post.does_auth_confirmed}
+          active={post.does_auth_invalidated}
+        >
           C'est faux
         </SocialInteractionTitle>
       </IconGroup>
@@ -74,10 +86,12 @@ const InteractionIcon = styled.Image`
   height: 20px;
   width: 20px;
   margin-right: 10px;
+  opacity: ${(props) => (props.disabled ? 0.5 : 1)};
 `;
 const SocialInteractionTitle = styled.Text`
   color: ${(props) => (props.active ? "#2d88ff" : "#ffffff")};
   font-weight: ${(props) => (props.active ? "bold" : "normal")};
+  opacity: ${(props) => (props.disabled ? 0.5 : 1)};
 `;
 
 const mapStateToProps = (state) => {

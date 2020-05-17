@@ -111,19 +111,15 @@ export const fetchPosts = (page = 1) => {
   };
 };
 
-export const fetchPostId = (post_id) => {
+export const fetchPostById = (post_id) => {
   return (dispatch) => {
-    dispatch(togglePostListLoading(post_id, true));
     axios
-      .get(apiUrl(`posts/user/${post_id}`))
+      .get(apiUrl(`posts/${post_id}`))
       .then(({ data }) => {
-        dispatch(setPosts([data.data]));
+        dispatch(setPostList([data.data]));
       })
       .catch(({ response }) => {
-        console.log(response);
-      })
-      .finally(() => {
-        dispatch(togglePostListLoading(post_id, false));
+        console.log("fetchPostById", response);
       });
   };
 };

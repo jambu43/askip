@@ -13,7 +13,9 @@ export default class ArticleReleaseCard extends React.Component {
         <ArticleCover size={size} source={{ uri: assetsUrl(article.featured_image) }} />
         <ArticleTitle>{cutText(article.title, 50)}</ArticleTitle>
         <ArticlePreview>{cutText(article.preview, 80)}</ArticlePreview>
-        <ArticleFrom>{article.publication_release.newspaper.name}</ArticleFrom>
+        {article.publication_release ? (
+          <ArticleFrom>{article.publication_release.newspaper.name}</ArticleFrom>
+        ) : null}
       </Container>
     );
   }

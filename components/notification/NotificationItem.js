@@ -4,9 +4,9 @@ import HTML from "react-native-render-html";
 import { darkLighten } from "../../config/variables";
 import moment from "moment";
 
-export default ({ notification, onPress }) => {
+export default ({ notification, onPress, read }) => {
   return (
-    <Container onPress={() => onPress(notification)}>
+    <Container onPress={() => onPress(notification)} read={read}>
       <HTML
         html={notificationText(notification)}
         tagsStyles={{
@@ -24,6 +24,7 @@ const Container = styled.TouchableOpacity`
   padding: 7.5px;
   border-radius: 15px;
   margin-bottom: 5px;
+  opacity: ${(props) => (props.read ? 0.5 : 1)};
 `;
 const Title = styled.Text``;
 const Text = styled.Text`

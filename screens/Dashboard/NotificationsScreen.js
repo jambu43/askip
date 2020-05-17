@@ -3,8 +3,8 @@ import styled from "styled-components";
 import AppHeader from "../../components/generic/AppHeader";
 import { dark } from "../../config/variables";
 import { connect } from "react-redux";
-import { getUnReadNotifications } from "../../store/selectors/notification";
-import { fetchNotifications } from "../../store/actions/notification";
+import { getUnReadNotifications, getReadNotifications } from "../../store/selectors/notification";
+import { fetchNotifications, markNotificationAsRead } from "../../store/actions/notification";
 import NotificationItem from "../../components/notification/NotificationItem";
 
 class NotificationsScreen extends React.Component {
@@ -44,24 +44,65 @@ class NotificationsScreen extends React.Component {
     );
   }
 
-  handleNotificationClick(notification) {}
+  handleNotificationClick(notification) {
+    const { navigation } = this.props;
+    switch (notification.type) {
+      case "POST_SHARE":
+        navigation.navigate("Post", { post_id: notification.sourcePost.id });
+        break;
+      case "POST_COMMENT":
+        navigation.navigate("Post", { post_id: notification.sourcePost.id });
+        break;
+      case "FOLLOW":
+        navigation.navigate("Profile", { user_id: notification.sourceUser.id });
+        break;
+    }
+    this.props.markNotificationAsRead(notification.id);
+  }
 
   _renderNotification({ item }) {
     return (
-      <NotificationItem notification={item} onPress={this.handleNotificationClick.bind(this)} />
+      <NotificationItem
+        notification={item}
+        key={item.id}
+        read={parseInt(item.read)}
+        onPress={this.handleNotificationClick.bind(this)}
+      />
+    );
+  }
+
+  _renderSectionHeader({ section: { title } }) {
+    return (
+      <NotificationSection>
+        <NotificationSectionTitle>{title}</NotificationSectionTitle>
+      </NotificationSection>
     );
   }
 
   render() {
-    const { navigation, notifications, notifications_loading } = this.props;
-    console.log(notifications);
+    const { navigation, notifications, read_notifications, notifications_loading } = this.props;
+    let sections = [];
+    if (notifications.length) {
+      sections.push({
+        title: "Notifications non-lues",
+        data: notifications,
+      });
+    }
+
+    if (read_notifications.length) {
+      sections.push({
+        title: "Notifications lues",
+        data: read_notifications,
+      });
+    }
     return (
       <Container>
         <AppHeader navigation={navigation} showBack={true} showAvatar={false} />
         <Content
           keyExtractor={(item) => item.id.toString()}
           extraData={notifications}
-          data={notifications}
+          sections={sections}
+          renderSectionHeader={this._renderSectionHeader}
           ListEmptyComponent={this._renderEmptyList}
           refreshing={notifications_loading}
           onRefresh={this._handleRefresh.bind(this)}
@@ -87,15 +128,15 @@ const EmptyNotificationWrapper = styled.View`
   min-height: 400px;
 `;
 
-const Content = styled.FlatList`
+const Content = styled.SectionList`
   padding: 10px;
 `;
 
-const Image = styled.Image`
-  height: 240px;
-  width: 240px;
-  margin: 0 auto;
-  margin-bottom: 25px;
+const NotificationSection = styled.View`
+  margin: 10px 0px;
+`;
+const NotificationSectionTitle = styled.Text`
+  color: #fff;
 `;
 
 const Title = styled.Text`
@@ -116,6 +157,7 @@ const Text = styled.Text`
 const mapStateToProps = (state) => {
   return {
     notifications: getUnReadNotifications(state),
+    read_notifications: getReadNotifications(state),
     notifications_loading: state.notification.notifications_loading,
   };
 };
@@ -123,6 +165,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     fetchNotifications: (page) => dispatch(fetchNotifications(page)),
+    markNotificationAsRead: (notification_id) => dispatch(markNotificationAsRead(notification_id)),
   };
 };
 

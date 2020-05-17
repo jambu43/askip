@@ -9,6 +9,7 @@ import {
   TOGGLE_PUBLICATION_RELEASES_READ,
   SET_USER_PUBLICATION_RELEASE,
   IS_USER_FETCHING,
+  SET_USER_DATA,
 } from "../types/auth";
 
 const initialState = {
@@ -100,6 +101,15 @@ export const authReducers = (state = initialState, action) => {
       }
 
       break;
+    case SET_USER_DATA: {
+      return {
+        ...state,
+        user: {
+          ...state.user,
+          ...action.payload.data,
+        },
+      };
+    }
     case SET_USER_PUBLICATION_RELEASE:
       try {
         return {

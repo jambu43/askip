@@ -4,6 +4,7 @@ export const IS_USER_FETCHING = "IS_USER_FETCHING";
 export const SET_IS_LOGGED_IN = "SET_IS_LOGGED_IN";
 export const SET_TOKEN = "SET_TOKEN";
 export const SET_AUTH_USER = "SET_AUTH_USER";
+export const SET_USER_DATA = "SET_USER_DATA";
 export const SET_LOGIN_ERRORS = "SET_LOGIN_ERRORS";
 export const SET_LOGIN_MODE = "SET_LOGIN_MODE";
 

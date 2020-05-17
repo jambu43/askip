@@ -47,7 +47,7 @@ class ExplorerScreen extends React.Component {
   };
 
   _renderEmptyList() {
-    const { posts, posts_loading } = this.props;
+    const { posts_loading } = this.props;
     if (!posts_loading) {
       return (
         <EmptyListNotification
@@ -84,7 +84,7 @@ class ExplorerScreen extends React.Component {
           onRefresh={this._handleRefresh.bind(this)}
           renderItem={this._renderPost.bind(this)}
           showsVerticalScrollIndicator={true}
-          ListEmptyComponent={this._renderEmptyList}
+          ListEmptyComponent={this._renderEmptyList.bind(this)}
           numColumns={1}
           onEndReached={this._handleLoadMore.bind(this)}
           onEndReachedThreshold={0.5}

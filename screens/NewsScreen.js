@@ -8,6 +8,7 @@ import { cutText, assetsUrl } from "../helpers";
 import HTML from "react-native-render-html";
 import { getNewsArticleById, getSimilarArticles } from "../store/selectors/news";
 import SimilarArticleItem from "../components/magazine/SimilarArticleItem";
+import { Text } from "react-native";
 
 class NewsScreen extends React.Component {
   componentDidMount() {
@@ -52,6 +53,14 @@ class NewsScreen extends React.Component {
                 tagsStyles={{
                   p: { color: "#fff", marginBottom: 5, fontSize: 16 },
                   a: { color: danger, fontWeight: "bold" },
+                  li: { color: "#fff" },
+                }}
+                listsPrefixesRenderers={{
+                  ol: (htmlAttribs, children, convertedCSSStyles, passProps) => {
+                    return (
+                      <Text style={{ color: "#fff", marginRight: 5 }}>{passProps.index + 1})</Text>
+                    );
+                  },
                 }}
               ></HTML>
             ) : null}

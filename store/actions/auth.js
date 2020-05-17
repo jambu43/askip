@@ -10,6 +10,7 @@ import {
   TOGGLE_USER_FOLLOWEES,
   TOGGLE_PUBLICATION_RELEASES_READ,
   IS_USER_FETCHING,
+  SET_USER_DATA,
 } from "../types/auth";
 
 export const toggleIsLoggingIn = () => {
@@ -22,6 +23,15 @@ export const isUserFetching = (_isUserFetching) => {
   return {
     type: IS_USER_FETCHING,
     payload: _isUserFetching,
+  };
+};
+
+export const setUserData = (data) => {
+  return {
+    type: SET_USER_DATA,
+    payload: {
+      data,
+    },
   };
 };
 

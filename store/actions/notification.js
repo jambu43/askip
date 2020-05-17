@@ -1,6 +1,7 @@
 import axios from "../../config/axios";
 import { apiUrl } from "../../helpers";
 import { SET_NOTIFICATIONS, TOGGLE_NOTIFICATIONS_LOADING } from "../types/notification";
+import { setUserData } from "./auth";
 
 const setNotifications = (notifications) => {
   return {
@@ -30,7 +31,7 @@ export const fetchNotifications = (page = 1) => {
         dispatch(toggleNotificationsLoading(false));
       })
       .catch(({ response }) => {
-        console.log(response);
+        console.log("fetchNotifications", response);
         dispatch(toggleNotificationsLoading(false));
       });
   };
@@ -39,9 +40,9 @@ export const fetchNotifications = (page = 1) => {
 export const markNotificationAsRead = (notification_id) => {
   return (dispatch) => {
     axios
-      .post(apiUrl(`mark_notification_as_read/${notification_id}`))
+      .post(apiUrl(`profile/mark_notification_as_read/${notification_id}`))
       .then(({ data }) => {
-        //TODO
+        dispatch(setUserData(data));
       })
       .catch(({ response }) => {
         console.log(response);

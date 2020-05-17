@@ -4,7 +4,7 @@ import moment from "moment";
 import { connect } from "react-redux";
 import { darkLighten, dark } from "../config/variables";
 import { BackIcon } from "../components/Icons";
-import { TouchableOpacity, View } from "react-native";
+import { TouchableOpacity, View, ActivityIndicator } from "react-native";
 import { getUserPostById, getPostById } from "../store/selectors/post";
 import PostSocialInteraction from "../components/askip/PostSocialInteraction";
 import PlainTextPost from "../components/askip/PlainTextPost";
@@ -15,6 +15,7 @@ import { fetchPostComment, addComment } from "../store/actions/comments";
 import CommentItem from "../components/askip/CommentItem";
 import PostCommentInput from "../components/askip/PostCommentInput";
 import PostCard from "../components/askip/PostCard";
+import { fetchPostById } from "../store/actions/post";
 
 class PostScreen extends React.Component {
   state = {
@@ -25,6 +26,7 @@ class PostScreen extends React.Component {
 
   componentDidMount() {
     let post_id = this.props.navigation.getParam("post_id");
+    this.props.fetchPostById(post_id);
     this.props.fetchPostComment(post_id, this.state.page);
   }
 
@@ -112,8 +114,10 @@ class PostScreen extends React.Component {
   }
 
   render() {
-    const { navigation, comments, post_comment_loading } = this.props;
+    const { navigation, comments, post, userPost, post_comment_loading } = this.props;
     const { content, commenting } = this.state;
+    const postData = post ? post : userPost;
+    let isLoading = !postData;
     return (
       <Container behavior="padding">
         <Header>
@@ -121,26 +125,30 @@ class PostScreen extends React.Component {
             <BackIcon fill="#fff" size={24} />
           </TouchableOpacity>
         </Header>
-        <Content
-          keyExtractor={(item) => item.id.toString()}
-          extraData={comments}
-          data={comments}
-          refreshing={post_comment_loading}
-          onRefresh={this._handleRefresh.bind(this)}
-          ListHeaderComponent={this.renderHeader.bind(this)}
-          renderItem={this.renderComment.bind(this)}
-          showsVerticalScrollIndicator={false}
-          onEndReached={this._handleLoadMore.bind(this)}
-          onEndReachedThreshold={0.5}
-          initialNumToRender={10}
-        />
-        <PostCommentInput
-          submitting={commenting}
-          content={content}
-          onSubmit={this.handleCommentSubmit.bind(this)}
-          onChange={this.handleCommentChange.bind(this)}
-        />
-        <View style={{ height: 0 }} />
+        {!isLoading ? (
+          <Content
+            keyExtractor={(item) => item.id.toString()}
+            extraData={comments}
+            data={comments}
+            refreshing={post_comment_loading}
+            onRefresh={this._handleRefresh.bind(this)}
+            ListHeaderComponent={this.renderHeader.bind(this)}
+            renderItem={this.renderComment.bind(this)}
+            showsVerticalScrollIndicator={false}
+            onEndReached={this._handleLoadMore.bind(this)}
+            onEndReachedThreshold={0.5}
+            initialNumToRender={10}
+          />
+        ) : null}
+        {!isLoading ? (
+          <PostCommentInput
+            submitting={commenting}
+            content={content}
+            onSubmit={this.handleCommentSubmit.bind(this)}
+            onChange={this.handleCommentChange.bind(this)}
+          />
+        ) : null}
+        {!isLoading ? <View style={{ height: 0 }} /> : <ActivityIndicator color="#fff" />}
       </Container>
     );
   }
@@ -179,6 +187,7 @@ const mapStateToProps = (state, props) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
+    fetchPostById: (post_id) => dispatch(fetchPostById(post_id)),
     fetchPostComment: (post_id, page) => dispatch(fetchPostComment(post_id, page)),
     addComment: (post_id, post) => dispatch(addComment(post_id, post)),
   };
