@@ -165,6 +165,7 @@ const PostContentWrapper = styled.View``;
 
 const Header = styled.View`
   padding: 7.5px 0px;
+  margin-top: 24px;
 `;
 
 const PostPicture = styled.Image`

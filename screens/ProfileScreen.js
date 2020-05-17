@@ -158,7 +158,7 @@ const Container = styled.View`
 const Content = styled.FlatList``;
 
 const Header = styled.View`
-  margin-top: 15px;
+  margin-top: 24px;
   padding: 7.5px 0px;
 `;
 

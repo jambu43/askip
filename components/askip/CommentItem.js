@@ -10,7 +10,11 @@ export default ({ comment, navigation, showFeedBackButton = true, setBack = fals
       <CommentAuthorAvatar source={{ uri: comment.author.avatar }} />
       <CommentBodyWrapper>
         <CommentBody>
-          <CommentAuthorName>{comment.author.name}</CommentAuthorName>
+          <CommentAuthorNameWrapper
+            onPress={() => navigation.navigate("Profile", { user_id: comment.author.id })}
+          >
+            <CommentAuthorName>{comment.author.name}</CommentAuthorName>
+          </CommentAuthorNameWrapper>
           <CommentContent>{comment.content}</CommentContent>
           <CommentDate>{moment(comment.created_at).fromNow()}</CommentDate>
         </CommentBody>
@@ -56,6 +60,8 @@ const CommentDate = styled.Text`
   color: #fff;
   font-size: 10px;
 `;
+
+const CommentAuthorNameWrapper = styled.TouchableOpacity``;
 const CommentAuthorName = styled.Text`
   color: #fff;
   font-weight: bold;
