@@ -24,7 +24,7 @@ class TrendsScreen extends React.Component {
 
   toArray(map) {
     let mapValues = Object.values(map);
-    return orderBy(mapValues, "name", "asc");
+    return orderBy(mapValues, "followers_count", "desc");
   }
 
   _handleRefresh() {
@@ -91,7 +91,7 @@ class TrendsScreen extends React.Component {
     const { navigation } = this.props;
     const { users, users_loading } = this.state;
     let arrayUsers = this.toArray(users);
-    console.log(arrayUsers);
+
     return (
       <Container>
         <Header>
