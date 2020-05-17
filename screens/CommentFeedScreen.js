@@ -87,7 +87,7 @@ class CommentFeedScreen extends React.Component {
     const { navigation, comments } = this.props;
     const { content, commenting } = this.state;
     return (
-      <Container behavior="padding">
+      <Container>
         <Header>
           <TouchableOpacity onPress={() => navigation.goBack()}>
             <BackIcon fill="#fff" size={24} />
@@ -128,7 +128,6 @@ const Container = styled.KeyboardAvoidingView`
 `;
 
 const Header = styled.View`
-  margin-top: 15px;
   padding: 7.5px 0px;
   flex-direction: row;
   align-items: center;

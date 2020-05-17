@@ -119,7 +119,7 @@ class PostScreen extends React.Component {
     const postData = post ? post : userPost;
     let isLoading = !postData;
     return (
-      <Container behavior="padding">
+      <Container>
         <Header>
           <TouchableOpacity onPress={() => navigation.goBack()}>
             <BackIcon fill="#fff" size={24} />
@@ -164,7 +164,6 @@ const Container = styled.KeyboardAvoidingView`
 const PostContentWrapper = styled.View``;
 
 const Header = styled.View`
-  margin-top: 15px;
   padding: 7.5px 0px;
 `;
 

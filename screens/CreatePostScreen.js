@@ -118,7 +118,6 @@ class CreatePostScreen extends React.Component {
     let canSubmit = content || selectedPicture;
     return (
       <Container>
-        <StatusBar backgroundColor={darkLighten} />
         <StickyHeader>
           <TouchableIcon onPress={() => navigation.dismiss()}>
             <AntDesign name="close" size={24} color="#fff" />
