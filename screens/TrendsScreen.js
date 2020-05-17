@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { dark } from "../config/variables";
 import { connect } from "react-redux";
 import { TouchableOpacity } from "react-native";
-import { BackIcon } from "../components/Icons";
+import { BackIcon, SearchIcon } from "../components/Icons";
 import { fetchTrends } from "../store/actions/users";
 import orderBy from "lodash/orderBy";
 import UserCard from "../components/user/UserCard";
@@ -98,6 +98,9 @@ class TrendsScreen extends React.Component {
           <TouchableOpacity onPress={() => navigation.goBack()}>
             <BackIcon fill="#fff" size={24} />
           </TouchableOpacity>
+          <TouchableOpacity onPress={() => navigation.navigate("Search")}>
+            <SearchIcon fill="#fff" size={24} />
+          </TouchableOpacity>
         </Header>
         <Content
           keyExtractor={(item) => item.id.toString()}
@@ -131,6 +134,8 @@ const Header = styled.View`
   margin-bottom: 15px;
   flex-direction: row;
   align-items: center;
+  justify-content: space-between;
+  padding: 5px 10px;
 `;
 
 const ContentHeader = styled.View`

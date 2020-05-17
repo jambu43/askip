@@ -37,6 +37,7 @@ import UserFollowersScreen from "../screens/Dashboard/UserFollowersScreen";
 import UserFolloweesScreen from "../screens/Dashboard/UserFolloweesScreen";
 import UserPublicationsScreen from "../screens/Dashboard/UserPublicationsScreen";
 import PostInteractionScreen from "../screens/Post/PostInteractionScreen";
+import SearchScreen from "../screens/SearchScreen";
 
 const BottomTransition = (index, position, height) => {
   const sceneRange = [index - 1, index, index + 1];
@@ -270,9 +271,9 @@ const TrendsStack = createStackNavigator(
     },
     Trends: {
       screen: TrendsScreen,
-      navigationOptions: {
-        tabBarLabel: "Tendances",
-      },
+    },
+    Search: {
+      screen: SearchScreen,
     },
   },
   {

@@ -190,3 +190,18 @@ export const fetchTrends = (page) => {
     });
   };
 };
+
+export const searchUsers = (keywords, page) => {
+  return () => {
+    return new Promise((resolve, reject) => {
+      axios
+        .get(apiUrl(`users/search/${keywords}?page=${page}`))
+        .then(({ data }) => {
+          resolve(data.data);
+        })
+        .catch(({ response }) => {
+          console.log(response);
+        });
+    });
+  };
+};

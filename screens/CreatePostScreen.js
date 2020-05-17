@@ -165,7 +165,11 @@ class CreatePostScreen extends React.Component {
           </ImagePickerButton>
           {colors.map((item) => {
             return (
-              <ColorPickerItem onPress={() => this.handleColorSelected(item)} bgColor={item} />
+              <ColorPickerItem
+                key={item}
+                onPress={() => this.handleColorSelected(item)}
+                bgColor={item}
+              />
             );
           })}
         </ColorPickerWrapper>

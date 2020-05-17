@@ -47,13 +47,11 @@ class ExplorerScreen extends React.Component {
 
   _renderEmptyList() {
     return (
-      <EmptyNotificationWrapper>
-        <Title> Aucun contenu </Title>
-        <Text>
-          Vous n'avez aucun contenu pour le moment allez sur l'ecran des tendances pour vous abonner
-          aux profils.
-        </Text>
-      </EmptyNotificationWrapper>
+      <EmptyListNotification
+        title="Aucun contenu"
+        message="Vous n'avez aucun contenu pour le moment allez sur l'ecran des tendances pour vous abonner
+          aux profils."
+      />
     );
   }
 
