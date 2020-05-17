@@ -19,12 +19,28 @@
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.makarios.askip"
+      "bundleIdentifier": "com.makarios.askip",
+      "googleServicesFile": "./GoogleService-Info.plist"
     },
     "android": {
       "package": "com.makarios.askip",
-      "versionCode": 6
+      "versionCode": 6,
+      "googleServicesFile": "./google-services.json"
     },
-    "description": ""
-  }
+    "web": {
+      "config": {
+        "firebase": {
+          "apiKey": "AIzaSyA4nIpe1Jw8GdilJp92QRj9yQbpmrW4AWk",
+          "authDomain": "askip-276821.firebaseapp.com",
+          "databaseURL": "https://askip-276821.firebaseio.com",
+          "projectId": "askip-276821",
+          "storageBucket": "askip-276821.appspot.com",
+          "messagingSenderId": "333695322960",
+          "appId": "1:333695322960:web:2cf709be18abec5e213a55",
+          "measurementId": "G-9QXM3J69MG"
+        }
+      }
+    }
+  },
+  "description": ""
 }

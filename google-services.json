@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "333695322960",
+    "firebase_url": "https://askip-276821.firebaseio.com",
+    "project_id": "askip-276821",
+    "storage_bucket": "askip-276821.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:333695322960:android:9adb324c8541de80213a55",
+        "android_client_info": {
+          "package_name": "com.makarios.askip"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "333695322960-f5754r82j6agmfahl7ltmct4ec5qjuck.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC7KDF_aYNjvjKR4U605NTkypP0JBB7IPE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "333695322960-f5754r82j6agmfahl7ltmct4ec5qjuck.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "333695322960-eqn1ca57p131aq6va3jfqhtbhk8doutn.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "host.exp.exponent"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
