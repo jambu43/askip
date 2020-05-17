@@ -99,6 +99,10 @@ export function fetchMe() {
   };
 }
 
+export const setAxiosToken = (token) => {
+  axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+};
+
 export function registerUser(payload) {
   return function (dispatch) {
     return new Promise((resolve, reject) => {
@@ -120,7 +124,7 @@ export function registerUser(payload) {
             payload: data.user,
           });
 
-          axios.defaults.headers.common["Authorization"] = `Bearer ${data.access_token}`;
+          setAxiosToken(data.access_token);
 
           resolve();
         })

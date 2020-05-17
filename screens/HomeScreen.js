@@ -12,12 +12,16 @@ import { fetchLatestArticles } from "../store/actions/articles";
 import ArticleReleaseList from "../components/home/ArticleReleaseList";
 import { getMagazinesReleases } from "../store/selectors/magazine";
 import { getNewsArticles } from "../store/selectors/news";
+import { setAxiosToken } from "../store/actions/auth";
 
 class HomeScreen extends React.Component {
   constructor(props) {
     super(props);
   }
   componentDidMount() {
+    if (this.props.token) {
+      setAxiosToken(this.props.token);
+    }
     this.willFocusSubscription = this.props.navigation.addListener("willFocus", () => {
       this._fetchMagazineData();
     });
@@ -79,6 +83,7 @@ class HomeScreen extends React.Component {
 
 const mapStateTopProps = (state) => {
   return {
+    token: state.auth.token,
     magazines_publication_releases: getMagazinesReleases(state).slice(0, 4),
     magazines_publication_releases_loading: state.magazine.magazines_publication_releases_loading,
     latest_podcast: state.podcast.latest_podcast,
