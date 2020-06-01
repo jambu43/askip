@@ -135,7 +135,11 @@ class CreatePostScreen extends React.Component {
         </StickyHeader>
 
         <PostFormHeader>
-          <PostInputWrapper colorMode={colorMode} bgColor={selectedColor}>
+          <PostInputWrapper
+            removeClippedSubviews={true}
+            colorMode={colorMode}
+            bgColor={selectedColor}
+          >
             <PostInput
               onChangeText={this.handleInputChange.bind(this)}
               colorMode={colorMode}

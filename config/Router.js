@@ -294,6 +294,22 @@ TrendsStack.navigationOptions = ({ navigation }) => {
   };
 };
 
+const CreatePostStack = createStackNavigator(
+  {
+    CreatePost: {
+      screen: CreatePostScreen,
+      navigationOptions: {
+        tabBarLabel: "Nouveau",
+      },
+    },
+  },
+  {
+    initialRouteName: "CreatePost",
+    headerMode: "none",
+    transitionConfig: configNavigation,
+  }
+);
+
 const HomeTabNavigator = createBottomTabNavigator(
   {
     Home: {
@@ -315,7 +331,7 @@ const HomeTabNavigator = createBottomTabNavigator(
       },
     },
     CreatePost: {
-      screen: CreatePostScreen,
+      screen: CreatePostStack,
       navigationOptions: {
         tabBarLabel: "Nouveau",
       },
@@ -341,7 +357,7 @@ const HomeTabNavigator = createBottomTabNavigator(
           case "Notifications":
             return <NotificationIcon fill={tintColor} />;
           case "CreatePost":
-            return <AddPostIcon />;
+            return <Entypo name="plus" size={24} color={tintColor} />;
           case "Trends":
             return <Entypo name="compass" size={24} color={tintColor} />;
         }
