@@ -76,6 +76,20 @@ export const toggleCurrentUserFollowersLoading = (isLoading) => {
   };
 };
 
+export const updateUserToken = (expo_token) => {
+  return function (dispatch) {
+    return new Promise((resolve, reject) => {
+      axios
+        .post(apiUrl(`profile/update_user_token`), { token: expo_token })
+        .then(() => {
+          resolve();
+        })
+        .catch(({ response }) => {
+          reject();
+        });
+    });
+  };
+};
 export const followUser = (followee_id) => {
   return function (dispatch) {
     return new Promise((resolve, reject) => {
