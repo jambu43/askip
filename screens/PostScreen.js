@@ -1,15 +1,16 @@
 import React from "react";
 import styled from "styled-components";
-import moment from "moment";
+import { Entypo, EvilIcons } from "@expo/vector-icons";
 import { connect } from "react-redux";
-import { darkLighten, dark } from "../config/variables";
+import { dark, danger } from "../config/variables";
 import { BackIcon } from "../components/Icons";
 import { TouchableOpacity, View, ActivityIndicator } from "react-native";
 import { getUserPostById, getPostById } from "../store/selectors/post";
+import Modal from "react-native-modal";
 import PostSocialInteraction from "../components/askip/PostSocialInteraction";
 import PlainTextPost from "../components/askip/PlainTextPost";
 import PostSocialStats from "../components/askip/PostSocialStats";
-import { assetsUrl, apiUrl } from "../helpers";
+import { assetsUrl } from "../helpers";
 import { getPostComments, getPostCommentsLoading } from "../store/selectors/comment";
 import { fetchPostComment, addComment } from "../store/actions/comments";
 import CommentItem from "../components/askip/CommentItem";
@@ -17,11 +18,21 @@ import PostCommentInput from "../components/askip/PostCommentInput";
 import PostCard from "../components/askip/PostCard";
 import { fetchPostById } from "../store/actions/post";
 
+const PostOptionItem = ({ item, onPress }) => {
+  return (
+    <PostOptionItemWrapper onPress={onPress}>
+      <EvilIcons name={item.icon_name} size={24} color={danger} />
+      <PostOptionItemLabel>{item.label}</PostOptionItemLabel>
+    </PostOptionItemWrapper>
+  );
+};
 class PostScreen extends React.Component {
   state = {
     page: 1,
     content: "",
     commenting: false,
+    showModalOptions: true,
+    postOptions: [{ icon_name: "trash", label: "Supprimer la publication", value: "DELETE_POST" }],
   };
 
   componentDidMount() {
@@ -113,16 +124,50 @@ class PostScreen extends React.Component {
       });
   }
 
+  togglePostOptions() {
+    this.setState({
+      showModalOptions: !this.state.showModalOptions,
+    });
+  }
+
+  handlePostOptionPress(value) {
+    this.togglePostOptions();
+  }
+
   render() {
     const { navigation, comments, post, userPost, post_comment_loading } = this.props;
-    const { content, commenting } = this.state;
+    const { content, commenting, showModalOptions, postOptions } = this.state;
     const postData = post ? post : userPost;
     let isLoading = !postData;
     return (
       <Container>
+        <Modal
+          style={{ justifyContent: "flex-end", margin: 0 }}
+          onSwipeComplete={this.togglePostOptions.bind(this)}
+          onBackdropPress={this.togglePostOptions.bind(this)}
+          onBackButtonPress={this.togglePostOptions.bind(this)}
+          swipeDirection={["down"]}
+          isVisible={showModalOptions}
+        >
+          <PostOptionsWrapper>
+            <PostOptionsTitle>Options de la publication</PostOptionsTitle>
+            {postOptions.map((item) => {
+              return (
+                <PostOptionItem
+                  onPress={this.handlePostOptionPress.bind(this)}
+                  item={item}
+                  key={item.value}
+                />
+              );
+            })}
+          </PostOptionsWrapper>
+        </Modal>
         <Header>
           <TouchableOpacity onPress={() => navigation.goBack()}>
             <BackIcon fill="#fff" size={24} />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => this.togglePostOptions()}>
+            <Entypo name="dots-three-horizontal" size={24} color="#ffffff9a" />
           </TouchableOpacity>
         </Header>
         {!isLoading ? (
@@ -164,8 +209,10 @@ const Container = styled.KeyboardAvoidingView`
 const PostContentWrapper = styled.View``;
 
 const Header = styled.View`
-  padding: 7.5px 0px;
+  padding: 7.5px 7.5px;
   margin-top: 24px;
+  flex-direction: row;
+  justify-content: space-between;
 `;
 
 const PostPicture = styled.Image`
@@ -175,6 +222,30 @@ const PostPicture = styled.Image`
 `;
 
 const Content = styled.FlatList``;
+
+const PostOptionsWrapper = styled.View`
+  background-color: #ffffff;
+  padding: 15px;
+  border-top-right-radius: 15px;
+  border-top-left-radius: 15px;
+`;
+
+const PostOptionsTitle = styled.Text`
+  text-align: center;
+  font-size: 18px;
+  font-weight: bold;
+  color: ${dark};
+`;
+
+const PostOptionItemWrapper = styled.TouchableOpacity`
+  flex-direction: row;
+  justify-content: center;
+  padding: 15px 10px;
+  align-items: center;
+`;
+const PostOptionItemLabel = styled.Text`
+  font-size: 15px;
+`;
 
 const mapStateToProps = (state, props) => {
   return {

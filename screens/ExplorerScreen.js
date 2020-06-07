@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import AppHeader from "../components/generic/AppHeader";
-import { dark, darkLighten } from "../config/variables";
+import { darkLighten } from "../config/variables";
 import { fetchPosts } from "../store/actions/post";
 import { connect } from "react-redux";
 import { getPosts } from "../store/selectors/post";

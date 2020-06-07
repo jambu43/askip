@@ -5,7 +5,7 @@ import * as ImagePicker from "expo-image-picker";
 import { dark, darkLighten } from "../config/variables";
 import stringUrlExtractor from "string-url-extractor";
 import { Feather, AntDesign } from "@expo/vector-icons";
-import { togglePostCreating, createPost } from "../store/actions/post";
+import { createPost } from "../store/actions/post";
 import { ActivityIndicator, Platform, StatusBar } from "react-native";
 
 class CreatePostScreen extends React.Component {

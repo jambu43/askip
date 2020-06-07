@@ -21,12 +21,16 @@ class PostCard extends React.Component {
       post.post_shares_count;
     return (
       <Container isSharedPost={isSharedPost}>
-        <AuthorGroup onPress={() => navigation.navigate("Profile", { user_id: post.author.id })}>
-          <AuthorImage source={{ uri: post.author.avatar }} />
-          <AuthorGroupDetails>
-            <Author>{post.author.name}</Author>
-            <PostDate>{moment(post.created_at).fromNow()}</PostDate>
-          </AuthorGroupDetails>
+        <AuthorGroup>
+          <AuthorGroupDetailsWrapper
+            onPress={() => navigation.navigate("Profile", { user_id: post.author.id })}
+          >
+            <AuthorImage source={{ uri: post.author.avatar }} />
+            <AuthorGroupDetails>
+              <Author>{post.author.name}</Author>
+              <PostDate>{moment(post.created_at).fromNow()}</PostDate>
+            </AuthorGroupDetails>
+          </AuthorGroupDetailsWrapper>
         </AuthorGroup>
         <CardGroup
           disabled={isSharedPost}
@@ -66,11 +70,16 @@ const PostPicture = styled.Image`
   width: 100%;
 `;
 
-const AuthorGroup = styled.TouchableOpacity`
+const AuthorGroup = styled.View`
   flex-direction: row;
   padding: 10px 15px;
   margin-bottom: 5px;
   align-items: center;
+`;
+const AuthorGroupDetailsWrapper = styled.TouchableOpacity`
+  flex-direction: row;
+  align-items: center;
+  flex: 1;
 `;
 const AuthorGroupDetails = styled.View`
   margin-left: 5px;
