@@ -37,6 +37,7 @@
     "redux-persist": "^6.0.0",
     "redux-thunk": "^2.3.0",
     "reselect": "^4.0.0",
+    "string-url-extractor": "^1.0.1",
     "styled-components": "^4.3.2"
   },
   "devDependencies": {

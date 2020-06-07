@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { connect } from "react-redux";
 import * as ImagePicker from "expo-image-picker";
 import { dark, darkLighten } from "../config/variables";
-import UserAvatar from "../components/generic/UserAvatar";
+import stringUrlExtractor from "string-url-extractor";
 import { Feather, AntDesign } from "@expo/vector-icons";
 import { togglePostCreating, createPost } from "../store/actions/post";
 import { ActivityIndicator, Platform, StatusBar } from "react-native";
@@ -84,7 +84,14 @@ class CreatePostScreen extends React.Component {
       formData.append("post_color", selectedColor);
     }
     if (content) {
-      formData.append("content", content);
+      let extractedUrls = stringUrlExtractor(content);
+      let parsedContent = content;
+      extractedUrls.forEach((item) => {
+        parsedContent = content.replace(item, `<a href='${item}'>${item}</a>`);
+      });
+
+      parsedContent = `<p>${parsedContent}</p>`;
+      formData.append("content", parsedContent);
     }
 
     if (selectedPicture) {

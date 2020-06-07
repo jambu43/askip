@@ -310,6 +310,14 @@ const CreatePostStack = createStackNavigator(
   }
 );
 
+CreatePostStack.navigationOptions = ({ navigation }) => {
+  let tabBarVisible = false;
+
+  return {
+    tabBarVisible,
+  };
+};
+
 const HomeTabNavigator = createBottomTabNavigator(
   {
     Home: {
@@ -324,16 +332,16 @@ const HomeTabNavigator = createBottomTabNavigator(
         tabBarLabel: "Explorer",
       },
     },
-    Trends: {
-      screen: TrendsStack,
-      navigationOptions: {
-        tabBarLabel: "Tendances",
-      },
-    },
     CreatePost: {
       screen: CreatePostStack,
       navigationOptions: {
         tabBarLabel: "Nouveau",
+      },
+    },
+    Trends: {
+      screen: TrendsStack,
+      navigationOptions: {
+        tabBarLabel: "Tendances",
       },
     },
     Dashboard: {
