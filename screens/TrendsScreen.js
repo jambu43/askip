@@ -82,7 +82,8 @@ class TrendsScreen extends React.Component {
       <ContentHeader>
         <ContentHeaderTitle>Tendances</ContentHeaderTitle>
         <ContentHeaderDescription>
-          La mode est ce que l'on porte. Ce qui est démodé, c'est ce que portent les autres.
+          Des endroits, des images, des personnes, des histoires, des tendances, askip on les
+          raconte et décrypte tous ensemble.
         </ContentHeaderDescription>
       </ContentHeader>
     );
