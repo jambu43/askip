@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import { dark, darkLighten, danger } from "../config/variables";
 import { fetchArticleById, readArticle, fetchSimilarArticles } from "../store/actions/articles";
 import { Entypo } from "@expo/vector-icons";
-import { cutText, assetsUrl } from "../helpers";
+import { cutText, assetsUrl, onLinkPress } from "../helpers";
 import HTML from "react-native-render-html";
 import { getNewsArticleById, getSimilarArticles } from "../store/selectors/news";
 import SimilarArticleItem from "../components/magazine/SimilarArticleItem";
@@ -49,6 +49,7 @@ class NewsScreen extends React.Component {
           <ArticleContentWrapper>
             {!isArticleLoading ? (
               <HTML
+                onLinkPress={onLinkPress}
                 html={article.content}
                 tagsStyles={{
                   p: { color: "#fff", marginBottom: 5, fontSize: 16 },

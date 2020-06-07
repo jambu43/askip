@@ -7,7 +7,7 @@ import { connect } from "react-redux";
 import { dark, danger } from "../config/variables";
 import { getPodcastById } from "../store/selectors/podcast";
 import { BackIcon } from "../components/Icons";
-import { assetsUrl, processPlaybackStatus } from "../helpers";
+import { assetsUrl, processPlaybackStatus, onLinkPress } from "../helpers";
 import PlayBackWardButton from "../components/podcast/PlayBackWardButton";
 import PlayButton from "../components/podcast/PlayButton";
 import PlayForwardButton from "../components/podcast/PlayForwardButton";
@@ -128,6 +128,10 @@ class PodcastScreen extends React.Component {
       canGoBackward,
       canGoForward,
     } = processPlaybackStatus(playbackStatus);
+
+    let parsedContent = !podcast.content.match(/^<p>/)
+      ? `<p>${podcast.content}</p>`
+      : podcast.content;
     return (
       <Container>
         <Header>
@@ -171,7 +175,15 @@ class PodcastScreen extends React.Component {
             <ActivityIndicator size="small" color="#fff" />
           ) : null}
         </PlayerControlWrapper>
-        <HTML html={podcast.content} tagsStyles={{ p: { color: "#fff" } }}></HTML>
+        <HTML
+          html={parsedContent}
+          onLinkPress={onLinkPress}
+          tagsStyles={{
+            p: { color: "#fff", marginBottom: 5, fontSize: 16 },
+            a: { color: danger, fontWeight: "bold" },
+            li: { color: "#fff" },
+          }}
+        ></HTML>
       </Container>
     );
   }

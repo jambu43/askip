@@ -1,4 +1,5 @@
 import { NavigationActions } from "react-navigation";
+import { Linking } from "react-native";
 
 export const cutText = (text, length, more = "...") => {
   text = text ? text : "";
@@ -37,6 +38,13 @@ export const processPlaybackStatus = ({
     canGoForward,
     canGoBackward,
   };
+};
+
+export const onLinkPress = (_, link) => {
+  let parsedLink = link.replace(/^http:\/\//, "");
+  parsedLink = parsedLink.replace(/^https:\/\//, "");
+  parsedLink = `http://${parsedLink}`;
+  Linking.openURL(parsedLink);
 };
 
 let _navigator;

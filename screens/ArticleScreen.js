@@ -10,7 +10,7 @@ import {
   getMagazineReleasePrevArticle,
 } from "../store/selectors/magazine";
 import { Entypo, MaterialIcons } from "@expo/vector-icons";
-import { assetsUrl, cutText } from "../helpers";
+import { assetsUrl, cutText, onLinkPress } from "../helpers";
 import { fetchArticleById, readArticle, getSimilarArticles } from "../store/actions/articles";
 import { Text } from "react-native";
 
@@ -79,6 +79,7 @@ class ArticleScreen extends React.Component {
           <ArticleContentWrapper>
             {!isArticleLoading ? (
               <HTML
+                onLinkPress={onLinkPress}
                 html={article.content}
                 tagsStyles={{
                   p: { color: "#fff", marginBottom: 5, fontSize: pFontSize },
