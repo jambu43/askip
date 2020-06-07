@@ -1,6 +1,14 @@
 import React from "react";
 import styled from "styled-components";
+import HTML from "react-native-render-html";
+import { Linking } from "react-native";
 
+const onLinkPress = (_, link) => {
+  let parsedLink = link.replace(/^http:\/\//, "");
+  parsedLink = parsedLink.replace(/^https:\/\//, "");
+  parsedLink = `http://${parsedLink}`;
+  Linking.openURL(parsedLink);
+};
 export default class PlainTextPost extends React.Component {
   render() {
     const { post } = this.props;
@@ -9,15 +17,44 @@ export default class PlainTextPost extends React.Component {
     if (!isPlainTextPost) {
       postColor = "transparent";
     }
+    let parsedContent = post.content.replace("\n", "<br>");
+    parsedContent = !parsedContent.match(/^<p>/) ? `<p>${parsedContent}</p>` : parsedContent;
+    let styles = isPlainTextPost ? plainTextStyles : nonPlainTextStyles;
     return (
       <Container>
         <PostContentWrapper isPlainTextPost={isPlainTextPost} postColor={postColor}>
-          <PostContent isPlainTextPost={isPlainTextPost}>{post.content}</PostContent>
+          <HTML onLinkPress={onLinkPress} html={parsedContent} tagsStyles={styles}></HTML>
         </PostContentWrapper>
       </Container>
     );
   }
 }
+
+let plainTextStyles = {
+  p: {
+    textAlign: "center",
+    color: "#fff",
+    fontSize: 20,
+  },
+  a: {
+    fontWeight: "bold",
+    color: "#fff",
+    fontSize: 20,
+    lineHeight: 20,
+    borderRadius: 10,
+  },
+};
+
+let nonPlainTextStyles = {
+  p: {
+    fontSize: 14,
+    color: "#fff",
+  },
+  a: {
+    fontWeight: "bold",
+    color: "#fff",
+  },
+};
 
 const Container = styled.View``;
 const PostContentWrapper = styled.View`
