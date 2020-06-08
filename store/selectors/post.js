@@ -4,6 +4,7 @@ import { createSelector } from "reselect";
 export const _getPosts = (state) => state.post.post_list;
 export const _getCurrentUserId = (state) => state.auth.user.id;
 export const _getUsersPosts = (state) => state.post.users_posts;
+export const _getDeletedPosts = (state) => state.post.deleted_posts;
 export const _getUserId = (state, props) => props.navigation.getParam("user_id");
 export const _getPostAuthorId = (state, props) => props.navigation.getParam("post_author_id");
 export const _getPostId = (state, props) => props.navigation.getParam("post_id");
@@ -25,6 +26,14 @@ export const getUsersPosts = createSelector(
 export const getPostById = createSelector([_getPostId, _getPosts], (post_id, posts) => {
   return posts[post_id] ? posts[post_id] : null;
 });
+
+export const isDeletedPost = createSelector(
+  [_getPostId, _getDeletedPosts],
+  (post_id, deleted_posts) => {
+    console.log(deleted_posts, post_id);
+    return deleted_posts.includes(post_id);
+  }
+);
 
 export const getUserPostById = createSelector(
   [_getPostId, _getPostAuthorId, _getUsersPosts],

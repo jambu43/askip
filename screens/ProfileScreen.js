@@ -111,7 +111,13 @@ class ProfileScreen extends React.Component {
   _renderPost({ item, index }) {
     const { navigation } = this.props;
     return (
-      <PostCard showSocialInteraction={true} post={item} navigation={navigation} key={item.id} />
+      <PostCard
+        isDeletedPost={false}
+        showSocialInteraction={true}
+        post={item}
+        navigation={navigation}
+        key={item.id}
+      />
     );
   }
 

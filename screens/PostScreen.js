@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 import { dark, danger } from "../config/variables";
 import { BackIcon } from "../components/Icons";
 import { TouchableOpacity, View, ActivityIndicator } from "react-native";
-import { getUserPostById, getPostById } from "../store/selectors/post";
+import { getUserPostById, getPostById, isDeletedPost } from "../store/selectors/post";
 import Modal from "react-native-modal";
 import PostSocialInteraction from "../components/askip/PostSocialInteraction";
 import PlainTextPost from "../components/askip/PlainTextPost";
@@ -16,11 +16,11 @@ import { fetchPostComment, addComment } from "../store/actions/comments";
 import CommentItem from "../components/askip/CommentItem";
 import PostCommentInput from "../components/askip/PostCommentInput";
 import PostCard from "../components/askip/PostCard";
-import { fetchPostById } from "../store/actions/post";
+import { fetchPostById, deletePost } from "../store/actions/post";
 
 const PostOptionItem = ({ item, onPress }) => {
   return (
-    <PostOptionItemWrapper onPress={onPress}>
+    <PostOptionItemWrapper onPress={() => onPress(item.value)}>
       <EvilIcons name={item.icon_name} size={24} color={danger} />
       <PostOptionItemLabel>{item.label}</PostOptionItemLabel>
     </PostOptionItemWrapper>
@@ -31,18 +31,21 @@ class PostScreen extends React.Component {
     page: 1,
     content: "",
     commenting: false,
-    showModalOptions: true,
+    showModalOptions: false,
     postOptions: [{ icon_name: "trash", label: "Supprimer la publication", value: "DELETE_POST" }],
   };
 
   componentDidMount() {
+    const { isDeletedPost } = this.props;
     let post_id = this.props.navigation.getParam("post_id");
-    this.props.fetchPostById(post_id);
-    this.props.fetchPostComment(post_id, this.state.page);
+    if (!isDeletedPost) {
+      this.props.fetchPostById(post_id);
+      this.props.fetchPostComment(post_id, this.state.page);
+    }
   }
 
   renderHeader() {
-    const { post, userPost, navigation } = this.props;
+    const { post, userPost, navigation, isDeletedPost } = this.props;
     const postData = post ? post : userPost;
     let hasSocialInteraction =
       postData.post_confirmations ||
@@ -70,7 +73,7 @@ class PostScreen extends React.Component {
             post={postData}
           />
         ) : null}
-        <PostSocialInteraction navigation={navigation} post={postData} />
+        {!isDeletedPost ? <PostSocialInteraction navigation={navigation} post={postData} /> : null}
       </PostContentWrapper>
     );
   }
@@ -132,10 +135,25 @@ class PostScreen extends React.Component {
 
   handlePostOptionPress(value) {
     this.togglePostOptions();
+    const { navigation, post, userPost } = this.props;
+    const postData = post ? post : userPost;
+    if (value == "DELETE_POST") {
+      this.props.deletePost(postData.id).then(() => {
+        navigation.goBack();
+      });
+    }
   }
 
   render() {
-    const { navigation, comments, post, userPost, post_comment_loading } = this.props;
+    const {
+      navigation,
+      comments,
+      post,
+      userPost,
+      post_comment_loading,
+      user,
+      isDeletedPost,
+    } = this.props;
     const { content, commenting, showModalOptions, postOptions } = this.state;
     const postData = post ? post : userPost;
     let isLoading = !postData;
@@ -166,9 +184,11 @@ class PostScreen extends React.Component {
           <TouchableOpacity onPress={() => navigation.goBack()}>
             <BackIcon fill="#fff" size={24} />
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => this.togglePostOptions()}>
-            <Entypo name="dots-three-horizontal" size={24} color="#ffffff9a" />
-          </TouchableOpacity>
+          {!isLoading && user.id == postData.author.id ? (
+            <TouchableOpacity disabled={isDeletedPost} onPress={() => this.togglePostOptions()}>
+              <Entypo name="dots-three-horizontal" size={24} color="#ffffff9a" />
+            </TouchableOpacity>
+          ) : null}
         </Header>
         {!isLoading ? (
           <Content
@@ -189,6 +209,7 @@ class PostScreen extends React.Component {
           <PostCommentInput
             submitting={commenting}
             content={content}
+            editable={!isDeletedPost}
             onSubmit={this.handleCommentSubmit.bind(this)}
             onChange={this.handleCommentChange.bind(this)}
           />
@@ -206,7 +227,9 @@ const Container = styled.KeyboardAvoidingView`
   position: relative;
   flex-grow: 1;
 `;
-const PostContentWrapper = styled.View``;
+const PostContentWrapper = styled.View`
+  margin-bottom: 15px;
+`;
 
 const Header = styled.View`
   padding: 7.5px 7.5px;
@@ -249,6 +272,8 @@ const PostOptionItemLabel = styled.Text`
 
 const mapStateToProps = (state, props) => {
   return {
+    user: state.auth.user,
+    isDeletedPost: isDeletedPost(state, props),
     userPost: getUserPostById(state, props),
     post: getPostById(state, props),
     comments: getPostComments(state, props),
@@ -261,6 +286,7 @@ const mapDispatchToProps = (dispatch) => {
     fetchPostById: (post_id) => dispatch(fetchPostById(post_id)),
     fetchPostComment: (post_id, page) => dispatch(fetchPostComment(post_id, page)),
     addComment: (post_id, post) => dispatch(addComment(post_id, post)),
+    deletePost: (post_id) => dispatch(deletePost(post_id)),
   };
 };
 

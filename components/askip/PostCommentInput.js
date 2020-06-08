@@ -3,14 +3,14 @@ import styled from "styled-components";
 import { darkLighten } from "../../config/variables";
 import { ActivityIndicator } from "react-native";
 
-export default ({ content, onChange, onSubmit, submitting }) => {
+export default ({ content, onChange, editable = true, onSubmit, submitting }) => {
   return (
     <CommentFormWrapper>
       <CommentInput
         placeholder="Votre commentaire..."
         value={content}
         multiline={true}
-        editable={!submitting}
+        editable={editable && !submitting}
         onChangeText={onChange}
       />
       <CommentSendButton disabled={!content || submitting} onPress={onSubmit}>

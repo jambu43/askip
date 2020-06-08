@@ -65,9 +65,15 @@ class ExplorerScreen extends React.Component {
   }
 
   _renderPost({ item, index }) {
-    const { navigation } = this.props;
+    const { navigation, deleted_posts } = this.props;
     return (
-      <PostCard post={item} showSocialInteraction={true} navigation={navigation} key={item.id} />
+      <PostCard
+        isDeletedPost={deleted_posts.includes(item.id)}
+        post={item}
+        showSocialInteraction={true}
+        navigation={navigation}
+        key={item.id}
+      />
     );
   }
 
@@ -99,6 +105,7 @@ const mapStateTopProps = (state) => {
   return {
     posts: getPosts(state),
     posts_loading: state.post.post_list_loading,
+    deleted_posts: state.post.deleted_posts,
   };
 };
 

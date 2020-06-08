@@ -8,6 +8,8 @@ import {
   SET_USERS_POSTS,
   TOGGLE_USERS_POSTS_LOADING,
   TOGGLE_POST_LIKING,
+  TOGGLE_DELETED_POST,
+  REMOVE_POST,
 } from "../types/post";
 
 import { apiUrl } from "../../helpers";
@@ -16,6 +18,14 @@ import { SET_USER_PUBLICATION_RELEASE } from "../types/auth";
 export const togglePostListLoading = () => {
   return {
     type: TOGGLE_POST_LIST_LOADING,
+  };
+};
+export const toggleDeletedPost = (post_id) => {
+  return {
+    type: TOGGLE_DELETED_POST,
+    payload: {
+      post_id,
+    },
   };
 };
 
@@ -28,11 +38,21 @@ export const togglePostCreating = (state) => {
   };
 };
 
-export const setPostList = (posts) => {
+export const setPostList = (posts, cleanFirst) => {
   return {
     type: SET_POST_LIST,
     payload: {
       posts,
+      cleanFirst,
+    },
+  };
+};
+
+export const removePost = (post_id) => {
+  return {
+    type: REMOVE_POST,
+    payload: {
+      post_id,
     },
   };
 };
@@ -101,7 +121,7 @@ export const fetchPosts = (page = 1) => {
     axios
       .get(apiUrl(`posts/feed?page=${page}`))
       .then(({ data }) => {
-        dispatch(setPostList(data.data));
+        dispatch(setPostList(data.data, page === 1));
         dispatch(togglePostListLoading());
       })
       .catch(({ response }) => {
@@ -192,6 +212,28 @@ export const updatePost = (post_id, formData) => {
         .post(apiUrl(`posts/${post_id}/update`), formData)
         .then(({ data }) => {
           resolve();
+        })
+        .catch(({ response }) => {
+          console.log(response);
+          reject();
+        });
+    });
+  };
+};
+
+export const deletePost = (post_id) => {
+  return (dispatch) => {
+    return new Promise((resolve, reject) => {
+      axios
+        .post(apiUrl(`posts/${post_id}`), { _method: "DELETE" })
+        .then(({}) => {
+          resolve();
+          try {
+            dispatch(removePost(post_id));
+            dispatch(toggleDeletedPost(post_id));
+          } catch (e) {
+            console.log(e);
+          }
         })
         .catch(({ response }) => {
           console.log(response);

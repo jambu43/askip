@@ -13,7 +13,7 @@ class PostCard extends React.Component {
   handlePostShare() {}
 
   render() {
-    const { post, showSocialInteraction, isSharedPost, navigation } = this.props;
+    const { post, showSocialInteraction, isSharedPost, isDeletedPost, navigation } = this.props;
     let hasSocialInteraction =
       post.post_confirmations ||
       post.post_invalidations ||
@@ -33,7 +33,7 @@ class PostCard extends React.Component {
           </AuthorGroupDetailsWrapper>
         </AuthorGroup>
         <CardGroup
-          disabled={isSharedPost}
+          disabled={isSharedPost || isDeletedPost}
           onPress={() =>
             navigation.navigate("Post", { post_id: post.id, post_author_id: post.author.id })
           }
@@ -50,7 +50,7 @@ class PostCard extends React.Component {
           ) : null}
           {hasSocialInteraction && showSocialInteraction ? <PostSocialStats post={post} /> : null}
         </CardGroup>
-        {showSocialInteraction ? (
+        {showSocialInteraction && !isDeletedPost ? (
           <PostSocialInteraction post={post} navigation={navigation} />
         ) : null}
       </Container>

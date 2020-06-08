@@ -6,6 +6,8 @@ import {
   TOGGLE_USERS_POSTS_LOADING,
   SET_USERS_POSTS,
   TOGGLE_POST_LIKING,
+  TOGGLE_DELETED_POST,
+  REMOVE_POST,
 } from "../types/post";
 
 const initialState = {
@@ -13,6 +15,7 @@ const initialState = {
   post_list_loading: false,
   post_loading: {},
   post_liking: {},
+  deleted_posts: [],
   post_creating: false,
   /**
    * {List<String, Array<Object>>}
@@ -49,8 +52,42 @@ export const postReducers = (state = initialState, { type, payload }) => {
           ...{ [payload.post_id]: payload.state },
         },
       };
+    case TOGGLE_DELETED_POST:
+      return {
+        ...state,
+        deleted_posts: [...state.deleted_posts, payload.post_id],
+      };
+    case REMOVE_POST:
+      let oldPostList = Object.values(state.post_list);
+      let oldUserPostList = Object.values(state.users_posts);
+      let setPostList = {};
+      let setUsersPosts = {};
+
+      oldPostList.forEach((item) => {
+        if (item.id != payload.post_id) {
+          setPostList[item.id] = item;
+        }
+      });
+
+      oldUserPostList.forEach((item) => {
+        if (item.id != payload.post_id) {
+          setUsersPosts[item.id] = item;
+        }
+      });
+
+      return {
+        ...state,
+        post_list: {
+          ...setPostList,
+        },
+        users_posts: {
+          ...setUsersPosts,
+        },
+      };
     case SET_POST_LIST: {
       let setPostList = {};
+      let oldPostList = payload.cleanFirst ? {} : state.post_list;
+      let oldUserPostList = payload.cleanFirst ? {} : state.users_posts;
       let setUsersPosts = {
         ...state.users_posts,
       };
@@ -75,11 +112,11 @@ export const postReducers = (state = initialState, { type, payload }) => {
       return {
         ...state,
         post_list: {
-          ...state.post_list,
+          ...oldPostList,
           ...setPostList,
         },
         users_posts: {
-          ...state.users_posts,
+          ...oldUserPostList,
           ...setUsersPosts,
         },
       };
