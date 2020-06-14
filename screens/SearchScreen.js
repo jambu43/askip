@@ -1,14 +1,17 @@
 import React from "react";
 import styled from "styled-components";
 import { dark, darkLighten } from "../config/variables";
+import { AntDesign } from "@expo/vector-icons";
 import { TouchableOpacity, ActivityIndicator, View } from "react-native";
 import { searchUsers } from "../store/actions/users";
 import { connect } from "react-redux";
 import orderBy from "lodash/orderBy";
 import UserCard from "../components/user/UserCard";
 import EmptyListNotification from "../components/generic/EmptyListNotification";
+import { SearchIcon } from "../components/Icons";
 
 class SearchScreen extends React.Component {
+  searchInput = null;
   state = {
     keywords: "",
     page: 1,
@@ -33,10 +36,21 @@ class SearchScreen extends React.Component {
   }
 
   handleKeywordsChange(text) {
-    this.setState({
-      keywords: text,
-      has_triggered_search: false,
-    });
+    if (!text) {
+      this.setState({
+        keywords: text,
+        has_triggered_search: false,
+        users: {},
+      });
+      if (this.searchInput) {
+        this.searchInput.focus();
+      }
+    } else {
+      this.setState({
+        keywords: text,
+        has_triggered_search: false,
+      });
+    }
   }
 
   toArray(map) {
@@ -60,7 +74,6 @@ class SearchScreen extends React.Component {
   };
 
   _handleRefresh() {
-    console.log("_handleLoadMore");
     this.setState(
       (prevState, nextProps) => ({
         page: 1,
@@ -78,7 +91,7 @@ class SearchScreen extends React.Component {
   }
 
   _renderEmptyList() {
-    if (!this.state.users_loading && this.state.keywords && this.has_triggered_search) {
+    if (!this.state.users_loading && this.state.keywords && this.state.has_triggered_search) {
       return (
         <EmptyListNotification
           title="Aucun résultat"
@@ -87,12 +100,7 @@ class SearchScreen extends React.Component {
       );
     }
 
-    return (
-      <EmptyListNotification
-        title="Découverte"
-        message="Saisissez vos premiers mots clefs pour faire des découvertes. "
-      />
-    );
+    return null;
   }
 
   renderHeader() {
@@ -113,7 +121,7 @@ class SearchScreen extends React.Component {
     this.props
       .searchUsers(this.state.keywords, this.state.page)
       .then((data) => {
-        this.setState({ users: {} });
+        this.setState({ users: {}, has_triggered_search: true });
         data.forEach((item) => {
           this.setState({
             users: {
@@ -149,19 +157,22 @@ class SearchScreen extends React.Component {
       <Container>
         <Header>
           <SearchInputWrapper>
+            <SearchIcon fill="#fff" size={24} />
             <SearchInput
+              ref={(ref) => (this.searchInput = ref)}
               returnKeyType="search"
               value={keywords}
               autoFocus={true}
+              placeholder="Recherches des personnes"
               inputFocused={inputFocused}
               onFocus={this.toggleFocus.bind(this)}
               onBlur={this.toggleFocus.bind(this)}
               onSubmitEditing={this.searchUsers.bind(this)}
               onChangeText={this.handleKeywordsChange.bind(this)}
             />
-            {inputFocused ? (
-              <TouchableOpacity onPress={() => navigation.goBack()}>
-                <CancelSearchText>Annuler</CancelSearchText>
+            {keywords.length ? (
+              <TouchableOpacity onPress={() => this.handleKeywordsChange("")}>
+                <AntDesign name="close" size={24} color="#fff" />
               </TouchableOpacity>
             ) : null}
           </SearchInputWrapper>
@@ -221,13 +232,10 @@ const CancelSearchText = styled.Text`
 
 const SearchInput = styled.TextInput`
   flex: 1;
-  border-color: #ccc;
-  border-width: 2px;
-  border-radius: 5px;
   margin-right: 10px;
   padding: 5px 10px;
   color: #ccc;
-  background-color: ${(props) => (props.inputFocused ? darkLighten : "transparent")};
+  background-color: transparent;
 `;
 
 const mapStateToProps = (state) => {
