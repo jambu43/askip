@@ -58,6 +58,23 @@ export const fetchLatestMagazineReleases = () => {
   };
 };
 
+export const searchMagazineReleases = (keywords) => {
+  return (dispatch) => {
+    dispatch(togglePublicationReleasesLoading(true));
+    return new Promise((resolve, reject) => {
+      axios
+        .get(apiUrl(`publication_releases/search/${keywords}`))
+        .then(({ data }) => {
+          resolve(data.data);
+        })
+        .catch(({ response }) => {
+          console.log(response);
+          reject();
+        });
+    });
+  };
+};
+
 export const fetchMagazineReleases = (page = 1) => {
   return (dispatch) => {
     dispatch(togglePublicationReleasesLoading(true));

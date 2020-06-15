@@ -6,7 +6,7 @@ import { fetchMagazineReleases } from "../store/actions/magazines";
 import { getMagazinesReleases } from "../store/selectors/magazine";
 import MagazineReleaseCard from "../components/magazine/MagazineReleaseCard";
 import { TouchableOpacity } from "react-native";
-import { BackIcon } from "../components/Icons";
+import { BackIcon, SearchIcon } from "../components/Icons";
 
 class MagazinesScreen extends React.Component {
   constructor(props) {
@@ -65,6 +65,9 @@ class MagazinesScreen extends React.Component {
           <TouchableOpacity onPress={() => navigation.goBack()}>
             <BackIcon fill="#fff" size={24} />
           </TouchableOpacity>
+          <TouchableOpacity onPress={() => navigation.navigate("MagazineSearch")}>
+            <SearchIcon fill="#fff" size={24} />
+          </TouchableOpacity>
         </Header>
         <Content
           keyExtractor={(item) => item.id.toString()}
@@ -98,6 +101,7 @@ const Header = styled.View`
   margin-bottom: 15px;
   flex-direction: row;
   align-items: center;
+  justify-content: space-between;
 `;
 
 const ContentHeader = styled.View`

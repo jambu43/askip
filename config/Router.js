@@ -38,6 +38,7 @@ import UserFolloweesScreen from "../screens/Dashboard/UserFolloweesScreen";
 import UserPublicationsScreen from "../screens/Dashboard/UserPublicationsScreen";
 import PostInteractionScreen from "../screens/Post/PostInteractionScreen";
 import SearchScreen from "../screens/SearchScreen";
+import MagazineSearchScreen from "../screens/MagazineSearchScreen";
 
 const BottomTransition = (index, position, height) => {
   const sceneRange = [index - 1, index, index + 1];
@@ -166,6 +167,10 @@ const HomeStack = createStackNavigator(
       path: "magazine/:magazine_id",
       screen: MagazineRecentlyRead,
     },
+    MagazineSearch: {
+      path: "magazines/search",
+      screen: MagazineSearchScreen,
+    },
     Home: {
       path: "home",
       screen: HomeScreen,
@@ -177,10 +182,6 @@ const HomeStack = createStackNavigator(
     Podcast: {
       path: "podcast/:podcast_id",
       screen: PodcastScreen,
-    },
-    ShowMypublication: {
-      path: "post/:user_id",
-      screen: MyPublicationScreen,
     },
     NewsExplorer: {
       path: "news",
