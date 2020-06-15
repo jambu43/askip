@@ -20,8 +20,8 @@ class NewsExplorerScreen extends React.Component {
       <ContentHeader>
         <ContentHeaderTitle>Actualités</ContentHeaderTitle>
         <ContentHeaderDescription>
-          “L'Actualité, ça n'existe pas, ça ne veut rien dire. L'actualité, ce sont des gens. Des
-          milliards de gens qui rient, qui pleurent, qui souffrent et qui tombent amoureux.”
+          Sur Askip, c'est vous qui êtes au centre de l'actualité. ce sont vos rires, vos pleurs,
+          vous émotions, vos ambitions, vos rêves, vos rumeurs, qui constituent l'actualité.
         </ContentHeaderDescription>
       </ContentHeader>
     );

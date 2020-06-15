@@ -52,7 +52,7 @@ class MagazinesScreen extends React.Component {
       <ContentHeader>
         <ContentHeaderTitle>Magazines</ContentHeaderTitle>
         <ContentHeaderDescription>
-          La lecture, c'est une vertu irremplaçable qui enrichie le savoir et fortifie la mémoire.
+          Askip , nous lisons des magazines en nous amusant et de manière totalement décomplexée.
         </ContentHeaderDescription>
       </ContentHeader>
     );
