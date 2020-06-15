@@ -1,4 +1,8 @@
-import { SET_NOTIFICATIONS, TOGGLE_NOTIFICATIONS_LOADING } from "../types/notification";
+import {
+  SET_NOTIFICATIONS,
+  TOGGLE_NOTIFICATIONS_LOADING,
+  MARK_NOTIFICATION_AS_READ,
+} from "../types/notification";
 
 let initialState = {
   notifications: {},
@@ -24,6 +28,28 @@ export const notificationReducers = (state = initialState, { type, payload }) =>
         ...state,
         notifications_loading: payload.isLoading,
       };
+    case MARK_NOTIFICATION_AS_READ: {
+      let setNotifications = {};
+
+      Object.values(state.notifications).map((item) => {
+        if (payload.notification_id == item.id) {
+          setNotifications[item.id] = {
+            ...item,
+            read: true,
+          };
+        }
+
+        setNotifications[item.id] = item;
+      });
+
+      return {
+        ...state,
+        notifications: {
+          ...state.notifications,
+          ...setNotifications,
+        },
+      };
+    }
     default:
       return state;
   }

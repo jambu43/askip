@@ -44,20 +44,26 @@ class NotificationsScreen extends React.Component {
     );
   }
 
-  handleNotificationClick(notification) {
+  async handleNotificationClick(notification) {
     const { navigation } = this.props;
+    await this.props.markNotificationAsRead(notification.id);
     switch (notification.type) {
       case "POST_SHARE":
-        navigation.navigate("Post", { post_id: notification.sourcePost.id });
+        if (notification.sourcePost) {
+          navigation.navigate("Post", { post_id: notification.sourcePost.id });
+        }
         break;
       case "POST_COMMENT":
-        navigation.navigate("Post", { post_id: notification.sourcePost.id });
+        if (notification.sourcePost) {
+          navigation.navigate("Post", { post_id: notification.sourcePost.id });
+        }
         break;
       case "FOLLOW":
-        navigation.navigate("Profile", { user_id: notification.sourceUser.id });
+        if (notification.sourceUser.id) {
+          navigation.navigate("Profile", { user_id: notification.sourceUser.id });
+        }
         break;
     }
-    this.props.markNotificationAsRead(notification.id);
   }
 
   _renderNotification({ item }) {
