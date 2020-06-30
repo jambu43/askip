@@ -6,6 +6,7 @@ import { cutText, assetsUrl } from "../../helpers";
 export default class MagazineReleaseCard extends React.Component {
   render() {
     const { magazine, size, navigation } = this.props;
+    let isVerified = parseInt(magazine.magazine.is_verified) === 1;
     return (
       <Container
         size={size}
@@ -16,7 +17,12 @@ export default class MagazineReleaseCard extends React.Component {
         <MagazineReleaseEdition>
           {moment(magazine.publication_date).format("MMMM YYYY")}
         </MagazineReleaseEdition>
-        <MagazineReleaseName>{magazine.magazine.name} fans</MagazineReleaseName>
+        <MagazineCardDivider>
+          <MagazineReleaseName>{magazine.magazine.name}</MagazineReleaseName>
+          {isVerified ? (
+            <MagazineVerifiedIcon source={require("../../assets/verified.png")} />
+          ) : null}
+        </MagazineCardDivider>
       </Container>
     );
   }
@@ -35,6 +41,14 @@ const MagazineCover = styled.Image`
   background: #f1f1f1;
   margin-bottom: 5px;
 `;
+const MagazineCardDivider = styled.View`
+  flex-direction: row;
+`;
+
+const MagazineVerifiedIcon = styled.Image`
+  height: 13px;
+  width: 13px;
+`;
 const MagazineTitle = styled.Text`
   color: #fff;
   font-weight: bold;
@@ -52,4 +66,5 @@ const MagazineReleaseName = styled.Text`
   font-size: 11px;
   font-weight: bold;
   margin-bottom: 5px;
+  margin-right: 5px;
 `;
