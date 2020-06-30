@@ -18,19 +18,17 @@ import ExplorerScreen from "../screens/ExplorerScreen";
 import DashboardScreen from "../screens/DashboardScreen";
 import ArticleScreen from "../screens/ArticleScreen";
 import HomeScreen from "../screens/HomeScreen";
-import PodcastScreen from "../screens/PodcastScreen";
-import PodcastsScreen from "../screens/PodcastsScreen";
+import PodcastEpisodeScreen from "../screens/PodcastEpisodeScreen";
+import PodcastScreen from "../screens/PodcastEpisodeScreen";
 import NewsScreen from "../screens/NewsScreen";
 import ProfileScreen from "../screens/ProfileScreen";
 import NotificationsScreen from "../screens/Dashboard/NotificationsScreen";
-import MyPublicationScreen from "../screens/MyPublicationScreen";
 import WelcomeScreen from "../screens/WelcomeScreen";
 import UserAvatar from "../components/generic/UserAvatar";
 import { NotificationIcon, SearchIcon, HomeIcon } from "../components/Icons";
 
 import { dark } from "./variables";
 import MagazineRecentlyRead from "../screens/MagazineRecentlyRead";
-import AddPostIcon from "../components/generic/AddPostIcon";
 import MagazinesScreen from "../screens/MagazinesScreen";
 import NewsExplorerScreen from "../screens/NewsExplorerScreen";
 import UserFollowersScreen from "../screens/Dashboard/UserFollowersScreen";
@@ -177,11 +175,11 @@ const HomeStack = createStackNavigator(
     },
     Podcasts: {
       path: "podcasts",
-      screen: PodcastsScreen,
+      screen: PodcastScreen,
     },
     Podcast: {
       path: "podcast/:podcast_id",
-      screen: PodcastScreen,
+      screen: PodcastEpisodeScreen,
     },
     NewsExplorer: {
       path: "news",
