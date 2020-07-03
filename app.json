@@ -17,6 +17,12 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
+    "notification": {
+      "icon": "./assets/icon-push-notifications.png",
+      "color": "#E01F26",
+      "iosDisplayInForeground": false,
+      "androidMode": "default"
+    },
     "updates": {
       "fallbackToCacheTimeout": 0
     },
