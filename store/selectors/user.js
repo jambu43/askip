@@ -28,3 +28,10 @@ export const getUserFollowees = createSelector([_getUserFollowees], (followees) 
   let followeesCollection = Object.values(followees);
   return orderBy(followeesCollection, "name", "asc");
 });
+
+export const getPodcastChannels = createSelector([_getUsers], (users) => {
+  let podcastChannels = Object.values(users).filter(
+    (item) => parseInt(item.show_in_podcast_gallery) > 0
+  );
+  return orderBy(podcastChannels, "name", "asc");
+});

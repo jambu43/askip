@@ -8,6 +8,7 @@ import { togglePostConfirmation, togglePostInvalidation } from "../../store/acti
 import PostSocialStats from "./PostSocialStats";
 import PostSocialInteraction from "./PostSocialInteraction";
 import moment from "moment";
+import CertifiedIcon from "../generic/CertifiedIcon";
 
 class PostCard extends React.Component {
   handlePostShare() {}
@@ -27,7 +28,10 @@ class PostCard extends React.Component {
           >
             <AuthorImage source={{ uri: post.author.avatar }} />
             <AuthorGroupDetails>
-              <Author>{post.author.name}</Author>
+              <AuthorGroupDetailsDivider>
+                <Author>{post.author.name}</Author>
+                {parseInt(post.author.is_certified) ? <CertifiedIcon /> : null}
+              </AuthorGroupDetailsDivider>
               <PostDate>{moment(post.created_at).fromNow()}</PostDate>
             </AuthorGroupDetails>
           </AuthorGroupDetailsWrapper>
@@ -81,6 +85,12 @@ const AuthorGroupDetailsWrapper = styled.TouchableOpacity`
   align-items: center;
   flex: 1;
 `;
+
+const AuthorGroupDetailsDivider = styled.View`
+  flex-direction: row;
+  align-items: center;
+`;
+
 const AuthorGroupDetails = styled.View`
   margin-left: 5px;
 `;
@@ -98,6 +108,7 @@ const Author = styled.Text`
   text-transform: uppercase;
   color: #ffffff;
   font-size: 13px;
+  margin-right: 5px;
 `;
 const CardGroup = styled.TouchableOpacity``;
 

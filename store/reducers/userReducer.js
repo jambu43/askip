@@ -6,11 +6,13 @@ import {
   TOGGLE_CURRENT_USER_FOLLOWERS_LOADING,
   SET_CURRENT_USER_FOLLOWEES,
   TOGGLE_CURRENT_USER_FOLLOWEES_LOADING,
+  TOGGLE_USERS_LOADING,
 } from "../types/user";
 
 const initialState = {
   users: {},
   userLoading: {},
+  usersLoading: false,
   currentUserFollowers: {},
   currentUserFollowersLoading: true,
   currentUserFollowees: {},
@@ -83,6 +85,11 @@ export const userReducer = (state = initialState, { payload, type }) => {
       return {
         ...state,
         currentUserFolloweesLoading: payload.isLoading,
+      };
+    case TOGGLE_USERS_LOADING:
+      return {
+        ...state,
+        usersLoading: payload.isLoading,
       };
     default:
       return state;

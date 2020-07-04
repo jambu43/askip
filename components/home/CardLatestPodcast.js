@@ -71,7 +71,7 @@ class CardLatestPodcast extends React.Component {
   async handlePlayButtonClick() {
     const { podcast, now_playing } = this.props;
     Audio.requestPermissionsAsync()
-      .then(async permission => {
+      .then(async (permission) => {
         if (permission.granted) {
           let soundObject = null;
           if (now_playing.podcast_id === podcast.id) {
@@ -105,7 +105,7 @@ class CardLatestPodcast extends React.Component {
           }
         }
       })
-      .catch(error => {
+      .catch((error) => {
         console.log("Error", error);
       });
   }
@@ -131,7 +131,9 @@ class CardLatestPodcast extends React.Component {
     } = processPlaybackStatus(playbackStatus);
     return (
       <Container>
-        <ContentWrapper onPress={() => navigation.navigate("Podcast", { podcast_id: podcast.id })}>
+        <ContentWrapper
+          onPress={() => navigation.navigate("PodcastEpisode", { podcast_id: podcast.id })}
+        >
           <CoverImage source={{ uri: assetsUrl(podcast.cover_image) }} />
           <Title>{podcast.title}</Title>
         </ContentWrapper>
@@ -160,8 +162,8 @@ class CardLatestPodcast extends React.Component {
           <PlayingProgress progress={playingProgress}></PlayingProgress>
           <BufferingProgress progress={bufferingProgress}></BufferingProgress>
         </ProgressWrapper>
-        <MorePodcastButton onPress={() => navigation.navigate("Podcasts", { user_id: 3 })}>
-          <MorePodcastButtonText>Voir d’autres épisodes</MorePodcastButtonText>
+        <MorePodcastButton onPress={() => navigation.navigate("Podcasts")}>
+          <MorePodcastButtonText>Parcourir la gallérie</MorePodcastButtonText>
         </MorePodcastButton>
       </Container>
     );
@@ -215,7 +217,7 @@ const PlayingProgress = styled.View`
   border-radius: 5px;
   background: ${danger};
   height: 7px;
-  width: ${props => `${props.progress}%`};
+  width: ${(props) => `${props.progress}%`};
   position: absolute;
   left: 0px;
   top: 0px;
@@ -227,7 +229,7 @@ const BufferingProgress = styled.View`
   border-radius: 5px;
   background: #aaa;
   height: 7px;
-  width: ${props => `${props.progress}%`};
+  width: ${(props) => `${props.progress}%`};
   position: relative;
   left: 0px;
   top: 0px;
@@ -239,15 +241,15 @@ const mapStateToProps = ({ podcast }) => {
   };
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
     setNowPlaying: ({ soundObject, playbackStatus, podcast_id }) => {
       return dispatch(setNowPlaying({ soundObject, playbackStatus, podcast_id }));
     },
-    setNowPlayingPlayBackStatus: playbackStatus => {
+    setNowPlayingPlayBackStatus: (playbackStatus) => {
       return dispatch(setNowPlayingPlayBackStatus(playbackStatus));
     },
-    setNowPlayingSoundObject: soundObject => {
+    setNowPlayingSoundObject: (soundObject) => {
       return dispatch(setNowPlayingSoundObject(soundObject));
     },
   };

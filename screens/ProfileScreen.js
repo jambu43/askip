@@ -9,6 +9,7 @@ import { dark, darkLighten } from "../config/variables";
 import { View, ActivityIndicator, TouchableOpacity } from "react-native";
 import { BackIcon } from "../components/Icons";
 import PostCard from "../components/askip/PostCard";
+import CertifiedIcon from "../components/generic/CertifiedIcon";
 
 class ProfileScreen extends React.Component {
   state = {
@@ -60,7 +61,10 @@ class ProfileScreen extends React.Component {
         <Card>
           <Avatar source={{ uri: user.avatar }} />
           <Information>
-            <Username>{user.name}</Username>
+            <UsernameDivider>
+              <Username>{user.name}</Username>
+              {parseInt(user.is_certified) ? <CertifiedIcon /> : null}
+            </UsernameDivider>
             <CountWrapper>
               <Publication>
                 <Number>{user.posts_count}</Number>
@@ -181,6 +185,12 @@ const Username = styled.Text`
   margin-left: 10px;
   font-size: 20px;
   font-weight: bold;
+  margin-right: 5px;
+`;
+
+const UsernameDivider = styled.View`
+  flex-direction: row;
+  align-items: center;
 `;
 
 const Avatar = styled.Image`

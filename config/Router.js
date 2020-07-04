@@ -19,7 +19,8 @@ import DashboardScreen from "../screens/DashboardScreen";
 import ArticleScreen from "../screens/ArticleScreen";
 import HomeScreen from "../screens/HomeScreen";
 import PodcastEpisodeScreen from "../screens/PodcastEpisodeScreen";
-import PodcastScreen from "../screens/PodcastEpisodeScreen";
+import PodcastScreen from "../screens/PodcastScreen";
+import PodcastsScreen from "../screens/PodcastsScreen";
 import NewsScreen from "../screens/NewsScreen";
 import ProfileScreen from "../screens/ProfileScreen";
 import NotificationsScreen from "../screens/Dashboard/NotificationsScreen";
@@ -175,10 +176,14 @@ const HomeStack = createStackNavigator(
     },
     Podcasts: {
       path: "podcasts",
-      screen: PodcastScreen,
+      screen: PodcastsScreen,
     },
     Podcast: {
       path: "podcast/:podcast_id",
+      screen: PodcastScreen,
+    },
+    PodcastEpisode: {
+      path: "podcast/:podcast_id/:episode_id",
       screen: PodcastEpisodeScreen,
     },
     NewsExplorer: {

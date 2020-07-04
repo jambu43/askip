@@ -7,6 +7,7 @@ import {
   SET_CURRENT_USER_FOLLOWERS,
   TOGGLE_CURRENT_USER_FOLLOWEES_LOADING,
   TOGGLE_CURRENT_USER_FOLLOWERS_LOADING,
+  TOGGLE_USERS_LOADING,
 } from "../types/user";
 import { apiUrl } from "../../helpers";
 import { toggleUserFollowees } from "./auth";
@@ -25,7 +26,7 @@ export const setUsers = (users) => {
   return {
     type: SET_USERS,
     payload: {
-      user: users,
+      users,
     },
   };
 };
@@ -67,6 +68,15 @@ export const toggleCurrentUserFolloweesLoading = (isLoading) => {
   };
 };
 
+export const toggleUsersLoading = (isLoading) => {
+  return {
+    type: TOGGLE_USERS_LOADING,
+    payload: {
+      isLoading,
+    },
+  };
+};
+
 export const toggleCurrentUserFollowersLoading = (isLoading) => {
   return {
     type: TOGGLE_CURRENT_USER_FOLLOWERS_LOADING,
@@ -99,8 +109,7 @@ export const followUser = (followee_id) => {
           dispatch(toggleUserFollowees(followee_id));
           resolve();
         })
-        .catch(({ response }) => {
-          console.log(response);
+        .catch((err) => {
           reject();
         });
     });

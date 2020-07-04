@@ -6,7 +6,7 @@ import PlayButton from "../podcast/PlayButton";
 const PodcastItem = ({ podcast, navigation, is_playing }) => {
   return (
     <Container
-      onPress={() => navigation.navigate("Podcast", { podcast_id: podcast.id, play: true })}
+      onPress={() => navigation.navigate("PodcastEpisode", { podcast_id: podcast.id, play: true })}
     >
       <Wrapper>
         <PodcastTitle>{podcast.title}</PodcastTitle>

@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { connect } from "react-redux";
-import { ActivityIndicator } from "react-native";
+import { ActivityIndicator, TouchableOpacity } from "react-native";
 import { dark, darkLighten } from "../config/variables";
 import { fetchUserPodcasts } from "../store/actions/podcasts";
 import { getUserById, isUserLoading } from "../store/selectors/user";
@@ -9,6 +9,7 @@ import { assetsUrl } from "../helpers";
 import AppHeader from "../components/generic/AppHeader";
 import PodcastItem from "../components/podcasts/PodcastItem";
 import { followUser } from "../store/actions/users";
+import { BackIcon } from "../components/Icons";
 
 class PodcastScreen extends React.Component {
   state = {
@@ -16,7 +17,8 @@ class PodcastScreen extends React.Component {
   };
 
   componentDidMount() {
-    this.props.fetchUserPodcasts();
+    const user_id = this.props.navigation.getParam("user_id");
+    this.props.fetchUserPodcasts(user_id);
   }
 
   toggleFollowChannel() {
@@ -45,13 +47,22 @@ class PodcastScreen extends React.Component {
       : require("../assets/plus.png");
     return (
       <Container>
-        <AppHeader />
+        <Header>
+          <TouchableOpacity onPress={() => navigation.goBack()}>
+            <BackIcon fill="#fff" size={24} />
+          </TouchableOpacity>
+        </Header>
         {isUserLoading || !user ? null : (
           <Content>
             <ChannelHeader>
               <ChannelLogo source={{ uri: assetsUrl(user.avatar) }} />
               <ChannelHeaderContent>
-                <ChannelHeaderTitle>{user.name}</ChannelHeaderTitle>
+                <ChannelCardDivider>
+                  <ChannelHeaderTitle>{user.name}</ChannelHeaderTitle>
+                  {user.is_certified ? (
+                    <CertifiedIcon source={require("../assets/verified.png")} />
+                  ) : null}
+                </ChannelCardDivider>
                 <ChannelHeaderDescription>{user.bio}</ChannelHeaderDescription>
               </ChannelHeaderContent>
             </ChannelHeader>
@@ -65,7 +76,9 @@ class PodcastScreen extends React.Component {
                 ) : (
                   <FollowIcon source={followIcon}></FollowIcon>
                 )}
-                <ChannelFollowButtonText>S'abonner</ChannelFollowButtonText>
+                <ChannelFollowButtonText>
+                  {has_followed ? "Ne plus s'abonner" : "S'abonner"}
+                </ChannelFollowButtonText>
               </ChannelFollowButton>
             </ChannelButtons>
             <PodcastSection>
@@ -91,9 +104,13 @@ class PodcastScreen extends React.Component {
 const Container = styled.View`
   background: ${dark};
   flex: 1;
+  padding: 10px 15px;
 `;
-const Content = styled.View`
-  padding: 15px;
+const Content = styled.View``;
+
+const Header = styled.View`
+  margin-top: 24px;
+  margin-bottom: 15px;
 `;
 
 const ChannelHeader = styled.View`
@@ -103,10 +120,21 @@ const ChannelHeader = styled.View`
 const ChannelHeaderContent = styled.View`
   flex: 1;
 `;
+
+const CertifiedIcon = styled.Image`
+  height: 13px;
+  width: 13px;
+`;
+
+const ChannelCardDivider = styled.View`
+  flex-direction: row;
+  align-items: center;
+`;
 const ChannelHeaderTitle = styled.Text`
   color: #fff;
   font-size: 20px;
   font-weight: bold;
+  margin-right: 5px;
 `;
 const ChannelHeaderDescription = styled.Text`
   color: #fff;
@@ -156,7 +184,7 @@ const PodcastSectionTitle = styled.Text`
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    fetchUserPodcasts: () => dispatch(fetchUserPodcasts()),
+    fetchUserPodcasts: (user_id) => dispatch(fetchUserPodcasts(user_id)),
     followUser: (followee_id) => dispatch(followUser(followee_id)),
   };
 };
