@@ -108,8 +108,69 @@ export const setAxiosToken = (token) => {
   axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 };
 
+export function logInUser(payload) {
+  return function (dispatch) {
+    dispatch({
+      type: SET_LOGIN_ERRORS,
+      payload: {},
+    });
+
+    return new Promise((resolve, reject) => {
+      axios
+        .post(apiUrl("auth/login_without_social_oauth"), payload)
+        .then(function ({ data }) {
+          dispatch({
+            type: SET_TOKEN,
+            payload: data.access_token,
+          });
+
+          dispatch({
+            type: SET_IS_LOGGED_IN,
+            payload: true,
+          });
+
+          dispatch({
+            type: SET_AUTH_USER,
+            payload: data.user,
+          });
+
+          setAxiosToken(data.access_token);
+
+          resolve();
+        })
+        .catch(function ({ response }) {
+          console.log(response);
+          dispatch({
+            type: TOGGLE_HAS_LOGIN_ERRORS,
+          });
+
+          if (response) {
+            dispatch({
+              type: SET_LOGIN_ERRORS,
+              payload: response.data.errors,
+            });
+          } else {
+            dispatch({
+              type: SET_LOGIN_ERRORS,
+              payload: "GENERAL_ERROR",
+            });
+          }
+        })
+        .finally(function () {
+          dispatch({
+            type: TOGGLE_IS_LOGGING_IN,
+          });
+        });
+    });
+  };
+}
+
 export function registerUser(payload) {
   return function (dispatch) {
+    dispatch({
+      type: SET_LOGIN_ERRORS,
+      payload: {},
+    });
     return new Promise((resolve, reject) => {
       axios
         .post(apiUrl("auth/register"), payload)
@@ -141,7 +202,63 @@ export function registerUser(payload) {
           if (response) {
             dispatch({
               type: SET_LOGIN_ERRORS,
-              payload: response.data.error,
+              payload: response.data.errors,
+            });
+          } else {
+            dispatch({
+              type: SET_LOGIN_ERRORS,
+              payload: "GENERAL_ERROR",
+            });
+          }
+        })
+        .finally(function () {
+          dispatch({
+            type: TOGGLE_IS_LOGGING_IN,
+          });
+        });
+    });
+  };
+}
+
+export function registerWithoutSocialOauth(payload) {
+  return function (dispatch) {
+    dispatch({
+      type: SET_LOGIN_ERRORS,
+      payload: {},
+    });
+    return new Promise((resolve, reject) => {
+      axios
+        .post(apiUrl("auth/register_without_social_oauth"), payload)
+        .then(function ({ data }) {
+          dispatch({
+            type: SET_TOKEN,
+            payload: data.access_token,
+          });
+
+          dispatch({
+            type: SET_IS_LOGGED_IN,
+            payload: true,
+          });
+
+          dispatch({
+            type: SET_AUTH_USER,
+            payload: data.user,
+          });
+
+          setAxiosToken(data.access_token);
+
+          resolve();
+        })
+        .catch(function ({ response }) {
+          console.log(response);
+          dispatch({
+            type: TOGGLE_HAS_LOGIN_ERRORS,
+          });
+
+          if (response) {
+            dispatch({
+              type: SET_LOGIN_ERRORS,
+              payload: response.data.errors,
             });
           } else {
             dispatch({

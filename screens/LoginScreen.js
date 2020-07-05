@@ -80,7 +80,6 @@ class LoginScreen extends React.Component {
         this.props.toggleIsLoggingIn();
       }
     } catch ({ message }) {
-      console.log(message);
       this.props.toggleIsLoggingIn();
     }
   }
@@ -120,7 +119,10 @@ class LoginScreen extends React.Component {
           <ButtonGmailText>CONTINUER AVEC GMAIL</ButtonGmailText>
         </ButtonGmail>
 
-        <ButtonPhoneNumber disabled={isLoggingIn} onPress={this.handleGoogleLoginClick.bind(this)}>
+        <ButtonPhoneNumber
+          disabled={isLoggingIn}
+          onPress={() => navigation.navigate("LoginWithPhoneNumber")}
+        >
           <ButtonGmailText>CONTINUER AVEC MON NUMERO</ButtonGmailText>
         </ButtonPhoneNumber>
 

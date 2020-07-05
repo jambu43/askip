@@ -1,16 +1,73 @@
 import React from "react";
 import styled from "styled-components";
-import { registerUser, toggleIsLoggingIn } from "../store/actions/auth";
+import { toggleIsLoggingIn, registerWithoutSocialOauth } from "../store/actions/auth";
 import { connect } from "react-redux";
-import { dark, darkLighten } from "../config/variables";
-import { TouchableOpacity } from "react-native";
+import { dark, darkLighten, danger } from "../config/variables";
+import { TouchableOpacity, ActivityIndicator } from "react-native";
 import { BackIcon } from "../components/Icons";
+import { StackActions, NavigationActions } from "react-navigation";
 
 class RegisterScreen extends React.Component {
-  handleFormSubmit() {}
+  state = {
+    phone_number: "",
+    password: "",
+    name: "",
+  };
+
+  handleFormSubmit() {
+    const { name, password, phone_number } = this.state;
+    let canSubmit =
+      this._isValidName(name) &&
+      this._isValidPassword(password) &&
+      this._isValidPhoneNumber(phone_number);
+
+    if (canSubmit) {
+      this.props.toggleIsLoggingIn();
+      this.props
+        .registerUser({
+          name,
+          phone_number,
+          password,
+        })
+        .then(() => {
+          this.goToHomeScreen();
+          this.props.toggleIsLoggingIn();
+        })
+        .catch(() => {
+          this.props.toggleIsLoggingIn();
+        });
+    }
+  }
+
+  goToHomeScreen() {
+    const resetAction = StackActions.reset({
+      index: 0,
+      actions: [NavigationActions.navigate({ routeName: "HomeStack" })],
+    });
+    this.props.navigation.dispatch(resetAction);
+  }
+
+  _isValidPhoneNumber(phone_number) {
+    return /^\+[0-9]{1,3}[0-9]{8,12}$/.test(phone_number);
+  }
+
+  _isValidPassword(password) {
+    return password.length > 6;
+  }
+
+  _isValidName(name) {
+    return name.split(" ").length > 1;
+  }
+
+  handleInputChanged(key, value) {
+    this.setState({
+      [key]: value,
+    });
+  }
 
   render() {
-    const { isLoggingIn, navigation } = this.props;
+    const { isLoggingIn, errors, navigation } = this.props;
+    const { name, password, phone_number } = this.state;
     return (
       <Container>
         <Header>
@@ -22,7 +79,18 @@ class RegisterScreen extends React.Component {
           <Title>Inscrivez-vous avec votre numéro de téléphone</Title>
           <FormWrapper>
             <FormGroup>
-              <InputForm autofocus selectionColor={dark} placeholder="Prémon et nom" />
+              <InputForm
+                autofocus
+                isValid={this._isValidName(name)}
+                selectionColor={dark}
+                placeholder="Prénon et nom"
+                onChangeText={(text) => this.handleInputChanged("name", text)}
+              />
+              {errors && errors["name"] ? (
+                <FormError>
+                  <FormErrorText>{errors["name"][0]}</FormErrorText>
+                </FormError>
+              ) : null}
             </FormGroup>
 
             <FormGroup>
@@ -30,14 +98,33 @@ class RegisterScreen extends React.Component {
                 autofocus
                 keyboardType="phone-pad"
                 selectionColor={dark}
+                isValid={this._isValidPhoneNumber(phone_number)}
                 placeholder="Numéro de téléphone"
+                onChangeText={(text) => this.handleInputChanged("phone_number", text)}
               />
+              {errors && errors["phone_number"] ? (
+                <FormError>
+                  <FormErrorText>{errors["phone_number"][0]}</FormErrorText>
+                </FormError>
+              ) : null}
             </FormGroup>
             <FormGroup>
-              <InputForm placeholder="Mot de passe" selectionColor={dark} />
+              <InputForm
+                placeholder="Mot de passe"
+                secureTextEntry={true}
+                isValid={this._isValidPassword(password)}
+                onChangeText={(text) => this.handleInputChanged("password", text)}
+                selectionColor={dark}
+              />
+              {errors && errors["password"] ? (
+                <FormError>
+                  <FormErrorText>{errors["password"][0]}</FormErrorText>
+                </FormError>
+              ) : null}
             </FormGroup>
             <FormGroup>
               <SubmitButton disabled={isLoggingIn} onPress={this.handleFormSubmit.bind(this)}>
+                {isLoggingIn ? <ActivityIndicator color="#fff" /> : false}
                 <SubmitButtonText>INSCRIPTION</SubmitButtonText>
               </SubmitButton>
             </FormGroup>
@@ -48,7 +135,7 @@ class RegisterScreen extends React.Component {
   }
 }
 
-const Container = styled.View`
+const Container = styled.ScrollView`
   flex: 1;
   padding: 15px;
 `;
@@ -81,6 +168,7 @@ const FormGroup = styled.View`
 const InputForm = styled.TextInput`
   min-height: 40px;
   padding: 5px 10px;
+  border: ${(props) => (props.isValid ? "1px solid #0A942F" : "none")};
   width: 100%;
   background-color: #f1f1f1;
   border-radius: 5px;
@@ -100,16 +188,14 @@ const SubmitButton = styled.TouchableOpacity`
   justify-content: center;
 `;
 
-const RegisterButton = styled.TouchableOpacity`
-  flex-direction: row;
-  justify-content: center;
+const FormError = styled.View`
+  margin-bottom: 10px;
+  width: 100%;
 `;
 
-const RegisterButtonText = styled.Text`
-  font-size: 13px;
-  text-transform: uppercase;
-  color: ${dark};
-  font-weight: bold;
+const FormErrorText = styled.Text`
+  color: ${danger};
+  font-size: 12px;
 `;
 
 const SubmitButtonText = styled.Text`
@@ -122,7 +208,7 @@ const SubmitButtonText = styled.Text`
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    registerUser: (payload) => dispatch(registerUser(payload)),
+    registerUser: (payload) => dispatch(registerWithoutSocialOauth(payload)),
     toggleIsLoggingIn: () => dispatch(toggleIsLoggingIn()),
   };
 };
@@ -130,6 +216,7 @@ const mapStateToProps = (state) => {
   return {
     isLoggingIn: state.auth.isLoggingIn,
     isLoggedIn: state.auth.isLoggedIn,
+    errors: state.auth.loginErrors,
   };
 };
 

@@ -1,17 +1,60 @@
 import React from "react";
 import styled from "styled-components";
-import { registerUser, toggleIsLoggingIn } from "../store/actions/auth";
+import { logInUser, toggleIsLoggingIn } from "../store/actions/auth";
 import { connect } from "react-redux";
-import { dark, darkLighten } from "../config/variables";
-import AppHeader from "../components/generic/AppHeader";
-import { TouchableOpacity } from "react-native";
+import { dark, darkLighten, danger } from "../config/variables";
+import { TouchableOpacity, ActivityIndicator } from "react-native";
 import { BackIcon } from "../components/Icons";
+import { StackActions, NavigationActions } from "react-navigation";
 
 class LoginWithPhoneNumberScreen extends React.Component {
-  handleFormSubmit() {}
+  state = {
+    phone_number: "",
+    password: "",
+  };
+
+  goToHomeScreen() {
+    const resetAction = StackActions.reset({
+      index: 0,
+      actions: [NavigationActions.navigate({ routeName: "HomeStack" })],
+    });
+    this.props.navigation.dispatch(resetAction);
+  }
+
+  handleInputChanged(key, value) {
+    this.setState({
+      [key]: value,
+    });
+  }
+
+  handleFormSubmit() {
+    const { password, phone_number } = this.state;
+    let canSubmit = this._isValidPassword(password) && this._isValidPhoneNumber(phone_number);
+    if (canSubmit) {
+      this.props.toggleIsLoggingIn();
+      this.props
+        .logInUser({
+          phone_number,
+          password,
+        })
+        .then(() => {
+          this.goToHomeScreen();
+        })
+        .catch(() => {});
+    }
+  }
+
+  _isValidPhoneNumber(phone_number) {
+    return /^\+[0-9]{1,3}[0-9]{8,12}$/.test(phone_number);
+  }
+
+  _isValidPassword(password) {
+    return password.length > 6;
+  }
 
   render() {
-    const { isLoggingIn, navigation } = this.props;
+    const { isLoggingIn, navigation, errors } = this.props;
+    const { password, phone_number } = this.state;
     return (
       <Container>
         <Header>
@@ -30,14 +73,33 @@ class LoginWithPhoneNumberScreen extends React.Component {
                 autofocus
                 keyboardType="phone-pad"
                 selectionColor={dark}
+                isValid={this._isValidPhoneNumber(phone_number)}
                 placeholder="Numéro de téléphone"
+                onChangeText={(text) => this.handleInputChanged("phone_number", text)}
               />
+              {errors && errors["phone_number"] ? (
+                <FormError>
+                  <FormErrorText>{errors["phone_number"][0]}</FormErrorText>
+                </FormError>
+              ) : null}
             </FormGroup>
             <FormGroup>
-              <InputForm placeholder="Mot de passe" selectionColor={dark} />
+              <InputForm
+                placeholder="Mot de passe"
+                secureTextEntry={true}
+                isValid={this._isValidPassword(password)}
+                onChangeText={(text) => this.handleInputChanged("password", text)}
+                selectionColor={dark}
+              />
+              {errors && errors["password"] ? (
+                <FormError>
+                  <FormErrorText>{errors["password"][0]}</FormErrorText>
+                </FormError>
+              ) : null}
             </FormGroup>
             <FormGroup>
               <SubmitButton disabled={isLoggingIn} onPress={this.handleFormSubmit.bind(this)}>
+                {isLoggingIn ? <ActivityIndicator color="#fff" /> : false}
                 <SubmitButtonText>CONNEXION</SubmitButtonText>
               </SubmitButton>
             </FormGroup>
@@ -84,10 +146,21 @@ const InputForm = styled.TextInput`
   width: 100%;
   background-color: #f1f1f1;
   border-radius: 5px;
+  border: ${(props) => (props.isValid ? "1px solid #0A942F" : "none")};
   height: 50px;
   color: ${dark};
   font-weight: bold;
   margin-bottom: 20px;
+`;
+
+const FormError = styled.View`
+  margin-bottom: 10px;
+  width: 100%;
+`;
+
+const FormErrorText = styled.Text`
+  color: ${danger};
+  font-size: 12px;
 `;
 
 const SubmitButton = styled.TouchableOpacity`
@@ -122,7 +195,7 @@ const SubmitButtonText = styled.Text`
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    registerUser: (payload) => dispatch(registerUser(payload)),
+    logInUser: (payload) => dispatch(logInUser(payload)),
     toggleIsLoggingIn: () => dispatch(toggleIsLoggingIn()),
   };
 };
@@ -130,6 +203,7 @@ const mapStateToProps = (state) => {
   return {
     isLoggingIn: state.auth.isLoggingIn,
     isLoggedIn: state.auth.isLoggedIn,
+    errors: state.auth.loginErrors,
   };
 };
 
