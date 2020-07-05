@@ -120,6 +120,10 @@ class LoginScreen extends React.Component {
           <ButtonGmailText>CONTINUER AVEC GMAIL</ButtonGmailText>
         </ButtonGmail>
 
+        <ButtonPhoneNumber disabled={isLoggingIn} onPress={this.handleGoogleLoginClick.bind(this)}>
+          <ButtonGmailText>CONTINUER AVEC MON NUMERO</ButtonGmailText>
+        </ButtonPhoneNumber>
+
         {isLoggingIn ? (
           <LoadingMessage>
             <ActivityIndicator color={danger} />
@@ -152,7 +156,7 @@ const Container = styled.View`
   flex: 1;
 `;
 const Image = styled.Image`
-  height: 200px;
+  height: 120px;
   width: 100%;
 `;
 
@@ -175,6 +179,17 @@ const LoadingMessage = styled.View`
   color: #222;
 `;
 const LoadingMessageText = styled.Text``;
+
+const ButtonPhoneNumber = styled.TouchableOpacity`
+  width: 100%;
+  border-radius: 2px;
+  padding: 15px;
+  background: #fff;
+  margin-bottom: 15px;
+  flex-direction: row;
+  justify-content: center;
+`;
+
 const ButtonGmail = styled.TouchableOpacity`
   width: 100%;
   border-radius: 2px;

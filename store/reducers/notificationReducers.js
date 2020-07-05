@@ -13,13 +13,14 @@ export const notificationReducers = (state = initialState, { type, payload }) =>
   switch (type) {
     case SET_NOTIFICATIONS:
       let setNotifications = {};
+      let oldNotifications = payload.clearFirst ? {} : state.notifications;
       payload.notifications.map((item) => {
         setNotifications[item.id] = item;
       });
       return {
         ...state,
         notifications: {
-          ...state.notifications,
+          ...oldNotifications,
           ...setNotifications,
         },
       };

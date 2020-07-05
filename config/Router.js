@@ -38,6 +38,8 @@ import UserPublicationsScreen from "../screens/Dashboard/UserPublicationsScreen"
 import PostInteractionScreen from "../screens/Post/PostInteractionScreen";
 import SearchScreen from "../screens/SearchScreen";
 import MagazineSearchScreen from "../screens/MagazineSearchScreen";
+import LoginWithPhoneNumberScreen from "../screens/LoginWithPhoneNumberScreen";
+import RegisterScreen from "../screens/RegisterScreen";
 
 const BottomTransition = (index, position, height) => {
   const sceneRange = [index - 1, index, index + 1];
@@ -393,6 +395,14 @@ const AppNavigator = createStackNavigator(
       path: "login",
       screen: LoginScreen,
     },
+    LoginWithPhoneNumber: {
+      path: "login_with_phone_number_screen",
+      screen: LoginWithPhoneNumberScreen,
+    },
+    Register: {
+      path: "register",
+      screen: RegisterScreen,
+    },
     Welcome: {
       path: "welcome",
       screen: WelcomeScreen,
@@ -400,7 +410,7 @@ const AppNavigator = createStackNavigator(
     HomeStack: HomeTabNavigator,
   },
   {
-    initialRouteName: "Login",
+    initialRouteName: "LoginWithPhoneNumber",
     headerMode: "none",
   }
 );

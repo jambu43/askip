@@ -8,6 +8,7 @@ import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import Rooter from "./config/Router";
 import moment from "./config/moment";
+import navigationService from "./helpers";
 import { store, persistor } from "./store/createStore";
 import { updateUserToken } from "./store/actions/users";
 console.disableYellowBox = true;
@@ -67,7 +68,6 @@ export default class App extends React.Component {
 
   _handleNotification = (notification) => {
     Vibration.vibrate();
-    console.log(notification);
   };
 
   render() {
@@ -75,17 +75,14 @@ export default class App extends React.Component {
       <Provider store={store}>
         <PersistGate loading={null} persistor={persistor}>
           <Rooter
+            ref={(navigatorRef) => {
+              navigationService.setTopLevelNavigator(navigatorRef);
+            }}
             onNavigationStateChange={(prevState, currentState, action) => {
               const currentScreen = getActiveRouteName(currentState);
               const prevScreen = getActiveRouteName(prevState);
               if (prevScreen !== currentScreen) {
-                console.log(currentScreen);
                 Analytics.setCurrentScreen(currentScreen, currentScreen);
-                Analytics.logEvent("share", {
-                  contentType: "text",
-                  itemId: "Expo rocks!",
-                  method: "facebook",
-                });
               }
             }}
           />

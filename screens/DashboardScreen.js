@@ -8,9 +8,10 @@ import { fetchLatestMagazineReleases } from "../store/actions/magazines";
 import { fetchLatestArticles } from "../store/actions/articles";
 import { getMagazinesReleases } from "../store/selectors/magazine";
 import { RefreshControl, View } from "react-native";
-import { fetchMe } from "../store/actions/auth";
+import { fetchMe, logOutUser } from "../store/actions/auth";
 import { getUsersPosts } from "../store/selectors/post";
 import { fetchUserPosts } from "../store/actions/post";
+import navigationService from "../helpers";
 import DashboardItem from "../components/dashboard/DashboardItem";
 
 class DashboardScreen extends React.Component {
@@ -24,6 +25,15 @@ class DashboardScreen extends React.Component {
     this.props.fetchLatestArticles();
     this.props.fetchMe();
     this.props.fetchUserPosts(user.id);
+  }
+
+  handleLogoutClick() {
+    this.props
+      .logOutUser()
+      .then(() => {
+        navigationService.navigate("Login");
+      })
+      .catch(() => {});
   }
 
   _handleRefresh() {
@@ -95,6 +105,18 @@ class DashboardScreen extends React.Component {
               count={user.followees_count}
               onPress={() => navigation.navigate("UserFollowees")}
             />
+
+            <DashboardItem
+              even={false}
+              title="Paramètres du compte"
+              onPress={() => navigation.navigate("UserFollowees")}
+            />
+
+            <DashboardItem
+              even={true}
+              title="Déconnexion"
+              onPress={() => this.handleLogoutClick()}
+            />
           </View>
         </ScrollView>
       </Container>
@@ -116,6 +138,7 @@ const mapDispatchToProps = (dispatch) => {
     fetchLatestMagazineReleases: () => dispatch(fetchLatestMagazineReleases()),
     fetchLatestArticles: () => dispatch(fetchLatestArticles()),
     fetchMe: () => dispatch(fetchMe()),
+    logOutUser: () => dispatch(logOutUser()),
     fetchUserPosts: (user_id) => dispatch(fetchUserPosts(user_id)),
   };
 };
@@ -172,4 +195,14 @@ const Title = styled.Text`
 const Divider = styled.View`
   background-color: ${darkLighten};
   padding: 5px;
+`;
+
+const LogoutWrapper = styled.TouchableOpacity`
+  flex-direction: row;
+  justify-content: center;
+`;
+
+const LogoutText = styled.Text`
+  text-align: center;
+  color: #fff;
 `;

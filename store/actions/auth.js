@@ -12,6 +12,8 @@ import {
   IS_USER_FETCHING,
   SET_USER_DATA,
 } from "../types/auth";
+import { setPostList } from "./post";
+import { setNotifications } from "./notification";
 
 export const toggleIsLoggingIn = () => {
   return {
@@ -68,6 +70,9 @@ export function logOutUser() {
             type: SET_IS_LOGGED_IN,
             payload: false,
           });
+
+          dispatch(setPostList([], true));
+          dispatch(setNotifications([], true));
           resolve();
         })
         .catch(() => {

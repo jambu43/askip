@@ -37,15 +37,15 @@ const NotificationDate = styled.Text`
 `;
 
 const notificationText = ({ type, sourceUser }) => {
+  if (!sourceUser) return "";
   switch (type) {
     case "FOLLOW":
       return `<p><b>${sourceUser.name}</b> s'est abonné à votre profil.</p>`;
-      break;
     case "POST_COMMENT":
       return `<p><b>${sourceUser.name}</b> a commenté votre publication.</p>`;
-      break;
+    case "PODCAST_COMMENT":
+      return `<p><b>${sourceUser.name}</b> a commenté votre podcast.</p>`;
     case "POST_SHARE":
       return `<p><b>${sourceUser.name}</b> a partagé votre publication sur sa fil d'actualité.</p>`;
-      break;
   }
 };

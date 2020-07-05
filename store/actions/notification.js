@@ -8,11 +8,12 @@ import {
 import { setUserData } from "./auth";
 import { reject } from "lodash";
 
-const setNotifications = (notifications) => {
+export const setNotifications = (notifications, clearFirst = false) => {
   return {
     type: SET_NOTIFICATIONS,
     payload: {
       notifications,
+      clearFirst,
     },
   };
 };
