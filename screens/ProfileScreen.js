@@ -10,6 +10,7 @@ import { View, ActivityIndicator, TouchableOpacity } from "react-native";
 import { BackIcon } from "../components/Icons";
 import PostCard from "../components/askip/PostCard";
 import CertifiedIcon from "../components/generic/CertifiedIcon";
+import UserAvatar from "../components/generic/UserAvatar";
 
 class ProfileScreen extends React.Component {
   state = {
@@ -59,7 +60,7 @@ class ProfileScreen extends React.Component {
     return (
       <View>
         <Card>
-          <Avatar source={{ uri: user.avatar }} />
+          <UserAvatar user={user} size={90} />
           <Information>
             <UsernameDivider>
               <Username>{user.name}</Username>

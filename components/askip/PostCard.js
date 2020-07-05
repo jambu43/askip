@@ -9,6 +9,7 @@ import PostSocialStats from "./PostSocialStats";
 import PostSocialInteraction from "./PostSocialInteraction";
 import moment from "moment";
 import CertifiedIcon from "../generic/CertifiedIcon";
+import UserAvatar from "../generic/UserAvatar";
 
 class PostCard extends React.Component {
   handlePostShare() {}
@@ -26,7 +27,7 @@ class PostCard extends React.Component {
           <AuthorGroupDetailsWrapper
             onPress={() => navigation.navigate("Profile", { user_id: post.author.id })}
           >
-            <AuthorImage source={{ uri: post.author.avatar }} />
+            <UserAvatar user={post.author} size={35} />
             <AuthorGroupDetails>
               <AuthorGroupDetailsDivider>
                 <Author>{post.author.name}</Author>

@@ -102,6 +102,7 @@ export const updateUserToken = (expo_token) => {
 };
 export const followUser = (followee_id) => {
   return function (dispatch) {
+    console.log(followee_id);
     return new Promise((resolve, reject) => {
       axios
         .post(apiUrl(`profile/toggle_follow_user/${followee_id}`))

@@ -13,6 +13,7 @@ import { getUsersPosts } from "../store/selectors/post";
 import { fetchUserPosts } from "../store/actions/post";
 import navigationService from "../helpers";
 import DashboardItem from "../components/dashboard/DashboardItem";
+import UserAvatar from "../components/generic/UserAvatar";
 
 class DashboardScreen extends React.Component {
   constructor(props) {
@@ -62,7 +63,7 @@ class DashboardScreen extends React.Component {
           }
         >
           <Card>
-            <Avatar source={{ uri: user.avatar }} />
+            <UserAvatar user={user} size={90} />
             <Information>
               <Username>{user.name}</Username>
               <CountWrapper>
@@ -108,12 +109,6 @@ class DashboardScreen extends React.Component {
 
             <DashboardItem
               even={false}
-              title="Paramètres du compte"
-              onPress={() => navigation.navigate("UserFollowees")}
-            />
-
-            <DashboardItem
-              even={true}
               title="Déconnexion"
               onPress={() => this.handleLogoutClick()}
             />

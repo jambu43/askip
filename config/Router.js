@@ -410,7 +410,7 @@ const AppNavigator = createStackNavigator(
     HomeStack: HomeTabNavigator,
   },
   {
-    initialRouteName: "LoginWithPhoneNumber",
+    initialRouteName: "Login",
     headerMode: "none",
   }
 );

@@ -47,6 +47,13 @@ export const onLinkPress = (_, link) => {
   Linking.openURL(parsedLink);
 };
 
+export const initials = (string = "", limit = 2) => {
+  return string
+    .split(" ")
+    .map((item, index) => (item.length > 2 && index < limit ? item[0] : ""))
+    .join("");
+};
+
 let _navigator;
 
 function setTopLevelNavigator(navigatorRef) {

@@ -130,6 +130,7 @@ const Container = styled.KeyboardAvoidingView`
 const Header = styled.View`
   padding: 7.5px 0px;
   flex-direction: row;
+  margin-top: 24px;
   align-items: center;
 `;
 const HeaderTitle = styled.Text`

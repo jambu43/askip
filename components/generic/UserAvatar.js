@@ -2,13 +2,21 @@ import React from "react";
 import styled from "styled-components";
 import { connect } from "react-redux";
 import { danger } from "../../config/variables";
+import { initials, assetsUrl } from "../../helpers";
 
-const UserAvatar = ({ user }) => {
+const UserAvatar = ({ user, currentUser, size = 24, show_notifications = false }) => {
+  let userData = user ? user : currentUser;
   return (
     <AvatarWrapper>
-      <Avatar source={{ uri: user.avatar }} />
-      {user.notifications_count > 0 ? (
-        <NotificationBadge isBadge={true}>{user.notifications_count}</NotificationBadge>
+      {userData.avatar ? (
+        <Avatar size={size} source={{ uri: assetsUrl(userData.avatar) }} />
+      ) : (
+        <AvatarTextWrapper size={size}>
+          <AvatarText>{initials(userData.name)}</AvatarText>
+        </AvatarTextWrapper>
+      )}
+      {show_notifications && userData.notifications_count > 0 ? (
+        <NotificationBadge isBadge={true}>{userData.notifications_count}</NotificationBadge>
       ) : null}
     </AvatarWrapper>
   );
@@ -17,15 +25,32 @@ const AvatarWrapper = styled.View`
   position: relative;
 `;
 const Avatar = styled.Image`
-  height: 24px;
-  width: 24px;
-  border-radius: 17px;
+  height: ${(props) => `${props.size}px`};
+  width: ${(props) => `${props.size}px`};
+  border-radius: ${(props) => props.size / 2}px;
+  background-color: #fff;
+`;
+
+const AvatarTextWrapper = styled.View`
+  height: ${(props) => `${props.size}px`};
+  width: ${(props) => `${props.size}px`};
+  background-color: #fff;
+  border-radius: ${(props) => props.size / 2}px;
+  justify-content: center;
+  border-width: 2px;
+  border-color: #aaa;
+`;
+const AvatarText = styled.Text`
+  text-transform: uppercase;
+  text-align: center;
+  font-size: 12px;
+  line-height: 12px;
 `;
 
 const NotificationBadge = styled.Text`
   color: #fff;
   background-color: ${(props) => (props.isBadge ? danger : "transparent")};
-  border-radius: 16px;
+  border-radius: ${(props) => props.size / 2}px;
   width: 14px;
   height: 14px;
   line-height: 14px;
@@ -38,7 +63,7 @@ const NotificationBadge = styled.Text`
 
 const mapStateToProps = (state) => {
   return {
-    user: state.auth.user,
+    currentUser: state.auth.user,
   };
 };
 
