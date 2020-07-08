@@ -35,6 +35,7 @@
     "android": {
       "package": "com.makarios.askip",
       "versionCode": 9,
+      "enableDangerousExperimentalLeanBuilds": true,
       "googleServicesFile": "./google-services.json"
     },
     "web": {
