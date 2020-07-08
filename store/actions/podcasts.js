@@ -8,6 +8,7 @@ import {
   SET_NOW_PLAYING_PLAY_BACK_STATUS,
   SET_NOW_PLAYING,
   SET_PODCASTS,
+  SET_PODCAST,
 } from "../types/podcast";
 import { setUser, setUserLoading, setUsers, toggleUsersLoading } from "./users";
 
@@ -37,6 +38,15 @@ export const setPodcasts = (podcasts) => {
     type: SET_PODCASTS,
     payload: {
       podcasts,
+    },
+  };
+};
+
+export const setPodcast = (podcast) => {
+  return {
+    type: SET_PODCAST,
+    payload: {
+      podcast,
     },
   };
 };

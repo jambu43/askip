@@ -3,7 +3,7 @@ import { createSelector } from "reselect";
 export const _getPostId = (state, props) => props.navigation.getParam("post_id");
 export const _getCommentId = (state, props) => props.navigation.getParam("comment_id");
 export const _getPostComments = (state) => state.post_comment.post_comments;
-export const _getPostCommentsLoading = (state) => state.post_comment.post_comment_loading;
+export const _getPostCommentsLoading = (state) => state.post_comment.comments_loading;
 
 export const getPostComments = createSelector(
   [_getPostId, _getPostComments],
@@ -26,8 +26,8 @@ export const getCommentFeed = createSelector(
 
 export const getPostCommentsLoading = createSelector(
   [_getPostId, _getPostCommentsLoading],
-  (post_id, post_comment_loading) => {
-    return post_comment_loading[post_id] ? post_comment_loading[post_id] : false;
+  (post_id, comments_loading) => {
+    return comments_loading[post_id] ? comments_loading[post_id] : false;
   }
 );
 

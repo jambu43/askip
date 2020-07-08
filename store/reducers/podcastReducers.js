@@ -37,7 +37,15 @@ export function podcastReducers(state = initialState, { payload, type }) {
     case SET_PODCAST:
       return {
         ...state,
-        podcasts: [...payload.podcasts],
+        podcasts: state.podcasts.map((item) => {
+          if (payload.podcast.id == item.id) {
+            return {
+              ...item,
+              ...podcast.podcast,
+            };
+          }
+          return item;
+        }),
       };
     case TOGGLE_PODCASTS_LOADING:
       return {
@@ -45,10 +53,10 @@ export function podcastReducers(state = initialState, { payload, type }) {
         podcasts_loading: !state.podcasts_loading,
       };
     case SET_LATEST_PODCAST:
-      let latestPodcastExists = state.podcasts.find(item => item.id === payload.podcast.id);
+      let latestPodcastExists = state.podcasts.find((item) => item.id === payload.podcast.id);
       let newPodcastList = !latestPodcastExists
         ? [...state.podcasts, payload.podcast]
-        : state.podcasts.map(item => (item.id === payload.podcast.id ? payload.podcast : item));
+        : state.podcasts.map((item) => (item.id === payload.podcast.id ? payload.podcast : item));
       return {
         ...state,
         podcasts: newPodcastList,

@@ -150,7 +150,7 @@ class PostScreen extends React.Component {
       comments,
       post,
       userPost,
-      post_comment_loading,
+      comments_loading,
       user,
       isDeletedPost,
     } = this.props;
@@ -195,7 +195,7 @@ class PostScreen extends React.Component {
             keyExtractor={(item) => item.id.toString()}
             extraData={comments}
             data={comments}
-            refreshing={post_comment_loading}
+            refreshing={comments_loading}
             onRefresh={this._handleRefresh.bind(this)}
             ListHeaderComponent={this.renderHeader.bind(this)}
             renderItem={this.renderComment.bind(this)}
@@ -277,7 +277,7 @@ const mapStateToProps = (state, props) => {
     userPost: getUserPostById(state, props),
     post: getPostById(state, props),
     comments: getPostComments(state, props),
-    post_comment_loading: getPostCommentsLoading(state, props),
+    comments_loading: getPostCommentsLoading(state, props),
   };
 };
 

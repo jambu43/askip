@@ -1,32 +1,32 @@
-import { POST_COMMENT_LOADING, SET_POST_COMMENTS } from "../types/comment";
+import { comments_loading, SET_POST_COMMENTS } from "../types/comment";
 
 const initialState = {
-  post_comment_loading: {},
+  comments_loading: {},
   post_comments: {},
 };
 
 export const commentReducers = (state = initialState, { type, payload }) => {
   switch (type) {
-    case POST_COMMENT_LOADING:
+    case comments_loading:
       return {
         ...state,
-        post_comment_loading: {
-          ...state.post_comment_loading,
+        comments_loading: {
+          ...state.comments_loading,
           [payload.post_id]: payload.isLoading,
         },
       };
     case SET_POST_COMMENTS:
-      let setPostComments = {};
+      let setComments = {};
 
       payload.comments.forEach((item) => {
-        setPostComments[item.id] = item;
+        setComments[item.id] = item;
       });
 
       return {
         ...state,
         post_comments: {
           ...state.post_comments,
-          ...setPostComments,
+          ...setComments,
         },
       };
     default:
