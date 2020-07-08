@@ -6,7 +6,6 @@ import { dark, darkLighten } from "../config/variables";
 import { fetchUserPodcasts } from "../store/actions/podcasts";
 import { getUserById, isUserLoading } from "../store/selectors/user";
 import { assetsUrl } from "../helpers";
-import AppHeader from "../components/generic/AppHeader";
 import PodcastItem from "../components/podcasts/PodcastItem";
 import { followUser } from "../store/actions/users";
 import { BackIcon } from "../components/Icons";

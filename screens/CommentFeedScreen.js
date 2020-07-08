@@ -7,7 +7,7 @@ import { BackIcon } from "../components/Icons";
 import { getCommentById, getCommentFeed } from "../store/selectors/comment";
 import CommentItem from "../components/askip/CommentItem";
 import PostCommentInput from "../components/askip/PostCommentInput";
-import { addComment, fetchCommentFeed } from "../store/actions/comments";
+import { addComment, fetchCommentFeed, addPodcastComment } from "../store/actions/comments";
 
 class CommentFeedScreen extends React.Component {
   state = {
@@ -65,22 +65,42 @@ class CommentFeedScreen extends React.Component {
     });
     let comment_id = this.props.navigation.getParam("comment_id");
     let post_id = this.props.navigation.getParam("post_id");
-    this.props
-      .addComment(post_id, {
-        content: this.state.content,
-        comment_id,
-      })
-      .then(() => {
-        this.setState({
-          content: "",
-          commenting: false,
+    let podcast_id = this.props.navigation.getParam("podcast_id");
+    if (post_id) {
+      this.props
+        .addComment(post_id, {
+          content: this.state.content,
+          comment_id,
+        })
+        .then(() => {
+          this.setState({
+            content: "",
+            commenting: false,
+          });
+        })
+        .catch(() => {
+          this.setState({
+            commenting: false,
+          });
         });
-      })
-      .catch(() => {
-        this.setState({
-          commenting: false,
+    } else {
+      this.props
+        .addPodcastComment(podcast_id, {
+          content: this.state.content,
+          comment_id,
+        })
+        .then(() => {
+          this.setState({
+            content: "",
+            commenting: false,
+          });
+        })
+        .catch(() => {
+          this.setState({
+            commenting: false,
+          });
         });
-      });
+    }
   }
 
   render() {
@@ -147,6 +167,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     fetchCommentFeed: (comment_id, page) => dispatch(fetchCommentFeed(comment_id, page)),
     addComment: (post_id, comment) => dispatch(addComment(post_id, comment)),
+    addPodcastComment: (podcast_id, comment) => dispatch(addPodcastComment(podcast_id, comment)),
   };
 };
 

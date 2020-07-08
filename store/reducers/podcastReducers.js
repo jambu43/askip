@@ -41,7 +41,7 @@ export function podcastReducers(state = initialState, { payload, type }) {
           if (payload.podcast.id == item.id) {
             return {
               ...item,
-              ...podcast.podcast,
+              ...payload.podcast,
             };
           }
           return item;

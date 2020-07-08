@@ -188,6 +188,10 @@ const HomeStack = createStackNavigator(
       path: "podcast/:podcast_id/:episode_id",
       screen: PodcastEpisodeScreen,
     },
+    Comment: {
+      path: "comments/:comment_id",
+      screen: CommentFeedScreen,
+    },
     NewsExplorer: {
       path: "news",
       screen: NewsExplorerScreen,

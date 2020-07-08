@@ -2,7 +2,7 @@ import { comments_loading, SET_POST_COMMENTS } from "../types/comment";
 
 const initialState = {
   comments_loading: {},
-  post_comments: {},
+  comments: {},
 };
 
 export const commentReducers = (state = initialState, { type, payload }) => {
@@ -24,8 +24,8 @@ export const commentReducers = (state = initialState, { type, payload }) => {
 
       return {
         ...state,
-        post_comments: {
-          ...state.post_comments,
+        comments: {
+          ...state.comments,
           ...setComments,
         },
       };

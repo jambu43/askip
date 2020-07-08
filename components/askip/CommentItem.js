@@ -21,7 +21,11 @@ export default ({ comment, navigation, showFeedBackButton = true, setBack = fals
         {showFeedBackButton ? (
           <CommentFeedBackButton
             onPress={() =>
-              navigation.navigate("Comment", { comment_id: comment.id, post_id: comment.post_id })
+              navigation.navigate("Comment", {
+                comment_id: comment.id,
+                post_id: comment.post_id,
+                podcast_id: comment.podcast_id,
+              })
             }
           >
             <CommentFeedBackButtonText>

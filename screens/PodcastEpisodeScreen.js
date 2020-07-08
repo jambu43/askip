@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import moment from "moment";
 import HTML from "react-native-render-html";
-import { TouchableOpacity, ActivityIndicator } from "react-native";
+import { TouchableOpacity, ActivityIndicator, View } from "react-native";
 import { connect } from "react-redux";
 import { dark, danger } from "../config/variables";
 import { getPodcastById } from "../store/selectors/podcast";
@@ -17,28 +17,21 @@ import {
   setNowPlaying,
   setNowPlayingSoundObject,
 } from "../store/actions/podcasts";
+import { fetchPodcastComment, addPodcastComment } from "../store/actions/comments";
+import { getPodcastComments, getPodcastCommentsLoading } from "../store/selectors/comment";
+import CommentItem from "../components/askip/CommentItem";
+import PostCommentInput from "../components/askip/PostCommentInput";
 
 class PodcastEpisodeScreen extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      commenting: false,
+      page: 1,
+    };
+  }
   async _onPlaybackStatusUpdate(playbackStatus) {
     if (!playbackStatus.isLoaded) {
-      // Update your UI for the unloaded state
-      if (playbackStatus.error) {
-        console.log(`Encountered a fatal error during playback: ${playbackStatus.error}`);
-        // Send Expo team the error on Slack or the forums so we can help you debug!
-      }
-    } else {
-      // Update your UI for the loaded state
-
-      if (playbackStatus.isPlaying) {
-        // Update your UI for the playing state
-      } else {
-        // Update your UI for the paused state
-      }
-
-      if (playbackStatus.isBuffering) {
-        // Update your UI for the buffering state
-      }
-
       if (playbackStatus.didJustFinish && !playbackStatus.isLooping) {
         // The player has just finished playing and will stop. Maybe you want to play something else?
         await this.props.now_playing.soundObject.stopAsync();
@@ -118,27 +111,69 @@ class PodcastEpisodeScreen extends React.Component {
     if (play && !playbackStatus.isPlaying) {
       await this.handlePlayButtonClick();
     }
+    let podcast_id = this.props.navigation.getParam("podcast_id");
+    this.props.fetchPodcastComment(podcast_id, this.state.page);
   }
-  render() {
-    const { podcast, now_playing, navigation } = this.props;
+
+  _handleRefresh() {
+    let podcast_id = this.props.navigation.getParam("podcast_id");
+    this.props.fetchPodcastComment(podcast_id, 1);
+  }
+
+  _handleLoadMore() {
+    let podcast_id = this.props.navigation.getParam("podcast_id");
+    this.setState(
+      (prevState, nextProps) => ({
+        page: prevState.page + 1,
+      }),
+      () => {
+        this.props.fetchPodcastComment(podcast_id, this.state.page);
+      }
+    );
+  }
+
+  handleCommentChange(text) {
+    this.setState({
+      content: text,
+    });
+  }
+
+  handleCommentSubmit() {
+    let podcast_id = this.props.navigation.getParam("podcast_id");
+    this.setState({
+      commenting: true,
+    });
+    this.props
+      .addPodcastComment(podcast_id, {
+        content: this.state.content,
+      })
+      .then(() => {
+        this.setState({
+          content: "",
+          commenting: false,
+        });
+      })
+      .catch(() => {
+        this.setState({
+          commenting: false,
+        });
+      });
+  }
+
+  renderHeader() {
+    const { podcast, now_playing } = this.props;
     const { playbackStatus } = now_playing;
+    let parsedContent = !podcast.content.match(/^<p>/)
+      ? `<p>${podcast.content}</p>`
+      : podcast.content;
     const {
       bufferingProgress,
       playingProgress,
       canGoBackward,
       canGoForward,
     } = processPlaybackStatus(playbackStatus);
-
-    let parsedContent = !podcast.content.match(/^<p>/)
-      ? `<p>${podcast.content}</p>`
-      : podcast.content;
     return (
-      <Container>
-        <Header>
-          <TouchableOpacity onPress={() => navigation.goBack()}>
-            <BackIcon fill="#fff" size={24} />
-          </TouchableOpacity>
-        </Header>
+      <PodcastContent>
         <ContentWrapper>
           <CoverImage source={{ uri: assetsUrl(podcast.cover_image) }} />
           <Title>{podcast.title}</Title>
@@ -184,6 +219,49 @@ class PodcastEpisodeScreen extends React.Component {
             li: { color: "#fff" },
           }}
         ></HTML>
+      </PodcastContent>
+    );
+  }
+
+  renderComment({ item }) {
+    return <CommentItem comment={item} key={item.id} navigation={this.props.navigation} />;
+  }
+  render() {
+    const { comments, comments_loading, now_playing, navigation } = this.props;
+    const { content, commenting } = this.state;
+    const isLoading = false;
+    console.log(comments);
+    return (
+      <Container>
+        <Header>
+          <TouchableOpacity onPress={() => navigation.goBack()}>
+            <BackIcon fill="#fff" size={24} />
+          </TouchableOpacity>
+        </Header>
+        {!isLoading ? (
+          <Content
+            keyExtractor={(item) => item.id.toString()}
+            extraData={comments}
+            data={comments}
+            refreshing={comments_loading}
+            onRefresh={this._handleRefresh.bind(this)}
+            ListHeaderComponent={this.renderHeader.bind(this)}
+            renderItem={this.renderComment.bind(this)}
+            showsVerticalScrollIndicator={false}
+            onEndReached={this._handleLoadMore.bind(this)}
+            onEndReachedThreshold={0.5}
+            initialNumToRender={10}
+          />
+        ) : null}
+        {!isLoading ? (
+          <PostCommentInput
+            submitting={commenting}
+            content={content}
+            onSubmit={this.handleCommentSubmit.bind(this)}
+            onChange={this.handleCommentChange.bind(this)}
+          />
+        ) : null}
+        {!isLoading ? <View style={{ height: 0 }} /> : <ActivityIndicator color="#fff" />}
       </Container>
     );
   }
@@ -192,12 +270,21 @@ class PodcastEpisodeScreen extends React.Component {
 const Container = styled.View`
   background: ${dark};
   flex: 1;
-  padding: 10px 15px;
+  padding: 10px 0px;
+  position: relative;
+  flex-grow: 1;
 `;
 const Header = styled.View`
   margin-top: 24px;
   margin-bottom: 15px;
 `;
+
+const PodcastContent = styled.View`
+  margin-bottom: 15px;
+  padding: 0 15px;
+`;
+
+const Content = styled.FlatList``;
 
 const PlayerControlWrapper = styled.View`
   flex-direction: row;
@@ -263,6 +350,8 @@ const mapStateToProps = (state, props) => {
   return {
     now_playing: state.podcast.now_playing,
     podcast: getPodcastById(state, props),
+    comments: getPodcastComments(state, props),
+    comments_loading: getPodcastCommentsLoading(state, props),
   };
 };
 
@@ -277,6 +366,8 @@ const mapDispatchToProps = (dispatch) => {
     setNowPlayingSoundObject: (soundObject) => {
       return dispatch(setNowPlayingSoundObject(soundObject));
     },
+    fetchPodcastComment: (podcast_id, page) => dispatch(fetchPodcastComment(podcast_id, page)),
+    addPodcastComment: (podcast_id, post) => dispatch(addPodcastComment(podcast_id, post)),
   };
 };
 
