@@ -24,7 +24,6 @@ import PodcastsScreen from "../screens/PodcastsScreen";
 import NewsScreen from "../screens/NewsScreen";
 import ProfileScreen from "../screens/ProfileScreen";
 import NotificationsScreen from "../screens/Dashboard/NotificationsScreen";
-import WelcomeScreen from "../screens/WelcomeScreen";
 import UserAvatar from "../components/generic/UserAvatar";
 import { NotificationIcon, SearchIcon, HomeIcon } from "../components/Icons";
 
@@ -406,10 +405,6 @@ const AppNavigator = createStackNavigator(
     Register: {
       path: "register",
       screen: RegisterScreen,
-    },
-    Welcome: {
-      path: "welcome",
-      screen: WelcomeScreen,
     },
     HomeStack: HomeTabNavigator,
   },
