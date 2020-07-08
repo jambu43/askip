@@ -15,6 +15,11 @@ class CreatePostScreen extends React.Component {
     selectedColor: "#70595F",
     selectedPicture: null,
     content: "",
+    inputWidth: "99%",
+  };
+
+  onTextFocus = () => {
+    this.setState({ inputWidth: "auto" });
   };
 
   handleColorSelected(color) {
@@ -119,7 +124,7 @@ class CreatePostScreen extends React.Component {
   }
 
   render() {
-    const { colors, selectedColor, selectedPicture, content } = this.state;
+    const { colors, selectedColor, selectedPicture, content, inputWidth } = this.state;
     const { navigation, post_creating } = this.props;
     let colorMode = !selectedPicture && selectedColor && content.length < 144;
     let canSubmit = content || selectedPicture;
@@ -148,10 +153,12 @@ class CreatePostScreen extends React.Component {
             bgColor={selectedColor}
           >
             <PostInput
+              inputWidth={inputWidth}
               onChangeText={this.handleInputChange.bind(this)}
               colorMode={colorMode}
               multiline={true}
               autofocus={true}
+              onFocus={this.onTextFocus.bind(this)}
               value={content}
               placeholder="Quoi de neuf ?"
             />
@@ -219,6 +226,7 @@ const PostInput = styled.TextInput`
   text-align: ${(props) => (props.colorMode ? "center" : "left")};
   font-size: ${(props) => (props.colorMode ? 23 : 14)}px;
   font-weight: ${(props) => (props.colorMode ? "bold" : 400)};
+  width: ${(props) => props.inputWidth};
   padding: 15px 0px;
   line-height: 23px;
 `;
