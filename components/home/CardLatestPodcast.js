@@ -17,7 +17,11 @@ import {
 class CardLatestPodcast extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      isLoading: false,
+    };
   }
+
   async _onPlaybackStatusUpdate(playbackStatus) {
     if (!playbackStatus.isLoaded) {
       // Update your UI for the unloaded state
@@ -42,6 +46,8 @@ class CardLatestPodcast extends React.Component {
         // The player has just finished playing and will stop. Maybe you want to play something else?
         await this.props.now_playing.soundObject.stopAsync();
       }
+
+      playbackStatus.hasPlayInitiated = true;
 
       this.props.setNowPlayingPlayBackStatus(playbackStatus);
     }
@@ -70,7 +76,10 @@ class CardLatestPodcast extends React.Component {
 
   async handlePlayButtonClick() {
     const { podcast, now_playing } = this.props;
-    Audio.requestPermissionsAsync()
+    this.setState({
+      isLoading: true,
+    });
+    await Audio.requestPermissionsAsync()
       .then(async (permission) => {
         if (permission.granted) {
           let soundObject = null;
@@ -79,6 +88,8 @@ class CardLatestPodcast extends React.Component {
             if (now_playing.playbackStatus.isPlaying) {
               await soundObject.pauseAsync();
             } else {
+              now_playing.playbackStatus.hasPlayInitiated = true;
+              this.props.setNowPlayingPlayBackStatus(now_playing.playbackStatus);
               await soundObject.playAsync();
             }
           } else {
@@ -92,6 +103,7 @@ class CardLatestPodcast extends React.Component {
               {},
               true
             );
+
             soundObject.setOnPlaybackStatusUpdate(this._onPlaybackStatusUpdate.bind(this));
             soundObject.setProgressUpdateIntervalAsync(1000);
             if (initialPlaybackObject.isLoaded) {
@@ -108,6 +120,10 @@ class CardLatestPodcast extends React.Component {
       .catch((error) => {
         console.log("Error", error);
       });
+
+    this.setState({
+      isLoading: false,
+    });
   }
 
   async componentWillUnmount() {
@@ -121,6 +137,7 @@ class CardLatestPodcast extends React.Component {
   }
 
   render() {
+    const { isLoading } = this.state;
     const { podcast, now_playing, navigation } = this.props;
     const { playbackStatus } = now_playing;
     const {
@@ -132,7 +149,12 @@ class CardLatestPodcast extends React.Component {
     return (
       <Container>
         <ContentWrapper
-          onPress={() => navigation.navigate("PodcastEpisode", { podcast_id: podcast.id })}
+          onPress={() =>
+            navigation.navigate("PodcastEpisode", {
+              podcast_id: podcast.id,
+              play: playbackStatus.isPlaying,
+            })
+          }
         >
           <CoverImage source={{ uri: assetsUrl(podcast.cover_image) }} />
           <Title>{podcast.title}</Title>
@@ -145,7 +167,7 @@ class CardLatestPodcast extends React.Component {
           />
           <PlayButton
             is_playing={playbackStatus.isPlaying}
-            is_loading={playbackStatus.isBuffering}
+            is_loading={isLoading}
             size={45}
             onPress={this.handlePlayButtonClick.bind(this)}
           />

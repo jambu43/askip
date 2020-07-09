@@ -23,6 +23,8 @@ const initialState = {
       durationMillis: 0,
       playableDurationMillis: 0,
       positionMillis: 0,
+      hasPlayInitiated: false,
+      shouldPlay: false,
     },
   },
 };

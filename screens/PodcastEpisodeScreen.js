@@ -28,9 +28,11 @@ class PodcastEpisodeScreen extends React.Component {
     this.state = {
       commenting: false,
       page: 1,
+      isLoading: false,
     };
   }
   async _onPlaybackStatusUpdate(playbackStatus) {
+    console(playbackStatus);
     if (!playbackStatus.isLoaded) {
       if (playbackStatus.didJustFinish && !playbackStatus.isLooping) {
         // The player has just finished playing and will stop. Maybe you want to play something else?
@@ -63,8 +65,11 @@ class PodcastEpisodeScreen extends React.Component {
   }
 
   async handlePlayButtonClick() {
+    this.setState({
+      isLoading: true,
+    });
     const { podcast, now_playing } = this.props;
-    Audio.requestPermissionsAsync()
+    await Audio.requestPermissionsAsync()
       .then(async (permission) => {
         if (permission.granted) {
           let soundObject = null;
@@ -86,6 +91,7 @@ class PodcastEpisodeScreen extends React.Component {
               {},
               true
             );
+
             soundObject.setOnPlaybackStatusUpdate(this._onPlaybackStatusUpdate.bind(this));
             soundObject.setProgressUpdateIntervalAsync(1000);
             if (initialPlaybackObject.isLoaded) {
@@ -102,6 +108,9 @@ class PodcastEpisodeScreen extends React.Component {
       .catch((error) => {
         console.log("Error", error);
       });
+    this.setState({
+      isLoading: false,
+    });
   }
 
   async componentDidMount() {
@@ -162,7 +171,9 @@ class PodcastEpisodeScreen extends React.Component {
 
   renderHeader() {
     const { podcast, now_playing } = this.props;
+    const { isLoading } = this.state;
     const { playbackStatus } = now_playing;
+
     let parsedContent = !podcast.content.match(/^<p>/)
       ? `<p>${podcast.content}</p>`
       : podcast.content;
@@ -197,7 +208,7 @@ class PodcastEpisodeScreen extends React.Component {
           />
           <PlayButton
             is_playing={playbackStatus.isPlaying}
-            is_loading={playbackStatus.isBuffering}
+            is_loading={isLoading}
             size={30}
             onPress={this.handlePlayButtonClick.bind(this)}
           />
@@ -230,7 +241,6 @@ class PodcastEpisodeScreen extends React.Component {
     const { comments, comments_loading, now_playing, navigation } = this.props;
     const { content, commenting } = this.state;
     const isLoading = false;
-    console.log(comments);
     return (
       <Container>
         <Header>
