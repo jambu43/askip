@@ -29,6 +29,8 @@ export const processPlaybackStatus = ({
   positionMillis,
   hasPlayInitiated,
   shouldPlay,
+  isPlaying,
+  isBuffering,
 }) => {
   let bufferingProgress = durationMillis ? (playableDurationMillis * 100) / durationMillis : 0;
   let playingProgress = durationMillis ? (positionMillis * 100) / durationMillis : 0;
@@ -42,6 +44,8 @@ export const processPlaybackStatus = ({
     canGoForward,
     canGoBackward,
     isLoading,
+    isBuffering,
+    isPlaying,
   };
 };
 

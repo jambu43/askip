@@ -196,12 +196,24 @@ class PodcastEpisodeScreen extends React.Component {
     let parsedContent = !podcast.content.match(/^<p>/)
       ? `<p>${podcast.content}</p>`
       : podcast.content;
-    const {
+
+    let {
       bufferingProgress,
       playingProgress,
       canGoBackward,
       canGoForward,
+      isBuffering,
+      isPlaying,
     } = processPlaybackStatus(playbackStatus);
+
+    if (podcast.id != now_playing.podcast_id) {
+      bufferingProgress = 0;
+      playingProgress = 0;
+      canGoBackward = false;
+      canGoForward = false;
+      isPlaying = false;
+      isBuffering = false;
+    }
     return (
       <PodcastContent>
         <ContentWrapper>
@@ -229,7 +241,7 @@ class PodcastEpisodeScreen extends React.Component {
             disabled={!canGoBackward}
           />
           <PlayButton
-            is_playing={playbackStatus.isPlaying}
+            is_playing={isPlaying}
             is_loading={isLoading}
             size={35}
             onPress={this.handlePlayButtonClick.bind(this)}
@@ -239,9 +251,6 @@ class PodcastEpisodeScreen extends React.Component {
             disabled={!canGoForward}
             size={35}
           />
-          {playbackStatus.isBuffering && playbackStatus.isPlaying ? (
-            <ActivityIndicator size="small" color="#fff" />
-          ) : null}
         </PlayerControlWrapper>
         <HTML
           html={parsedContent}
@@ -260,7 +269,7 @@ class PodcastEpisodeScreen extends React.Component {
     return <CommentItem comment={item} key={item.id} navigation={this.props.navigation} />;
   }
   render() {
-    const { comments, comments_loading, now_playing, navigation } = this.props;
+    const { comments, comments_loading, navigation } = this.props;
     const { content, commenting } = this.state;
     const isLoading = false;
     return (
