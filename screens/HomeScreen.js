@@ -13,6 +13,7 @@ import ArticleReleaseList from "../components/home/ArticleReleaseList";
 import { getMagazinesReleases } from "../store/selectors/magazine";
 import { getNewsArticles } from "../store/selectors/news";
 import { setAxiosToken } from "../store/actions/auth";
+import { getNowPlayingPodcastById } from "../store/selectors/podcast";
 
 class HomeScreen extends React.Component {
   constructor(props) {
@@ -42,13 +43,18 @@ class HomeScreen extends React.Component {
   _handleRefresh() {
     this._fetchMagazineData();
   }
+
+  _nowPlaying() {
+    const { latest_podcast, now_playing, now_playing_podcast } = this.props;
+    return now_playing_podcast ? now_playing_podcast : latest_podcast;
+  }
+
   render() {
     const {
       navigation,
       magazines_publication_releases,
       latest_podcast,
       articles,
-      articles_loading,
       magazines_publication_releases_loading,
     } = this.props;
     return (
@@ -67,14 +73,14 @@ class HomeScreen extends React.Component {
             title="Nouvelles parutions"
             magazines={magazines_publication_releases}
           />
-          <ArticleReleaseList navigation={navigation} title="À la une" articles={articles} />
           {latest_podcast ? (
             <SectionLatestPodcast
               navigation={navigation}
               title="Dernière épisode du podcast"
-              podcast={latest_podcast}
+              podcast={this._nowPlaying()}
             />
           ) : null}
+          <ArticleReleaseList navigation={navigation} title="À la une" articles={articles} />
         </ScrollView>
       </Container>
     );
@@ -89,6 +95,8 @@ const mapStateTopProps = (state) => {
     latest_podcast: state.podcast.latest_podcast,
     articles: getNewsArticles(state).slice(0, 4),
     articles_loading: state.article.article_list_loading,
+    now_playing: state.podcast.now_playing,
+    now_playing_podcast: getNowPlayingPodcastById(state),
   };
 };
 

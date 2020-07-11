@@ -47,8 +47,6 @@ class CardLatestPodcast extends React.Component {
         await this.props.now_playing.soundObject.stopAsync();
       }
 
-      playbackStatus.hasPlayInitiated = true;
-
       this.props.setNowPlayingPlayBackStatus(playbackStatus);
     }
   }
@@ -156,7 +154,6 @@ class CardLatestPodcast extends React.Component {
             })
           }
         >
-          <CoverImage source={{ uri: assetsUrl(podcast.cover_image) }} />
           <Title>{podcast.title}</Title>
         </ContentWrapper>
         <PlayerControlWrapper>
@@ -185,7 +182,7 @@ class CardLatestPodcast extends React.Component {
           <BufferingProgress progress={bufferingProgress}></BufferingProgress>
         </ProgressWrapper>
         <MorePodcastButton onPress={() => navigation.navigate("Podcasts")}>
-          <MorePodcastButtonText>Parcourir la gallérie</MorePodcastButtonText>
+          <MorePodcastButtonText>Explorer nos podcasts</MorePodcastButtonText>
         </MorePodcastButton>
       </Container>
     );

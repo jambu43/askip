@@ -1,13 +1,11 @@
 import React from "react";
 import styled from "styled-components";
 import CardLatestPodcast from "./CardLatestPodcast";
+import { darkLighten } from "../../config/variables";
 
 const SectionLatestPodcast = ({ title, podcast, navigation }) => {
   return (
     <Container>
-      <Header>
-        <Title>{title}</Title>
-      </Header>
       <Content>
         <CardLatestPodcast navigation={navigation} podcast={podcast} />
       </Content>
@@ -16,7 +14,8 @@ const SectionLatestPodcast = ({ title, podcast, navigation }) => {
 };
 
 const Container = styled.View`
-  padding: 0 15px;
+  padding: 15px;
+  background-color: ${darkLighten};
 `;
 const Title = styled.Text`
   font-size: 20px;

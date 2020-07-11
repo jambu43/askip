@@ -19,10 +19,8 @@ export const getPostComments = createSelector(
 export const getPodcastComments = createSelector(
   [_getPodcastId, _getComments],
   (podcast_id, post_comments) => {
-    console.log(podcast_id, post_comments);
     let comments = Object.values(post_comments);
     comments = comments.filter((item) => item.podcast_id == podcast_id);
-
     return orderBy(comments, "created_at", "desc");
   }
 );

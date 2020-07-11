@@ -31,9 +31,27 @@ class PodcastEpisodeScreen extends React.Component {
       isLoading: false,
     };
   }
+
   async _onPlaybackStatusUpdate(playbackStatus) {
-    console(playbackStatus);
     if (!playbackStatus.isLoaded) {
+      // Update your UI for the unloaded state
+      if (playbackStatus.error) {
+        console.log(`Encountered a fatal error during playback: ${playbackStatus.error}`);
+        // Send Expo team the error on Slack or the forums so we can help you debug!
+      }
+    } else {
+      // Update your UI for the loaded state
+
+      if (playbackStatus.isPlaying) {
+        // Update your UI for the playing state
+      } else {
+        // Update your UI for the paused state
+      }
+
+      if (playbackStatus.isBuffering) {
+        // Update your UI for the buffering state
+      }
+
       if (playbackStatus.didJustFinish && !playbackStatus.isLooping) {
         // The player has just finished playing and will stop. Maybe you want to play something else?
         await this.props.now_playing.soundObject.stopAsync();
@@ -81,19 +99,20 @@ class PodcastEpisodeScreen extends React.Component {
               await soundObject.playAsync();
             }
           } else {
+            console.log("_onPlaybackStatusUpdate");
             if (now_playing.soundObject) {
               await now_playing.soundObject.stopAsync();
             }
 
             soundObject = new Audio.Sound();
+            soundObject.setOnPlaybackStatusUpdate(this._onPlaybackStatusUpdate.bind(this));
+            soundObject.setProgressUpdateIntervalAsync(1000);
             let initialPlaybackObject = await soundObject.loadAsync(
               { uri: assetsUrl(this.props.podcast.file_path) },
               {},
               true
             );
 
-            soundObject.setOnPlaybackStatusUpdate(this._onPlaybackStatusUpdate.bind(this));
-            soundObject.setProgressUpdateIntervalAsync(1000);
             if (initialPlaybackObject.isLoaded) {
               await soundObject.playAsync();
               this.props.setNowPlaying({
@@ -191,7 +210,10 @@ class PodcastEpisodeScreen extends React.Component {
           <MetaWrapper>
             <MetaItem>{moment(podcast.created_at).format("DD MMMM YYYY")}</MetaItem>
             <MetaItem> - </MetaItem>
-            <MetaItem>{podcast.read_time}</MetaItem>
+            <MetaItem>
+              {Math.floor(podcast.read_time / 60) + ":"}
+              {Math.floor(podcast.read_time % 60)}
+            </MetaItem>
             <MetaItem> - </MetaItem>
             <MetaItem>{podcast.file_size}MB</MetaItem>
           </MetaWrapper>
@@ -203,19 +225,19 @@ class PodcastEpisodeScreen extends React.Component {
         <PlayerControlWrapper>
           <PlayBackWardButton
             onPress={this.handlePlayBackwardClick.bind(this)}
-            size={30}
+            size={35}
             disabled={!canGoBackward}
           />
           <PlayButton
             is_playing={playbackStatus.isPlaying}
             is_loading={isLoading}
-            size={30}
+            size={35}
             onPress={this.handlePlayButtonClick.bind(this)}
           />
           <PlayForwardButton
             onPress={this.handlePlayForwardClick.bind(this)}
             disabled={!canGoForward}
-            size={30}
+            size={35}
           />
           {playbackStatus.isBuffering && playbackStatus.isPlaying ? (
             <ActivityIndicator size="small" color="#fff" />

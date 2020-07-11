@@ -58,7 +58,7 @@ class PodcastsScreen extends React.Component {
   }
 
   render() {
-    const { channels, usersLoading } = this.props;
+    const { channels, usersLoading, navigation } = this.props;
     return (
       <Container>
         <Header>
