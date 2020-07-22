@@ -105,15 +105,16 @@ class LoginWithPhoneNumberScreen extends React.Component {
                 </FormError>
               ) : null}
             </FormGroup>
-            <FormGroup>
-              {showFormGeneralErrors ? (
+
+            {showFormGeneralErrors ? (
+              <FormGroup>
                 <FormError>
                   <FormErrorText>
                     Le numéro de téléphone doit commencer par le code du pays. (Ex: +243)
                   </FormErrorText>
                 </FormError>
-              ) : null}
-            </FormGroup>
+              </FormGroup>
+            ) : null}
             <FormGroup>
               <SubmitButton disabled={isLoggingIn} onPress={this.handleFormSubmit.bind(this)}>
                 {isLoggingIn ? <ActivityIndicator color="#fff" /> : false}
@@ -167,7 +168,7 @@ const InputForm = styled.TextInput`
   height: 50px;
   color: ${dark};
   font-weight: bold;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 `;
 
 const FormError = styled.View`

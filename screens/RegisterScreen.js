@@ -12,6 +12,7 @@ class RegisterScreen extends React.Component {
     phone_number: "",
     password: "",
     name: "",
+    showFormGeneralErrors: false
   };
 
   handleFormSubmit() {
@@ -20,6 +21,10 @@ class RegisterScreen extends React.Component {
       this._isValidName(name) &&
       this._isValidPassword(password) &&
       this._isValidPhoneNumber(phone_number);
+
+    this.setState({
+      showFormGeneralErrors: false
+    });
 
     if (canSubmit) {
       this.props.toggleIsLoggingIn();
@@ -36,6 +41,10 @@ class RegisterScreen extends React.Component {
         .catch(() => {
           this.props.toggleIsLoggingIn();
         });
+    } else {
+      this.setState({
+        showFormGeneralErrors: true
+      });
     }
   }
 
@@ -67,7 +76,7 @@ class RegisterScreen extends React.Component {
 
   render() {
     const { isLoggingIn, errors, navigation } = this.props;
-    const { name, password, phone_number } = this.state;
+    const { name, password, phone_number, showFormGeneralErrors } = this.state;
     return (
       <Container>
         <Header>
@@ -86,6 +95,13 @@ class RegisterScreen extends React.Component {
                 placeholder="Prénon et nom"
                 onChangeText={(text) => this.handleInputChanged("name", text)}
               />
+              {showFormGeneralErrors ? (
+                <FormError>
+                  <FormHelpText>
+                    Le nom et le prénom doivent être séparé par un espace.
+                  </FormHelpText>
+                </FormError>
+              ) : null}
               {errors && errors["name"] ? (
                 <FormError>
                   <FormErrorText>{errors["name"][0]}</FormErrorText>
@@ -102,6 +118,13 @@ class RegisterScreen extends React.Component {
                 placeholder="Numéro de téléphone"
                 onChangeText={(text) => this.handleInputChanged("phone_number", text)}
               />
+              {showFormGeneralErrors ? (
+                <FormError>
+                  <FormHelpText>
+                    Le numéro de téléphone doit commencer par le code du pays.
+                  </FormHelpText>
+                </FormError>
+              ) : null}
               {errors && errors["phone_number"] ? (
                 <FormError>
                   <FormErrorText>{errors["phone_number"][0]}</FormErrorText>
@@ -116,12 +139,29 @@ class RegisterScreen extends React.Component {
                 onChangeText={(text) => this.handleInputChanged("password", text)}
                 selectionColor={dark}
               />
+              {showFormGeneralErrors ? (
+                <FormError>
+                  <FormHelpText>
+                    Le mot de passe doit avoir plus de 6 caractères.
+                  </FormHelpText>
+                </FormError>
+              ) : null}
               {errors && errors["password"] ? (
                 <FormError>
                   <FormErrorText>{errors["password"][0]}</FormErrorText>
                 </FormError>
               ) : null}
             </FormGroup>
+
+            {showFormGeneralErrors ? (
+              <FormGroup>
+                <FormError>
+                  <FormErrorText>
+                    Veuillez remplir tous les champs selon les indications.
+                  </FormErrorText>
+                </FormError>
+              </FormGroup>
+            ) : null}
             <FormGroup>
               <SubmitButton disabled={isLoggingIn} onPress={this.handleFormSubmit.bind(this)}>
                 {isLoggingIn ? <ActivityIndicator color="#fff" /> : false}
@@ -175,7 +215,7 @@ const InputForm = styled.TextInput`
   height: 50px;
   color: ${dark};
   font-weight: bold;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 `;
 
 const SubmitButton = styled.TouchableOpacity`
@@ -189,12 +229,17 @@ const SubmitButton = styled.TouchableOpacity`
 `;
 
 const FormError = styled.View`
-  margin-bottom: 10px;
+  margin-bottom: 5px;
   width: 100%;
 `;
 
 const FormErrorText = styled.Text`
   color: ${danger};
+  font-size: 12px;
+`;
+
+const FormHelpText = styled.Text`
+  color: ${dark};
   font-size: 12px;
 `;
 
