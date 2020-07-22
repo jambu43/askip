@@ -96,7 +96,7 @@ export function fetchMe() {
 
           resolve();
         })
-        .catch(function ({ response }) {})
+        .catch(function ({ response }) { })
         .finally(function () {
           dispatch(isUserFetching(false));
         });
@@ -139,7 +139,6 @@ export function logInUser(payload) {
           resolve();
         })
         .catch(function ({ response }) {
-          console.log(response);
           dispatch({
             type: TOGGLE_HAS_LOGIN_ERRORS,
           });

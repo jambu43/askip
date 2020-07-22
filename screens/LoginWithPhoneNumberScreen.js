@@ -11,6 +11,7 @@ class LoginWithPhoneNumberScreen extends React.Component {
   state = {
     phone_number: "",
     password: "",
+    showFormGeneralErrors: false
   };
 
   goToHomeScreen() {
@@ -28,8 +29,11 @@ class LoginWithPhoneNumberScreen extends React.Component {
   }
 
   handleFormSubmit() {
+    this.setState({
+      showFormGeneralErrors: false
+    });
     const { password, phone_number } = this.state;
-    let canSubmit = this._isValidPassword(password) && this._isValidPhoneNumber(phone_number);
+    let canSubmit = this._isValidPhoneNumber(phone_number);
     if (canSubmit) {
       this.props.toggleIsLoggingIn();
       this.props
@@ -40,7 +44,11 @@ class LoginWithPhoneNumberScreen extends React.Component {
         .then(() => {
           this.goToHomeScreen();
         })
-        .catch(() => {});
+        .catch(() => { });
+    } else {
+      this.setState({
+        showFormGeneralErrors: true
+      });
     }
   }
 
@@ -54,7 +62,7 @@ class LoginWithPhoneNumberScreen extends React.Component {
 
   render() {
     const { isLoggingIn, navigation, errors } = this.props;
-    const { password, phone_number } = this.state;
+    const { password, phone_number, showFormGeneralErrors } = this.state;
     return (
       <Container>
         <Header>
@@ -94,6 +102,15 @@ class LoginWithPhoneNumberScreen extends React.Component {
               {errors && errors["password"] ? (
                 <FormError>
                   <FormErrorText>{errors["password"][0]}</FormErrorText>
+                </FormError>
+              ) : null}
+            </FormGroup>
+            <FormGroup>
+              {showFormGeneralErrors ? (
+                <FormError>
+                  <FormErrorText>
+                    Le numéro de téléphone doit commencer par le code du pays. (Ex: +243)
+                  </FormErrorText>
                 </FormError>
               ) : null}
             </FormGroup>
