@@ -114,11 +114,6 @@ class LoginScreen extends React.Component {
           <ButtonFacebookText>CONTINUER AVEC FACEBOOK</ButtonFacebookText>
         </ButtonFacebook>
 
-        <ButtonGmail disabled={isLoggingIn} onPress={this.handleGoogleLoginClick.bind(this)}>
-          <ButtonIcon source={require("../assets/google.png")}></ButtonIcon>
-          <ButtonGmailText>CONTINUER AVEC GMAIL</ButtonGmailText>
-        </ButtonGmail>
-
         <ButtonPhoneNumber
           disabled={isLoggingIn}
           onPress={() => navigation.navigate("LoginWithPhoneNumber")}
