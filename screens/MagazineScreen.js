@@ -50,8 +50,8 @@ class MagazineScreen extends React.Component {
     });
     this.props
       .togglePublicationRelease(publicationReleaseId)
-      .then(() => {})
-      .catch(() => {})
+      .then(() => { })
+      .catch(() => { })
       .finally(() => {
         this.setState({
           toggling_publication_release: false,
@@ -99,6 +99,13 @@ class MagazineScreen extends React.Component {
               <MaterialCommunityIcons name="file-document-outline" color="#fff" size={24} />
               <MagazineInfoItemTitle>
                 {magazine_release.articles_count} Articles
+              </MagazineInfoItemTitle>
+            </MagazineInfoItem>
+
+            <MagazineInfoItem>
+              <MaterialCommunityIcons name="eye-check" color="#fff" size={24} />
+              <MagazineInfoItemTitle>
+                {magazine_release.readers_count} lecteurs
               </MagazineInfoItemTitle>
             </MagazineInfoItem>
 
