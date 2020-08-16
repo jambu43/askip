@@ -13,6 +13,7 @@
       "android",
       "web"
     ],
+    "scheme": "askip",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -42,7 +43,23 @@
       "package": "com.makarios.askip",
       "versionCode": 12,
       "enableDangerousExperimentalLeanBuilds": true,
-      "googleServicesFile": "./google-services.json"
+      "googleServicesFile": "./google-services.json",
+      "intentFilters": [
+        {
+          "action": "VIEW",
+          "data": [
+            {
+              "scheme": "https",
+              "host": "askip.buzz",
+              "pathPrefix": "/records"
+            },
+          ],
+          "category": [
+            "BROWSABLE",
+            "DEFAULT"
+          ]
+        }
+      ]
     },
     "web": {
       "config": {
