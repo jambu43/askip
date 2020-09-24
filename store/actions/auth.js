@@ -139,6 +139,7 @@ export function logInUser(payload) {
           resolve();
         })
         .catch(function ({ response }) {
+          console.log(response)
           dispatch({
             type: TOGGLE_HAS_LOGIN_ERRORS,
           });
