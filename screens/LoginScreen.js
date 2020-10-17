@@ -109,11 +109,11 @@ class LoginScreen extends React.Component {
           accedez à des centaines de magazines et journaux.
         </Text>
 
-        <ButtonFacebook disabled={isLoggingIn} onPress={this.handleLoginClick.bind(this)}>
+        {/* <ButtonFacebook disabled={isLoggingIn} onPress={this.handleLoginClick.bind(this)}>
           <ButtonIcon source={require("../assets/facebook.png")}></ButtonIcon>
           <ButtonFacebookText>CONTINUER AVEC FACEBOOK</ButtonFacebookText>
         </ButtonFacebook>
-
+ */}
         <ButtonPhoneNumber
           disabled={isLoggingIn}
           onPress={() => navigation.navigate("LoginWithPhoneNumber")}
