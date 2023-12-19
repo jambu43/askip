@@ -7,17 +7,17 @@ export const cutText = (text, length, more = "...") => {
 };
 
 export const apiUrl = (pathname) => {
-  return `https://www.askip.buzz/api/v1/${pathname}`;
+  return `http://127.0.0.1:8000/api/v1/${pathname}`;
 };
 
 export const assetsUrl = (pathname) => {
   if (pathname) {
     if (pathname.match("^file://")) return pathname;
     if (pathname.match("^http://") || pathname.match("^https://")) return pathname;
-    return `https://www.askip.buzz/storage/${pathname}`;
+    return `http://127.0.0.1:8000/storage/${pathname}`;
   }
 
-  return `https://www.askip.buzz/storage/`;
+  return `http://127.0.0.1:8000/storage/`;
 };
 
 export const simplePlural = (count, plural, singular) => {
